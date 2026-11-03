@@ -3,6 +3,8 @@ import { TypographyLab } from "@/components/playground/TypographyLab";
 import { PaletteGenerator } from "@/components/playground/PaletteGenerator";
 import { ColourMatch } from "@/components/playground/ColourMatch";
 import { PromptGenerator } from "@/components/playground/PromptGenerator";
+import { DesignMemory } from "@/components/playground/DesignMemory";
+import { LogoDetective } from "@/components/playground/LogoDetective";
 
 export const metadata: Metadata = {
   title: "The Creative Playground",
@@ -10,11 +12,13 @@ export const metadata: Metadata = {
 };
 
 const tools = [
-  { id: "typography-lab", label: "Typography Lab", el: <TypographyLab /> },
-  { id: "palette", label: "Palette Generator", el: <PaletteGenerator /> },
-  { id: "colour-match", label: "Colour Match", el: <ColourMatch /> },
-  { id: "prompts", label: "Prompt Generator", el: <PromptGenerator /> },
-];
+    { id: "typography-lab", label: "Typography Lab", el: <TypographyLab /> },
+    { id: "palette", label: "Palette Generator", el: <PaletteGenerator /> },
+    { id: "colour-match", label: "Colour Match", el: <ColourMatch /> },
+    { id: "memory", label: "Design Memory", el: <DesignMemory /> },
+    { id: "logo-detective", label: "Logo Detective", el: <LogoDetective /> },
+    { id: "prompts", label: "Prompt Generator", el: <PromptGenerator /> },
+  ];
 
 export default function Playground() {
   return (
