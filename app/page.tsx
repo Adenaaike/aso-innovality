@@ -7,7 +7,8 @@ import { Reveal } from "@/components/Reveal";
 import { StatusCard } from "@/components/home/StatusCard";
 import { Marquee } from "@/components/home/Marquee";
 import { Stats } from "@/components/home/Stats";
-import { services, steps } from "@/lib/site";
+import { ServicesHover } from "@/components/home/ServicesHover";
+import { steps } from "@/lib/site";
 import { publicClient } from "@/lib/supabase/public";
 
 export const revalidate = 300;
@@ -24,6 +25,30 @@ async function getFeatured(): Promise<Featured[]> {
     .select("slug, title, year, cover_url, overview, category:categories(name)")
     .eq("published", true).eq("featured", true).order("sort_order").limit(4);
   return (data ?? []) as unknown as Featured[];
+}
+
+// Which project categories feed each service's hover preview
+const SERVICE_CATEGORIES: Record<string, string[]> = {
+  "brand-identity": ["Brand Identity", "Logo Design"],
+  "graphic-design": ["Graphic Design", "Campaigns & Posters", "Social Media Design"],
+  "creative-direction": ["Campaigns & Posters", "Experimental Design"],
+  "photography": ["Photography"],
+  "packaging-print": ["Packaging"],
+  "digital-experiences": ["Experimental Design"],
+};
+
+async function getPreviews(): Promise<Record<string, string[]>> {
+  const sb = publicClient();
+  if (!sb) return {};
+  const { data } = await sb.from("projects")
+    .select("cover_url, category:categories(name)")
+    .eq("published", true).not("cover_url", "is", null).order("sort_order").limit(40);
+  const rows = (data ?? []) as unknown as { cover_url: string; category: { name: string } | null }[];
+  const out: Record<string, string[]> = {};
+  for (const [slug, cats] of Object.entries(SERVICE_CATEGORIES)) {
+    out[slug] = rows.filter((r) => r.category && cats.includes(r.category.name)).map((r) => r.cover_url).slice(0, 3);
+  }
+  return out;
 }
 
 const tools = [
@@ -44,7 +69,7 @@ function Eyebrow({ no, label, light = false }: { no: string; label: string; ligh
 }
 
 export default async function Home() {
-  const featured = await getFeatured();
+  const [featured, previews] = await Promise.all([getFeatured(), getPreviews()]);
 
   return (
     <>
@@ -105,7 +130,7 @@ export default async function Home() {
         <div className="mt-20"><Stats /></div>
       </section>
 
-      {/* 02 — IDENTITY: Selected Works */}
+      {/* 02 — IDENTITY */}
       <section className="border-t border-line bg-surface/50 py-24" aria-labelledby="works-title">
         <div className="mx-auto max-w-6xl px-6">
           <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-6">
@@ -120,7 +145,7 @@ export default async function Home() {
             {featured.length
               ? featured.map((p, i) => (
                   <Reveal key={p.slug} delay={i * 0.08} className="break-inside-avoid">
-                    <Link href={`/work/${p.slug}`} className="group block">
+                    <Link href={`/work/${p.slug}`} data-cursor="View project" className="group block">
                       <div className="relative overflow-hidden rounded-sm bg-surface">
                         {p.cover_url ? (
                           <Image src={p.cover_url} alt={p.title} width={1600} height={1600} sizes="(min-width:768px) 50vw, 100vw"
@@ -147,21 +172,8 @@ export default async function Home() {
                 ))}
           </div>
 
-          {/* Services */}
           <Reveal className="mt-20"><h3 className="font-display text-2xl font-bold md:text-3xl">What I design</h3></Reveal>
-          <ul className="mt-8 divide-y divide-line border-y border-line">
-            {services.map((s, i) => (
-              <Reveal key={s.slug} delay={i * 0.04}>
-                <li>
-                  <Link href={`/services#${s.slug}`} className="group grid gap-2 py-6 md:grid-cols-12 md:items-baseline">
-                    <span className="font-display text-xs text-muted md:col-span-1">{s.no}</span>
-                    <span className="font-display text-lg font-semibold transition group-hover:translate-x-1 group-hover:text-royal md:col-span-5 md:text-xl">{s.title}</span>
-                    <span className="text-sm text-muted md:col-span-6">{s.summary}</span>
-                  </Link>
-                </li>
-              </Reveal>
-            ))}
-          </ul>
+          <div className="mt-8"><ServicesHover previews={previews} /></div>
         </div>
       </section>
 
