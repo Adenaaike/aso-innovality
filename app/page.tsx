@@ -129,8 +129,8 @@ export default async function Home() {
         <div className="mt-20"><Stats /></div>
       </section>
 
-      {/* 02 — IDENTITY */}
-      <section className="border-t border-line bg-surface/50 py-24" aria-labelledby="works-title">
+            {/* 02 — IDENTITY */}
+            <section className="border-t border-line bg-surface/50 py-24" aria-labelledby="works-title">
         <div className="mx-auto max-w-6xl px-6">
           <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-6">
             <div>
@@ -140,32 +140,34 @@ export default async function Home() {
             <Link href="/work" className="text-sm font-medium text-royal hover:underline dark:text-light-azure">View all projects →</Link>
           </Reveal>
 
-          <div className="columns-1 gap-6 md:columns-2 [&>*]:mb-6">
+          <div className="columns-2 gap-4 md:columns-3 lg:columns-4 [&>*]:mb-4">
             {featured.length
               ? featured.map((p, i) => (
-                  <Reveal key={p.slug} delay={i * 0.08} className="break-inside-avoid">
+                  <Reveal key={p.slug} delay={i * 0.06} className="break-inside-avoid">
                     <Link href={`/work/${p.slug}`} data-cursor="View project" className="group block">
-                      <div className="relative overflow-hidden rounded-sm bg-surface">
+                      <div className="relative overflow-hidden rounded-lg bg-surface">
                         {p.cover_url ? (
-                          <Image src={p.cover_url} alt={p.title} width={1600} height={1600} sizes="(min-width:768px) 50vw, 100vw"
-                            className="h-auto w-full transition duration-700 group-hover:scale-[1.03]" />
+                          <Image src={p.cover_url} alt={p.title} width={1600} height={1600}
+                            sizes="(min-width:1024px) 25vw, (min-width:768px) 33vw, 50vw"
+                            className="h-auto w-full transition duration-500 group-hover:scale-[1.03]" />
                         ) : (
-                          <div className="grid aspect-[4/3] place-items-center text-sm text-muted">No cover yet</div>
+                          <div className="grid aspect-[4/5] place-items-center text-xs text-muted">No cover yet</div>
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-navy/50 to-transparent opacity-0 transition group-hover:opacity-100" />
+                        {(p.summary || p.overview) && (
+                          <div className="absolute inset-0 flex items-end bg-gradient-to-t from-navy/85 via-navy/20 to-transparent p-4 opacity-0 transition duration-300 group-hover:opacity-100">
+                            <p className="line-clamp-3 text-xs leading-relaxed text-white">{p.summary || p.overview}</p>
+                          </div>
+                        )}
                       </div>
-                      <div className="mt-3 flex justify-between gap-4">
-                        <h3 className="font-display text-lg font-semibold group-hover:text-royal">{p.title}</h3>
-                        <p className="shrink-0 text-sm text-muted">{[p.category?.name, p.year].filter(Boolean).join(" · ")}</p>
-                      </div>
-                      {(p.summary || p.overview) && <p className="mt-1 line-clamp-2 text-sm text-muted">{p.summary || p.overview}</p>}
+                      <h3 className="mt-2.5 truncate font-display text-sm font-semibold group-hover:text-royal">{p.title}</h3>
+                      <p className="mt-0.5 text-xs text-muted">{[p.category?.name, p.year].filter(Boolean).join(" · ")}</p>
                     </Link>
                   </Reveal>
                 ))
-              : ["aspect-square", "aspect-[4/5]", "aspect-[4/3]", "aspect-[3/4]"].map((ratio, i) => (
-                  <Reveal key={ratio} delay={i * 0.08} className="break-inside-avoid">
-                    <div className={`grid ${ratio} place-items-center rounded-sm border border-dashed border-neutral-grey/60 bg-bg p-6 text-center`}>
-                      <p className="text-sm text-muted"><strong className="block font-display text-fg">Project placeholder</strong>Publish a featured project from the admin dashboard to replace this.</p>
+              : ["aspect-square", "aspect-[4/5]", "aspect-[3/4]", "aspect-[4/5]"].map((ratio, i) => (
+                  <Reveal key={i} delay={i * 0.06} className="break-inside-avoid">
+                    <div className={`grid ${ratio} place-items-center rounded-lg border border-dashed border-neutral-grey/60 bg-bg p-4 text-center`}>
+                      <p className="text-xs text-muted"><strong className="block font-display text-fg">Project placeholder</strong>Publish a featured project to replace this.</p>
                     </div>
                   </Reveal>
                 ))}
