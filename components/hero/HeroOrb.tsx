@@ -13,7 +13,7 @@ function Composition() {
     g.position.x = THREE.MathUtils.damp(g.position.x, state.pointer.x * 0.3, 3, delta);
   });
   return (
-    <group ref={group}>
+    <group ref={group} scale={0.7}>
       <Float speed={1.2} rotationIntensity={0.4} floatIntensity={0.8}>
         <mesh>
           <icosahedronGeometry args={[1.2, 0]} />
