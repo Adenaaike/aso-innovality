@@ -178,12 +178,13 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ABOUT PREVIEW */}
-      <section className="bg-navy py-20 text-white" aria-labelledby="about-title">
+            {/* ABOUT PREVIEW */}
+            <section className="bg-navy py-20 text-white" aria-labelledby="about-title">
         <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-12 lg:items-center">
           <Reveal className="lg:col-span-5">
-            <div className="grid aspect-[4/5] place-items-center rounded-sm border border-dashed border-white/25 bg-white/5 text-sm text-white/70">
-              Portrait placeholder
+            <div className="relative mx-auto aspect-[4/5] w-full max-w-[260px] overflow-hidden rounded-sm sm:max-w-sm lg:mx-0 lg:ml-auto">
+              <Image src="/images/aso-portrait.jpg" alt="Portrait of Adenaike Sodiq Olusegun, creative designer in Lagos"
+                fill sizes="(min-width:1024px) 40vw, 100vw" className="object-cover" />
             </div>
           </Reveal>
           <Reveal delay={0.1} className="lg:col-span-6 lg:col-start-7">
