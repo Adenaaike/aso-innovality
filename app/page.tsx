@@ -97,13 +97,13 @@ export default async function Home() {
           <div className="h-[36vh] lg:col-span-5 lg:h-[56vh]"><HeroVisual /></div>
         </div>
       </section>
-      
+
       <Marquee />
 
       {/* SIGNATURE */}
-      <section className="bg-surface py-12">
+            <section className="bg-surface py-7">
         <div className="mx-auto max-w-6xl px-6">
-          <SignatureWords className="text-[clamp(2.25rem,7vw,5.5rem)] tracking-tight" />
+        <SignatureWords className="text-[clamp(1.75rem,6vw,4.5rem)] tracking-tight" />
         </div>
       </section>
 

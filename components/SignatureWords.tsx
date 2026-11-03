@@ -96,7 +96,7 @@ export function SignatureWords({ className = "" }: { className?: string }) {
   const Visual = VISUALS[i];
 
   return (
-    <div className={`flex items-center justify-between gap-6 font-display font-bold leading-none ${className}`}>
+    <div className={`flex items-center justify-between gap-3 sm:gap-6 font-display font-bold leading-none ${className}`}>
       <p className="min-w-0">
         <span className="sr-only">Ideas. Identity. Innovation.</span>
         <span aria-hidden className="relative block h-[1.1em] overflow-hidden">
@@ -112,7 +112,7 @@ export function SignatureWords({ className = "" }: { className?: string }) {
         </span>
       </p>
 
-      <div aria-hidden className="relative hidden size-[1.1em] shrink-0 sm:block">
+      <div aria-hidden className="relative block size-[0.9em] shrink-0 sm:size-[1.1em]">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div key={i} className="absolute inset-0"
             initial={{ opacity: 0, scale: 0.6, rotate: -20 }} animate={{ opacity: 1, scale: 1, rotate: 0 }}
