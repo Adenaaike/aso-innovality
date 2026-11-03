@@ -9,9 +9,10 @@ import { browserClient } from "@/lib/supabase/browser";
 type State = "loading" | "signed-out" | "not-admin" | "admin";
 
 export const adminLinks = [
-  { href: "/admin", label: "Overview" },
-  { href: "/admin/enquiries", label: "Enquiries" },
-];
+    { href: "/admin", label: "Overview" },
+    { href: "/admin/projects", label: "Projects" },
+    { href: "/admin/enquiries", label: "Enquiries" },
+  ];
 
 export function AdminGate({ children }: { children: ReactNode }) {
   const sb = browserClient();
@@ -85,7 +86,7 @@ export function AdminGate({ children }: { children: ReactNode }) {
       <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-line pb-4">
         <nav aria-label="Admin" className="flex flex-wrap gap-1">
           {adminLinks.map((l) => (
-            <Link key={l.href} href={l.href} aria-current={pathname === l.href ? "page" : undefined}
+            <Link key={l.href} href={l.href} aria-current={(l.href === "/admin" ? pathname === "/admin" : pathname.startsWith(l.href)) ? "page" : undefined}
               className="rounded-full px-4 py-2 text-sm font-medium text-muted hover:text-fg aria-[current=page]:bg-royal aria-[current=page]:text-white">
               {l.label}
             </Link>
