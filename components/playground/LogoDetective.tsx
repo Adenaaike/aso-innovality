@@ -1,5 +1,5 @@
 "use client";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Lightbulb, ArrowRight, RotateCcw, Play, Check, X, Trophy } from "lucide-react";
 
 type LogoType = "Wordmark" | "Lettermark" | "Pictorial mark" | "Abstract mark" | "Emblem" | "Combination mark";
@@ -65,6 +65,22 @@ export function LogoDetective() {
   const [picked, setPicked] = useState<LogoType | null>(null);
   const [score, setScore] = useState(0);
   const [hint, setHint] = useState(false);
+  const [best, setBest] = useState<Record<Level, number>>({ easy: 0, medium: 0, hard: 0 });
+  const [newBest, setNewBest] = useState(false);
+
+  useEffect(() => {
+    try { const raw = localStorage.getItem("aso-logo-best"); if (raw) setBest(JSON.parse(raw)); } catch {}
+  }, []);
+
+  useEffect(() => {
+    if (status !== "done") return;
+    if (score > best[level]) {
+      const next = { ...best, [level]: score };
+      setBest(next);
+      setNewBest(true);
+      try { localStorage.setItem("aso-logo-best", JSON.stringify(next)); } catch {}
+    } else setNewBest(false);
+  }, [status]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function start() {
     const { questions, options } = LEVELS[level];
@@ -115,6 +131,7 @@ export function LogoDetective() {
             <p className="max-w-md text-sm text-muted">
               {LEVELS[level].questions} questions, {LEVELS[level].options} choices each{LEVELS[level].hints ? ", hints available" : ", no hints"}.
             </p>
+            <p className="text-sm text-muted">Best ({LEVELS[level].label}): <strong className="text-fg">{best[level]}/{LEVELS[level].questions}</strong></p>
             <button onClick={start} className={primary}><Play size={16} /> Start quiz</button>
           </div>
         )}
@@ -167,6 +184,9 @@ export function LogoDetective() {
             <Trophy size={28} className="text-royal" />
             <p className="font-display text-4xl font-bold">{score}/{quiz.length}</p>
             <p className="text-sm text-muted">{pct}% correct</p>
+            <p className="text-sm font-medium text-royal dark:text-light-azure">
+              {newBest ? "New best score!" : `Best (${LEVELS[level].label}): ${best[level]}/${quiz.length}`}
+            </p>
             <p className="text-sm font-medium">
               {pct === 100 ? "Perfect! You’re a true logo detective." : pct >= 70 ? "Great eye for branding." : "Good start. Play again to sharpen your eye."}
             </p>

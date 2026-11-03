@@ -17,6 +17,7 @@ const SIZES = {
   medium: { label: "4 × 4", pairs: 8, cols: "grid-cols-4" },
   large: { label: "4 × 6", pairs: 12, cols: "grid-cols-4 sm:grid-cols-6" },
 } as const;
+
 type Size = keyof typeof SIZES;
 type Card = { id: number; icon: number };
 const BEST_KEY = "aso-memory-best";
@@ -38,6 +39,7 @@ export function DesignMemory() {
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [best, setBest] = useState<Record<Size, number>>({ small: 0, medium: 0, large: 0 });
+  const [newBest, setNewBest] = useState(false);
 
   const pairs = SIZES[size].pairs;
   const score = Math.max(0, pairs * 100 - Math.max(0, moves - pairs) * 10 - seconds * 2);
@@ -46,7 +48,7 @@ export function DesignMemory() {
     const icons = shuffle(ICONS.map((_, i) => i)).slice(0, SIZES[s].pairs);
     setDeck(shuffle([...icons, ...icons]).map((icon, id) => ({ id, icon })));
     setFlipped([]); setMatched([]); setMoves(0); setSeconds(0);
-    setRunning(false); setBusy(false); setDone(false);
+    setRunning(false); setBusy(false); setDone(false); setNewBest(false);
   }
 
   useEffect(() => { deal(size); }, [size]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -63,13 +65,13 @@ export function DesignMemory() {
 
   useEffect(() => {
     if (!done) return;
-    setBest((prev) => {
-      if (score <= prev[size]) return prev;
-      const next = { ...prev, [size]: score };
+    if (score > best[size]) {
+      const next = { ...best, [size]: score };
+      setBest(next);
+      setNewBest(true);
       try { localStorage.setItem(BEST_KEY, JSON.stringify(next)); } catch {}
-      return next;
-    });
-  }, [done, score, size]);
+    } else setNewBest(false);
+  }, [done]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function flip(i: number) {
     if (busy || done || flipped.includes(i) || matched.includes(deck[i].icon)) return;
@@ -112,6 +114,7 @@ export function DesignMemory() {
         <span>Moves: {moves}</span>
         <span>Time: {seconds}s</span>
         <span>Pairs: {matched.length}/{pairs}</span>
+        <span className="text-royal dark:text-light-azure">Best: {best[size] || "—"}</span>
         <button onClick={() => deal()} className="ml-auto inline-flex items-center gap-1.5 text-royal hover:underline dark:text-light-azure">
           <RotateCcw size={14} /> Restart
         </button>
@@ -146,7 +149,7 @@ export function DesignMemory() {
           <Trophy size={28} className="text-royal" />
           <p className="font-display text-3xl font-bold">{score}</p>
           <p className="text-sm text-muted">Completed in {moves} moves and {seconds}s</p>
-          <p className="text-sm font-medium">{score >= best[size] ? "New best score!" : `Best (${SIZES[size].label}): ${best[size]}`}</p>
+          <p className="text-sm font-medium">{newBest ? "New best score!" : `Best (${SIZES[size].label}): ${best[size]}`}</p>
           <button onClick={() => deal()} className="mt-2 inline-flex items-center gap-2 rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-bright">
             <RotateCcw size={16} /> Play again
           </button>
