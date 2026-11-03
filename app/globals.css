@@ -1,26 +1,56 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-royal: #1177FF;
+  --color-bright: #1689FE;
+  --color-azure: #1D9BFF;
+  --color-sky: #21A9FF;
+  --color-light-azure: #48B7FF;
+  --color-soft-blue: #6DC6FE;
+  --color-pale-blue: #9BD9FE;
+  --color-ice: #C4E8FC;
+  --color-aqua: #E8FCFC;
+  --color-navy: #101B2B;
+  --color-soft-grey: #F4F7FA;
+  --color-neutral-grey: #888888;
+
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #FFFFFF; --fg: #101B2B; --surface: #F4F7FA;
+  --muted: #4A5869; --line: #101B2B1A;
 }
-
+.dark {
+  --bg: #101B2B; --fg: #FFFFFF; --surface: #16253B;
+  --muted: #A9BCD2; --line: #FFFFFF1F;
+}
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg); --color-fg: var(--fg); --color-surface: var(--surface);
+  --color-muted: var(--muted); --color-line: var(--line);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
+
+.aso-gradient {
+  background: linear-gradient(100deg, #1177FF 0%, #1689FE 18%, #1D9BFF 36%, #21A9FF 54%, #9BD9FE 78%, #E8FCFC 100%);
+}
+.aso-text-gradient {
+  background: linear-gradient(100deg, #1177FF, #1D9BFF 40%, #48B7FF 70%, #9BD9FE);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.dark .aso-text-gradient {
+  background: linear-gradient(100deg, #48B7FF, #9BD9FE 50%, #E8FCFC);
+  -webkit-background-clip: text; background-clip: text;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
