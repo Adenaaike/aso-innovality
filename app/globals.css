@@ -54,3 +54,7 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
     transition-duration: .01ms !important;
   }
 }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

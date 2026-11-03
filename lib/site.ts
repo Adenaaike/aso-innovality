@@ -54,3 +54,35 @@ export const site = {
       deliverables: [],
     },
   ];
+
+// ── Homepage content (edit freely) ──────────────────────────
+
+export const studio = {
+    available: true, // change to false when you're fully booked
+    city: "Lagos",
+    timeZone: "Africa/Lagos",
+  };
+  
+  // Organisations from the CV. Remove any you'd rather not show.
+  export const clients = [
+    "Christ Unity Ministries",
+    "Samnun Clothing",
+    "City Initiative",
+    "DDT — Dee Defendant of Truth",
+  ];
+  
+  // Honest numbers only, from the CV
+  export const stats = [
+    { value: new Date().getFullYear() - 2017, suffix: "+", label: "Years designing" },
+    { value: 4, suffix: "", label: "Organisations designed for" },
+    { value: 5, suffix: "", label: "Exhibitions & design events" },
+    { value: 2, suffix: "", label: "Certifications" },
+  ];
+  
+  // How ASO works. Reword these in your own voice anytime.
+  export const steps = [
+    { no: "01", title: "Discover", text: "Understanding your goals, your audience and what makes your brand different." },
+    { no: "02", title: "Concept", text: "Exploring ideas, directions and moodboards before committing to a look." },
+    { no: "03", title: "Design", text: "Crafting the identity and every asset in detail, refined through your feedback." },
+    { no: "04", title: "Deliver", text: "Final files, guidelines and everything you need to use your brand with confidence." },
+  ];

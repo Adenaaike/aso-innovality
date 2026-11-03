@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ThemeProvider } from "next-themes";
 import { spaceGrotesk, inter } from "@/lib/fonts";
 import { Nav } from "@/components/Nav";
+import { WhatsAppButton } from "@/components/home/WhatsAppButton";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
             </div>
           </footer>
+          <WhatsAppButton />
         </ThemeProvider>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />
       </body>
