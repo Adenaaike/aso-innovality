@@ -72,8 +72,8 @@ export default async function Home() {
 
   return (
     <>
-      {/* HERO */}
-      <section className="relative overflow-hidden pt-28 pb-16 lg:min-h-[90svh] lg:pt-32">
+            {/* HERO */}
+            <section className="relative overflow-hidden pt-28 pb-16 lg:min-h-[90svh] lg:pt-32">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(55%_50%_at_78%_38%,#21A9FF33,transparent_70%),radial-gradient(40%_40%_at_15%_85%,#1177FF1F,transparent_70%)]" />
         <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-7">
@@ -83,7 +83,7 @@ export default async function Home() {
             </h1>
             <p className="mt-5 max-w-xl text-base text-muted md:text-lg">Designing identities. Building impressions. Creating possibilities.</p>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted md:text-base">
-            I’m Adenaike Sodiq Olusegun , a multidisciplinary creative designer in Lagos with over 9 years’ experience helping organisations, startups and ministries across Africa and Europe communicate with clarity and visual impact. I work across brand identity, graphic design, photography, packaging and creative direction.
+              I’m Adenaike Sodiq Olusegun, a multidisciplinary creative designer in Lagos with over 9 years’ experience helping organisations, startups and ministries across Africa and Europe communicate with clarity and visual impact.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/work" className="group inline-flex items-center gap-2 rounded-full bg-royal px-6 py-3 text-sm font-medium text-white transition hover:bg-bright focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-royal">
@@ -97,7 +97,7 @@ export default async function Home() {
           <div className="h-[36vh] lg:col-span-5 lg:h-[56vh]"><HeroVisual /></div>
         </div>
       </section>
-
+      
       <Marquee />
 
       {/* SIGNATURE */}
