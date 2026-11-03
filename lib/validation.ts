@@ -1,8 +1,16 @@
 import { z } from "zod";
 
-export const projectTypes = ["Brand Identity", "Logo Design", "Graphic Design & Advertising", "Creative / Art Direction",
-  "Photography & Image Editing", "Packaging & Print", "Digital Visual Experience", "Other"] as const;
-export const budgets = ["Under ₦250k", "₦250k – ₦750k", "₦750k – ₦2m", "Over ₦2m", "Not sure yet"]; // edit freely
+export const projectTypes = [
+  "Brand Identity & Logo System",
+  "Event / Campaign Series",
+  "Commercial & Social Media Design",
+  "Photo Manipulation & Compositing",
+  "Print & Packaging",
+  "Digital Visual Experience",
+  "Other Collaboration",
+] as const;
+
+export const budgets = ["Starter — $300+", "Growth — $750+", "Enterprise — $1,800+", "Custom scope"];
 
 export const enquirySchema = z.object({
   fullName: z.string().trim().min(2, "Please enter your name").max(120),

@@ -25,56 +25,69 @@ export const site = {
   export const services = [
     {
       no: "01", slug: "brand-identity", title: "Brand Identity & Strategy",
-      summary: "Distinctive visual identities that communicate the personality, positioning and values of businesses.",
-      deliverables: ["Logo design", "Logo variations", "Brand colours", "Typography systems", "Brand guidelines", "Stationery", "Brand mockups", "Visual identity systems"],
+      summary: "Complete visual identity systems that earn trust, from primary marks and sub-brands to brand guidelines and corporate stationery.",
+      deliverables: ["Logo systems", "Sub-brand architecture", "Brand guidelines", "Typography & colour systems", "Stationery & staff ID collateral"],
     },
     {
       no: "02", slug: "graphic-design", title: "Graphic Design & Advertising",
-      summary: "Compelling visual communication for marketing, campaigns, promotions and events.",
-      deliverables: ["Flyers", "Posters", "Social media graphics", "Brochures", "Banners", "Campaign designs", "Marketing materials"],
+      summary: "Marketing visuals that stop the scroll and make complex offers easy to understand, across social media, print and outdoor.",
+      deliverables: ["Property & product listings", "Promotional flyers", "Social media campaign suites", "Pricing & information layouts"],
     },
     {
-      no: "03", slug: "creative-direction", title: "Creative & Art Direction",
-      summary: "Turning ideas into cohesive visual narratives through creative planning, visual exploration and design execution.",
-      deliverables: [],
+      no: "03", slug: "campaign-direction", title: "Campaign & Event Art Direction",
+      summary: "Cohesive visual storytelling for conferences, seasonal events and ministry gatherings, so every event feels distinct yet clearly yours.",
+      deliverables: ["Event key visuals", "Series branding", "Custom 3D & display titles", "Stage & screen graphics"],
     },
     {
-      no: "04", slug: "photography", title: "Photography & Image Editing",
-      summary: "Developing and refining visual assets for brands, campaigns, promotional materials and storytelling.",
-      deliverables: [],
+      no: "04", slug: "photo-manipulation", title: "Photo Manipulation & Editorial Compositing",
+      summary: "Multi-image blending, lighting and colour grading that turn standard photography into cinematic poster art.",
+      deliverables: ["Tribute & editorial posters", "Double-exposure composites", "High-end retouching", "Key art"],
     },
     {
       no: "05", slug: "packaging-print", title: "Packaging & Print Design",
-      summary: "Visually compelling packaging and printed communication that elevates brand presentation.",
-      deliverables: [],
+      summary: "Production-ready print with accurate colour, bleed and finishing, so it looks right off the press.",
+      deliverables: ["ID cards & lanyards", "Brochures & programmes", "Packaging & labels"],
     },
     {
       no: "06", slug: "digital-experiences", title: "Digital Visual Experiences",
-      summary: "Exploring where design, technology, motion and interactive communication meet.",
-      deliverables: [],
+      summary: "Bringing brand identities to screens with responsive web visuals and digital brand kits that hold up on every device.",
+      deliverables: ["Web UI visual assets", "Digital brand kits", "Interactive design systems"],
     },
   ];
-
-// ── Homepage content (edit freely) ──────────────────────────
-
-export const studio = {
+  
+  // ── Homepage content (edit freely) ──────────────────────────
+  
+  export const studio = {
     available: true, // change to false when you're fully booked
     city: "Lagos",
     timeZone: "Africa/Lagos",
   };
   
-  // Organisations from the CV. Remove any you'd rather not show.
+  // Organisations I've designed for (shown in the "Designed for" strip)
   export const clients = [
+    "IBETA Africa",
+    "GIE Church Miracle Center",
+    "One Million Landlord",
+    "Salem Global",
     "Christ Unity Ministries",
     "Samnun Clothing",
     "City Initiative",
     "DDT — Dee Defendant of Truth",
   ];
   
-  // Honest numbers only, from the CV
-  export const stats = [
+  // Countries served. Add the third once confirmed (needs a matching flag in components/home/Flag.tsx)
+  export const countries = [
+    { code: "ng", name: "Nigeria" },
+    { code: "be", name: "Belgium" },
+  ];
+  
+  export type Stat = { value: number; suffix: string; label: string; flags?: boolean };
+  
+  // Honest numbers only. Organisation and country counts update automatically.
+  export const stats: Stat[] = [
     { value: new Date().getFullYear() - 2017, suffix: "+", label: "Years designing" },
-    { value: 4, suffix: "", label: "Organisations designed for" },
+    { value: clients.length, suffix: "", label: "Organisations designed for" },
+    { value: countries.length, suffix: "", label: "Countries served", flags: true },
     { value: 5, suffix: "", label: "Exhibitions & design events" },
     { value: 2, suffix: "", label: "Certifications" },
   ];

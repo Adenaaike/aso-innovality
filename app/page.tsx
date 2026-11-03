@@ -15,14 +15,14 @@ export const revalidate = 300;
 
 type Featured = {
   slug: string; title: string; year: number | null; cover_url: string | null;
-  overview: string | null; category: { name: string } | null;
+  overview: string | null; summary: string | null; category: { name: string } | null;
 };
 
 async function getFeatured(): Promise<Featured[]> {
   const sb = publicClient();
   if (!sb) return [];
   const { data } = await sb.from("projects")
-    .select("slug, title, year, cover_url, overview, category:categories(name)")
+  .select("slug, title, year, cover_url, overview, summary, category:categories(name)")
     .eq("published", true).eq("featured", true).order("sort_order").limit(4);
   return (data ?? []) as unknown as Featured[];
 }
@@ -30,13 +30,12 @@ async function getFeatured(): Promise<Featured[]> {
 // Which project categories feed each service's hover preview
 const SERVICE_CATEGORIES: Record<string, string[]> = {
   "brand-identity": ["Brand Identity", "Logo Design"],
-  "graphic-design": ["Graphic Design", "Campaigns & Posters", "Social Media Design"],
-  "creative-direction": ["Campaigns & Posters", "Experimental Design"],
-  "photography": ["Photography"],
+  "graphic-design": ["Graphic Design", "Social Media Design"],
+  "campaign-direction": ["Campaigns & Posters"],
+  "photo-manipulation": ["Photo Manipulation", "Photography"],
   "packaging-print": ["Packaging"],
   "digital-experiences": ["Experimental Design"],
 };
-
 async function getPreviews(): Promise<Record<string, string[]>> {
   const sb = publicClient();
   if (!sb) return {};
@@ -84,7 +83,7 @@ export default async function Home() {
             </h1>
             <p className="mt-5 max-w-xl text-base text-muted md:text-lg">Designing identities. Building impressions. Creating possibilities.</p>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted md:text-base">
-              I’m Adenaike Sodiq Olusegun, a multidisciplinary creative designer in Lagos working across brand identity, graphic design, photography, packaging and creative direction.
+            I’m Adenaike Sodiq Olusegun , a multidisciplinary creative designer in Lagos with over 9 years’ experience helping organisations, startups and ministries across Africa and Europe communicate with clarity and visual impact. I work across brand identity, graphic design, photography, packaging and creative direction.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/work" className="group inline-flex items-center gap-2 rounded-full bg-royal px-6 py-3 text-sm font-medium text-white transition hover:bg-bright focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-royal">
@@ -159,7 +158,7 @@ export default async function Home() {
                         <h3 className="font-display text-lg font-semibold group-hover:text-royal">{p.title}</h3>
                         <p className="shrink-0 text-sm text-muted">{[p.category?.name, p.year].filter(Boolean).join(" · ")}</p>
                       </div>
-                      {p.overview && <p className="mt-1 line-clamp-2 text-sm text-muted">{p.overview}</p>}
+                      {(p.summary || p.overview) && <p className="mt-1 line-clamp-2 text-sm text-muted">{p.summary || p.overview}</p>}
                     </Link>
                   </Reveal>
                 ))
