@@ -8,7 +8,7 @@ export default function Contact() {
   return (
     <div className="mx-auto grid max-w-7xl gap-16 px-6 pt-32 pb-24 lg:grid-cols-12">
       <div className="lg:col-span-5">
-        <h1 className="font-display text-[clamp(2.5rem,6vw,5rem)] font-bold uppercase leading-[0.95]">
+        <h1 className="font-display text-[clamp(1.75rem,4vw,3rem)] font-bold uppercase leading-[0.95]">
           Have an idea? <span className="aso-text-gradient">Let’s bring it to life.</span>
         </h1>
         <dl className="mt-12 space-y-5">

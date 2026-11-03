@@ -28,42 +28,42 @@ export default async function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden pt-28 pb-16 lg:min-h-[100svh]">
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(55%_50%_at_78%_38%,#21A9FF40,transparent_70%),radial-gradient(40%_40%_at_15%_85%,#1177FF26,transparent_70%)]" />
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-12 lg:items-center">
+      <section className="relative overflow-hidden pt-28 pb-16 lg:min-h-[90svh] lg:pt-32">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(55%_50%_at_78%_38%,#21A9FF33,transparent_70%),radial-gradient(40%_40%_at_15%_85%,#1177FF1F,transparent_70%)]" />
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-7">
-            <p className="font-display text-xs font-semibold tracking-[0.35em] text-royal dark:text-light-azure">ASO INNOVALITY</p>
-            <h1 className="mt-6 font-display text-[clamp(2.6rem,7vw,6.25rem)] font-bold uppercase leading-[0.92] tracking-tight">
+            <p className="font-display text-xs font-semibold tracking-[0.3em] text-royal dark:text-light-azure">ASO INNOVALITY</p>
+            <h1 className="mt-5 font-display text-[clamp(2rem,4.5vw,3.75rem)] font-bold uppercase leading-[1.02] tracking-tight">
               I turn ideas into <span className="aso-text-gradient">visual experiences.</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-muted">Designing identities. Building impressions. Creating possibilities.</p>
-            <p className="mt-3 max-w-xl text-muted">
+            <p className="mt-5 max-w-xl text-base text-muted md:text-lg">Designing identities. Building impressions. Creating possibilities.</p>
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted md:text-base">
               I’m Adenaike Sodiq Olusegun, a multidisciplinary creative designer working across brand identity, graphic design, photography, packaging and creative direction.
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link href="/work" className="group inline-flex items-center gap-2 rounded-full bg-royal px-7 py-4 font-medium text-white transition hover:bg-bright focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-royal">
-                Explore My Work <ArrowUpRight size={18} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/work" className="group inline-flex items-center gap-2 rounded-full bg-royal px-6 py-3 text-sm font-medium text-white transition hover:bg-bright focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-royal">
+                Explore My Work <ArrowUpRight size={16} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
-              <Link href="/contact" className="inline-flex items-center gap-2 rounded-full border border-line px-7 py-4 font-medium transition hover:border-royal hover:text-royal">
+              <Link href="/contact" className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-medium transition hover:border-royal hover:text-royal">
                 Let’s Work Together
               </Link>
             </div>
           </div>
-          <div className="h-[44vh] lg:col-span-5 lg:h-[68vh]"><HeroVisual /></div>
+          <div className="h-[36vh] lg:col-span-5 lg:h-[56vh]"><HeroVisual /></div>
         </div>
       </section>
 
       {/* SIGNATURE */}
-      <section className="border-y border-line bg-surface py-16">
-        <div className="mx-auto max-w-7xl px-6">
-          <SignatureWords className="text-[clamp(3rem,12vw,10rem)] tracking-tight" />
+      <section className="border-y border-line bg-surface py-12">
+        <div className="mx-auto max-w-6xl px-6">
+          <SignatureWords className="text-[clamp(2.25rem,7vw,5.5rem)] tracking-tight" />
         </div>
       </section>
 
       {/* SELECTED WORKS */}
-      <section className="mx-auto max-w-7xl px-6 py-24" aria-labelledby="works-title">
-        <Reveal className="mb-12 flex items-end justify-between gap-6">
-          <h2 id="works-title" className="font-display text-4xl font-bold md:text-6xl">Selected Works</h2>
+      <section className="mx-auto max-w-6xl px-6 py-20" aria-labelledby="works-title">
+        <Reveal className="mb-10 flex items-end justify-between gap-6">
+          <h2 id="works-title" className="font-display text-3xl font-bold md:text-4xl">Selected Works</h2>
           <Link href="/work" className="text-sm font-medium text-royal hover:underline dark:text-light-azure">View all projects →</Link>
         </Reveal>
         <div className="grid gap-6 lg:grid-cols-12">
@@ -78,8 +78,8 @@ export default async function Home() {
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent opacity-0 transition group-hover:opacity-100" />
                   </div>
-                  <div className="mt-4 flex justify-between gap-4">
-                    <h3 className="font-display text-xl font-semibold group-hover:text-royal">{p.title}</h3>
+                  <div className="mt-3 flex justify-between gap-4">
+                    <h3 className="font-display text-lg font-semibold group-hover:text-royal">{p.title}</h3>
                     <p className="text-sm text-muted">{[p.category?.name, p.year].filter(Boolean).join(" · ")}</p>
                   </div>
                 </Link>
@@ -94,35 +94,35 @@ export default async function Home() {
       </section>
 
       {/* ABOUT PREVIEW */}
-      <section className="bg-navy py-24 text-white" aria-labelledby="about-title">
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-12 lg:items-center">
+      <section className="bg-navy py-20 text-white" aria-labelledby="about-title">
+        <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-12 lg:items-center">
           <Reveal className="lg:col-span-5">
             <div className="grid aspect-[4/5] place-items-center rounded-sm border border-dashed border-white/25 bg-white/5 text-sm text-white/70">
               Portrait placeholder — upload in admin
             </div>
           </Reveal>
           <Reveal delay={0.1} className="lg:col-span-6 lg:col-start-7">
-            <p className="text-xs font-semibold tracking-[0.35em] text-sky">ABOUT ASO</p>
-            <h2 id="about-title" className="mt-4 font-display text-4xl font-bold md:text-5xl">Creativity, strategy and attention to detail.</h2>
-            <p className="mt-6 text-lg text-ice">
+            <p className="text-xs font-semibold tracking-[0.3em] text-sky">ABOUT ASO</p>
+            <h2 id="about-title" className="mt-4 font-display text-3xl font-bold md:text-4xl">Creativity, strategy and attention to detail.</h2>
+            <p className="mt-5 text-base leading-relaxed text-ice">
               Adenaike Sodiq Olusegun, professionally known as ASO, is a multidisciplinary creative designer, visual communicator and brand identity enthusiast passionate about transforming ideas into meaningful visual experiences.
             </p>
-            <Link href="/about" className="mt-8 inline-flex items-center gap-2 font-medium text-sky hover:text-pale-blue">Read the full story <ArrowUpRight size={18} /></Link>
+            <Link href="/about" className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-sky hover:text-pale-blue">Read the full story <ArrowUpRight size={16} /></Link>
           </Reveal>
         </div>
       </section>
 
       {/* SERVICES */}
-      <section className="mx-auto max-w-7xl px-6 py-24" aria-labelledby="services-title">
-        <Reveal><h2 id="services-title" className="font-display text-4xl font-bold md:text-6xl">Services</h2></Reveal>
-        <ul className="mt-12 divide-y divide-line border-y border-line">
+      <section className="mx-auto max-w-6xl px-6 py-20" aria-labelledby="services-title">
+        <Reveal><h2 id="services-title" className="font-display text-3xl font-bold md:text-4xl">Services</h2></Reveal>
+        <ul className="mt-10 divide-y divide-line border-y border-line">
           {services.map((s, i) => (
             <Reveal key={s.slug} delay={i * 0.04}>
               <li>
-                <Link href={`/services#${s.slug}`} className="group grid gap-2 py-8 md:grid-cols-12 md:items-baseline">
-                  <span className="font-display text-sm text-muted md:col-span-1">{s.no}</span>
-                  <span className="font-display text-2xl font-semibold transition group-hover:translate-x-2 group-hover:text-royal md:col-span-5 md:text-3xl">{s.title}</span>
-                  <span className="text-muted md:col-span-6">{s.summary}</span>
+                <Link href={`/services#${s.slug}`} className="group grid gap-2 py-6 md:grid-cols-12 md:items-baseline">
+                  <span className="font-display text-xs text-muted md:col-span-1">{s.no}</span>
+                  <span className="font-display text-lg font-semibold transition group-hover:translate-x-1 group-hover:text-royal md:col-span-5 md:text-xl">{s.title}</span>
+                  <span className="text-sm text-muted md:col-span-6">{s.summary}</span>
                 </Link>
               </li>
             </Reveal>
@@ -131,31 +131,31 @@ export default async function Home() {
       </section>
 
       {/* PLAYGROUND PREVIEW */}
-      <section className="px-6 pb-24">
-        <Reveal className="relative mx-auto max-w-7xl overflow-hidden rounded-sm aso-gradient px-8 py-20 text-navy md:px-16">
-          <p className="text-xs font-semibold tracking-[0.35em]">THE CREATIVE PLAYGROUND</p>
-          <h2 className="mt-4 max-w-3xl font-display text-4xl font-bold md:text-6xl">A space where creativity meets experimentation.</h2>
-          <p className="mt-6 max-w-xl text-lg">Set type, play with colour and test your eye for design.</p>
-          <Link href="/playground" className="mt-10 inline-flex rounded-full bg-navy px-7 py-4 font-medium text-white hover:bg-royal">Enter the Playground</Link>
+      <section className="px-6 pb-20">
+        <Reveal className="relative mx-auto max-w-6xl overflow-hidden rounded-sm aso-gradient px-8 py-14 text-navy md:px-12">
+          <p className="text-xs font-semibold tracking-[0.3em]">THE CREATIVE PLAYGROUND</p>
+          <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold md:text-4xl">A space where creativity meets experimentation.</h2>
+          <p className="mt-4 max-w-xl text-base">Set type, play with colour and test your eye for design.</p>
+          <Link href="/playground" className="mt-8 inline-flex rounded-full bg-navy px-6 py-3 text-sm font-medium text-white hover:bg-royal">Enter the Playground</Link>
         </Reveal>
       </section>
 
       {/* PHILOSOPHY */}
-      <section className="mx-auto max-w-5xl px-6 py-24 text-center">
+      <section className="mx-auto max-w-4xl px-6 py-20 text-center">
         <Reveal>
-          <blockquote className="font-display text-3xl font-medium leading-tight md:text-5xl">
+          <blockquote className="font-display text-2xl font-medium leading-snug md:text-3xl">
             “Great design should do more than look good. It should <span className="aso-text-gradient">communicate, connect, inspire,</span> and create lasting impressions.”
           </blockquote>
         </Reveal>
       </section>
 
       {/* CTA */}
-      <section className="bg-navy py-28 text-center text-white">
-        <Reveal className="mx-auto max-w-5xl px-6">
-          <h2 className="font-display text-[clamp(2.5rem,7vw,6rem)] font-bold uppercase leading-[0.95]">
+      <section className="bg-navy py-20 text-center text-white">
+        <Reveal className="mx-auto max-w-4xl px-6">
+          <h2 className="font-display text-[clamp(1.75rem,4.5vw,3.25rem)] font-bold uppercase leading-[1.05]">
             Have an idea? <span className="aso-text-gradient">Let’s bring it to life.</span>
           </h2>
-          <Link href="/contact" className="mt-12 inline-flex rounded-full bg-royal px-8 py-4 font-medium hover:bg-azure">Start a project</Link>
+          <Link href="/contact" className="mt-10 inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium hover:bg-azure">Start a project</Link>
         </Reveal>
       </section>
     </>

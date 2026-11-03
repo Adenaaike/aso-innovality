@@ -59,7 +59,7 @@ export function Nav() {
             {nav.map((item, i) => (
               <li key={item.href}>
                 <Link href={item.href} aria-current={isActive(item.href) ? "page" : undefined}
-                  className="flex items-baseline gap-4 py-2 font-display text-4xl font-semibold aria-[current=page]:text-royal">
+                  className="flex items-baseline gap-4 py-2 font-display text-xl font-medium aria-[current=page]:text-royal">
                   <span className="text-xs text-muted">0{i + 1}</span>{item.label}
                 </Link>
               </li>
