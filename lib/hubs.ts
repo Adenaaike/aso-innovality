@@ -66,7 +66,7 @@ export const webHub: Hub = {
     title: "Websites that load fast, rank well and",
     titleAccent: "turn visitors into clients.",
     intro: "Custom, mobile-first websites that I design and build myself, with on-page SEO, speed and analytics set up from day one. Choose your website below and get an instant estimate.",
-    contactService: "digital-experiences",
+    contactService: "web-development",
     calcName: "website cost calculator",
     facts: [
       { label: "Pricing", value: "Per project or monthly SEO" },
@@ -111,7 +111,7 @@ export const aiHub: Hub = {
     title: "Automations that save time and",
     titleAccent: "work while you sleep.",
     intro: "I design and build practical AI and automation for growing businesses, teams and ministries: chatbots, WhatsApp follow-ups and workflows that connect your tools, so the repetitive work runs itself. Choose what you need below and get an instant estimate.",
-    contactService: "digital-experiences",
+    contactService: "ai-automation",
     calcName: "automation cost calculator",
     facts: [
       { label: "Pricing", value: "Per project or monthly support" },
