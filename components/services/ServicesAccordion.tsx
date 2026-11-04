@@ -16,7 +16,7 @@ export function ServicesAccordion({ previews }: { previews: Record<string, strin
           const img = previews[s.slug]?.[0];
           return (
             <Link key={s.slug} href={`#${s.slug}`} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)}
-              className={`relative overflow-hidden rounded-lg transition-[flex-grow] duration-500 ease-out ${on ? "grow-[4]" : "grow"} basis-0`}>
+              className={`relative basis-0 overflow-hidden rounded-lg transition-[flex-grow] duration-500 ease-out ${on ? "grow-[4]" : "grow"}`}>
               {img ? <Image src={img} alt="" fill sizes="50vw" className="object-cover" /> : <div className="absolute inset-0 aso-gradient" />}
               <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/35 to-navy/10" />
               <div className="absolute inset-x-0 bottom-0 p-5 text-white">
@@ -35,13 +35,17 @@ export function ServicesAccordion({ previews }: { previews: Record<string, strin
         })}
       </div>
 
-      {/* Phones and tablets: simple jump links */}
-      <div className="flex flex-wrap gap-2 lg:hidden">
-        {services.map((s) => (
-          <Link key={s.slug} href={`#${s.slug}`} className="rounded-full border border-line px-4 py-2 text-sm font-medium hover:border-royal hover:text-royal">
-            {s.no} · {s.title}
-          </Link>
-        ))}
+      {/* Phones and tablets: auto-scrolling service chips (pause on touch/hover) */}
+      <div className="group -mx-6 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)] lg:hidden">
+        <div className="flex w-max animate-[marquee_30s_linear_infinite] py-1 group-hover:[animation-play-state:paused] group-active:[animation-play-state:paused] group-focus-within:[animation-play-state:paused]">
+          {[...services, ...services].map((s, i) => (
+            <Link key={`${s.slug}-${i}`} href={`#${s.slug}`}
+              aria-hidden={i >= services.length} tabIndex={i >= services.length ? -1 : undefined}
+              className="mr-2 shrink-0 whitespace-nowrap rounded-full border border-line px-3.5 py-1.5 text-xs font-medium hover:border-royal hover:text-royal">
+              {s.no} · {s.title}
+            </Link>
+          ))}
+        </div>
       </div>
     </>
   );

@@ -33,7 +33,7 @@ export default async function Services() {
       </section>
 
       {carousels.length > 0 && (
-        <section id="carousels" className="mt-20 scroll-mt-20 overflow-hidden bg-navy py-20 text-white">
+                <section id="carousels" className="mt-10 scroll-mt-20 overflow-hidden bg-navy py-14 text-white sm:mt-20 sm:py-20">
           <div className="mx-auto max-w-6xl px-6">
             <div className="mx-auto max-w-2xl text-center">
               <p className="text-xs font-semibold tracking-[0.3em] text-sky">CAROUSEL DESIGN</p>
