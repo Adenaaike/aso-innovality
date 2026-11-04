@@ -4,14 +4,16 @@ import { ArrowDown, ArrowUp, Eye, EyeOff, Pencil, Plus, Trash2 } from "lucide-re
 import { browserClient } from "@/lib/supabase/browser";
 
 export type Field = {
-  key: string; label: string; type: "text" | "textarea" | "lines" | "checkbox";
-  placeholder?: string; required?: boolean; hint?: string;
+  key: string; label: string; type: "text" | "textarea" | "lines" | "checkbox" | "select" | "number";
+  placeholder?: string; required?: boolean; hint?: string; options?: { value: string; label: string }[];
 };
 export type Row = { id: string; sort_order: number; published: boolean; [k: string]: unknown };
 type FormState = Record<string, string | boolean>;
 
-export function CollectionEditor({ table, title, hint, fields, summary }: {
+export function CollectionEditor({ table, title, hint, fields, summary, filter, onRows }: {
   table: string; title: string; hint?: string; fields: Field[]; summary: (r: Row) => string;
+  filter?: { column: string; value: string }; // only show/insert rows matching this column
+  onRows?: (rows: Row[]) => void;            // tells the parent page the current rows
 }) {
   const sb = browserClient();
   const [rows, setRows] = useState<Row[]>([]);
@@ -21,9 +23,13 @@ export function CollectionEditor({ table, title, hint, fields, summary }: {
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
   async function load() {
-    const { data, error } = await sb.from(table).select("*").order("sort_order").order("created_at");
-    if (error) setMsg({ ok: false, text: `Couldn’t load ${title.toLowerCase()}. Did you run the SQL?` });
-    else setRows((data ?? []) as Row[]);
+    let q = sb.from(table).select("*");
+    if (filter) q = q.eq(filter.column, filter.value);
+    const { data, error } = await q.order("sort_order").order("created_at");
+    if (error) { setMsg({ ok: false, text: `Couldn’t load ${title.toLowerCase()}. Did you run the SQL?` }); return; }
+    const list = (data ?? []) as Row[];
+    setRows(list);
+    onRows?.(list);
   }
   useEffect(() => { load(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -31,9 +37,11 @@ export function CollectionEditor({ table, title, hint, fields, summary }: {
     const f: FormState = {};
     for (const fl of fields) {
       const v = r?.[fl.key];
-      f[fl.key] = fl.type === "checkbox" ? Boolean(v)
-        : fl.type === "lines" ? (Array.isArray(v) ? (v as string[]).join("\n") : "")
-        : typeof v === "string" ? v : "";
+      if (fl.type === "checkbox") f[fl.key] = Boolean(v);
+      else if (fl.type === "lines") f[fl.key] = Array.isArray(v) ? (v as string[]).join("\n") : "";
+      else if (fl.type === "number") f[fl.key] = v === null || v === undefined ? "" : String(v);
+      else if (fl.type === "select") f[fl.key] = typeof v === "string" ? v : fl.options?.[0]?.value ?? "";
+      else f[fl.key] = typeof v === "string" ? v : "";
     }
     return f;
   }
@@ -41,19 +49,23 @@ export function CollectionEditor({ table, title, hint, fields, summary }: {
   async function save() {
     if (!form) return;
     for (const fl of fields) {
-      if (fl.required && !String(form[fl.key] ?? "").trim()) return setMsg({ ok: false, text: `Please fill in “${fl.label}”.` });
+      const raw = String(form[fl.key] ?? "").trim();
+      if (fl.required && !raw) return setMsg({ ok: false, text: `Please fill in “${fl.label}”.` });
+      if (fl.type === "number" && raw && Number.isNaN(Number(raw))) return setMsg({ ok: false, text: `“${fl.label}” must be a number.` });
     }
     const payload: Record<string, unknown> = {};
     for (const fl of fields) {
       const v = form[fl.key];
-      payload[fl.key] = fl.type === "checkbox" ? Boolean(v)
-        : fl.type === "lines" ? String(v).split("\n").map((s) => s.trim()).filter(Boolean)
-        : String(v).trim() || null;
+      if (fl.type === "checkbox") payload[fl.key] = Boolean(v);
+      else if (fl.type === "lines") payload[fl.key] = String(v).split("\n").map((s) => s.trim()).filter(Boolean);
+      else if (fl.type === "number") payload[fl.key] = String(v).trim() === "" ? null : Number(v);
+      else if (fl.type === "select") payload[fl.key] = String(v);
+      else payload[fl.key] = String(v).trim() || null;
     }
     setBusy(true);
     const res = editId
       ? await sb.from(table).update(payload).eq("id", editId)
-      : await sb.from(table).insert({ ...payload, sort_order: rows.length, published: true });
+      : await sb.from(table).insert({ ...payload, ...(filter ? { [filter.column]: filter.value } : {}), sort_order: rows.length, published: true });
     setBusy(false);
     if (res.error) return setMsg({ ok: false, text: res.error.message });
     setForm(null); setEditId(null); setMsg({ ok: true, text: "Saved." });
@@ -105,26 +117,38 @@ export function CollectionEditor({ table, title, hint, fields, summary }: {
 
       {form && (
         <div className="space-y-4 rounded-sm bg-surface p-5">
-          {fields.map((fl) => (
-            <div key={fl.key}>
-              {fl.type === "checkbox" ? (
-                <label className="flex items-center gap-3 text-sm font-medium">
-                  <input type="checkbox" checked={Boolean(form[fl.key])} onChange={(e) => setForm({ ...form, [fl.key]: e.target.checked })} className="size-4 accent-royal" />
-                  {fl.label}
-                </label>
-              ) : (
-                <>
-                  <label htmlFor={`${table}-${fl.key}`} className="mb-1 block text-sm font-medium">{fl.label}{fl.required && " *"}</label>
-                  {fl.type === "text"
-                    ? <input id={`${table}-${fl.key}`} value={String(form[fl.key])} placeholder={fl.placeholder} className={input}
+          {fields.map((fl) => {
+            const id = `${table}-${fl.key}`;
+            return (
+              <div key={fl.key}>
+                {fl.type === "checkbox" ? (
+                  <label className="flex items-center gap-3 text-sm font-medium">
+                    <input type="checkbox" checked={Boolean(form[fl.key])} onChange={(e) => setForm({ ...form, [fl.key]: e.target.checked })} className="size-4 accent-royal" />
+                    {fl.label}
+                  </label>
+                ) : (
+                  <>
+                    <label htmlFor={id} className="mb-1 block text-sm font-medium">{fl.label}{fl.required && " *"}</label>
+                    {fl.type === "select" ? (
+                      <select id={id} value={String(form[fl.key])} className={input} onChange={(e) => setForm({ ...form, [fl.key]: e.target.value })}>
+                        {fl.options?.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                      </select>
+                    ) : fl.type === "number" ? (
+                      <input id={id} type="number" min={0} step="any" value={String(form[fl.key])} placeholder={fl.placeholder} className={input}
                         onChange={(e) => setForm({ ...form, [fl.key]: e.target.value })} />
-                    : <textarea id={`${table}-${fl.key}`} rows={fl.type === "lines" ? 5 : 4} value={String(form[fl.key])} placeholder={fl.placeholder} className={input}
-                        onChange={(e) => setForm({ ...form, [fl.key]: e.target.value })} />}
-                </>
-              )}
-              {fl.hint && <p className="mt-1 text-xs text-muted">{fl.hint}</p>}
-            </div>
-          ))}
+                    ) : fl.type === "text" ? (
+                      <input id={id} value={String(form[fl.key])} placeholder={fl.placeholder} className={input}
+                        onChange={(e) => setForm({ ...form, [fl.key]: e.target.value })} />
+                    ) : (
+                      <textarea id={id} rows={fl.type === "lines" ? 5 : 4} value={String(form[fl.key])} placeholder={fl.placeholder} className={input}
+                        onChange={(e) => setForm({ ...form, [fl.key]: e.target.value })} />
+                    )}
+                  </>
+                )}
+                {fl.hint && <p className="mt-1 text-xs text-muted">{fl.hint}</p>}
+              </div>
+            );
+          })}
           <div className="flex gap-2">
             <button onClick={save} disabled={busy} className="rounded-full bg-royal px-6 py-2.5 text-sm font-medium text-white hover:bg-bright disabled:opacity-60">
               {busy ? "Saving…" : editId ? "Save changes" : "Add"}
