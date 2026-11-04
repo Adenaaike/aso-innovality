@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PracticeCards } from "@/components/practices/PracticeCards";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
@@ -106,6 +107,7 @@ export default async function Services() {
         </div>
       </section>
 
+      <PracticeCards />
       <Packages items={packages} />
       <Testimonials items={testimonials} />
       <FaqSection items={faqs} />

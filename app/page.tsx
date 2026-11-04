@@ -13,6 +13,7 @@ import { publicClient } from "@/lib/supabase/public";
 import { getCarousels } from "@/lib/projects";
 import { CarouselTeaser } from "@/components/carousel/CarouselTeaser";
 import { getSettings } from "@/lib/settings";
+import { PracticeCards } from "@/components/practices/PracticeCards";
 import { getTestimonials } from "@/lib/content";
 import { Testimonials } from "@/components/content/Testimonials";
 
@@ -90,7 +91,12 @@ export default async function Home() {
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted md:text-base">
               I’m Adenaike Sodiq Olusegun, a multidisciplinary creative designer in Lagos with over 9 years’ experience helping organisations, startups and ministries across Africa and Europe communicate with clarity and visual impact.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/estimate" className="group mt-6 inline-flex items-center gap-2 text-sm font-medium text-royal dark:text-light-azure">
+                <span className="grid size-6 place-items-center rounded-full bg-royal/10 text-xs font-bold">$</span>
+                Know your project cost in 60 seconds
+                <ArrowUpRight size={14} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+              <div className="mt-6 flex flex-wrap gap-3">
               <Link href="/work" className="group inline-flex items-center gap-2 rounded-full bg-royal px-6 py-3 text-sm font-medium text-white transition hover:bg-bright focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-royal">
                 Explore My Work <ArrowUpRight size={16} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
@@ -224,8 +230,10 @@ export default async function Home() {
         </Reveal>
       </section>
 
+      <PracticeCards />
       <Testimonials items={testimonials} />
 
+      <PracticeCards />
 {/* CTA */}
       <section className="bg-navy py-20 text-center text-white">
         <Reveal className="mx-auto max-w-4xl px-6">

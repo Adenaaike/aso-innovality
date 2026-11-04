@@ -21,7 +21,7 @@ export default async function Contact() {
           Let’s build something <span className="aso-text-gradient">distinctive</span> together.
         </h1>
         <p className="mt-6 text-base leading-relaxed text-muted">
-          I’m available for brand identity commissions, campaign design, agency partnerships and international collaborations. Tell me about your organisation, timeline and goals, and I’ll reply within 24–48 hours.
+        I’m available for brand identity and design projects, websites and SEO, and AI and automation, for organisations in Nigeria and worldwide. Tell me about your organisation, timeline and goals, and I’ll reply within 24–48 hours.
         </p>
         <dl className="mt-10 space-y-5">
           <div><dt className="text-xs uppercase tracking-wider text-muted">Email</dt><dd><a href={`mailto:${s.email}`} className="hover:text-royal">{s.email}</a></dd></div>

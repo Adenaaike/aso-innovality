@@ -5,6 +5,8 @@ export const projectTypes = [
   "Event / Campaign Series",
   "Commercial & Social Media Design",
   "Carousel & Social Content Design",
+  "Website Design & Development",
+  "AI & Automation",
   "Photo Manipulation & Compositing",
   "Print & Packaging",
   "Digital Visual Experience",

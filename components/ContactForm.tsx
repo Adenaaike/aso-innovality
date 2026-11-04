@@ -13,6 +13,8 @@ const SERVICE_TO_TYPE: Record<string, (typeof projectTypes)[number]> = {
   "packaging-print": "Print & Packaging",
   "digital-experiences": "Digital Visual Experience",
   "carousel-design": "Carousel & Social Content Design",
+  "web-development": "Website Design & Development",
+  "ai-automation": "AI & Automation",
 };
 
 export function ContactForm() {
@@ -20,7 +22,25 @@ export function ContactForm() {
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
 
   useEffect(() => {
-    const s = new URLSearchParams(window.location.search).get("service");
+    const params = new URLSearchParams(window.location.search);
+
+    // Estimate details from a calculator
+    const brief = params.get("brief");
+    if (brief) setValue("description", brief.slice(0, 4000));
+
+    // Budget tier matching the calculator total
+    const usd = Number(params.get("budget"));
+    if (usd > 0) {
+      const tiers = budgets
+        .map((b) => ({ b, min: Number((String(b).match(/\$([\d,]+)/)?.[1] ?? "").replace(/,/g, "")) }))
+        .filter((t) => t.min > 0)
+        .sort((a, z) => z.min - a.min);
+      const pick = tiers.find((t) => usd >= t.min);
+      if (pick) setValue("budget", pick.b);
+    }
+
+    // Project type from "Start a project" links
+    const s = params.get("service");
     if (s && SERVICE_TO_TYPE[s]) setValue("projectType", SERVICE_TO_TYPE[s]);
   }, [setValue]);
 
@@ -56,6 +76,7 @@ export function ContactForm() {
         </select><Err name="projectType" /></div>
       <div className="md:col-span-2"><label htmlFor="budget" className="mb-1 block text-sm font-medium">Estimated budget</label>
         <select id="budget" defaultValue="" className={input} {...register("budget")}>
+   
           <option value="">Prefer not to say</option>{budgets.map((b) => <option key={b}>{b}</option>)}
         </select></div>
       <div className="md:col-span-2"><label htmlFor="description" className="mb-1 block text-sm font-medium">Project description *</label>

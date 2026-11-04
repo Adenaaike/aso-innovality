@@ -149,7 +149,7 @@ useEffect(() => {
   ];
   const waHref = `https://wa.me/${whatsapp}?text=${encodeURIComponent([`Hello ASO, I used your ${calcName}.`, "", ...summary, "", "Please send me a formal quote."].join("\n"))}`;
   const brief = [`From the ${calcName}:`, ...summary, "", "About my project: "].join("\n");
-  const quoteHref = `/contact?service=${contactService}&brief=${encodeURIComponent(brief)}`;
+  const quoteHref = `/contact?service=${contactService}&brief=${encodeURIComponent(brief)}${!monthly && total > 0 ? `&budget=${Math.round(total)}` : ""}`;
 
   async function copy() {
     try { await navigator.clipboard.writeText(summary.join("\n")); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch {}
