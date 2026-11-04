@@ -1,12 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { budgets, enquirySchema, projectTypes, type Enquiry } from "@/lib/validation";
 
+// "Start a project" buttons link to /contact?service=<slug>
+const SERVICE_TO_TYPE: Record<string, (typeof projectTypes)[number]> = {
+  "brand-identity": "Brand Identity & Logo System",
+  "graphic-design": "Commercial & Social Media Design",
+  "campaign-direction": "Event / Campaign Series",
+  "photo-manipulation": "Photo Manipulation & Compositing",
+  "packaging-print": "Print & Packaging",
+  "digital-experiences": "Digital Visual Experience",
+};
+
 export function ContactForm() {
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<Enquiry>({ resolver: zodResolver(enquirySchema) });
+  const { register, handleSubmit, reset, setValue, formState: { errors, isSubmitting } } = useForm<Enquiry>({ resolver: zodResolver(enquirySchema) });
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+
+  useEffect(() => {
+    const s = new URLSearchParams(window.location.search).get("service");
+    if (s && SERVICE_TO_TYPE[s]) setValue("projectType", SERVICE_TO_TYPE[s]);
+  }, [setValue]);
 
   async function onSubmit(values: Enquiry) {
     setStatus(null);
@@ -15,7 +30,7 @@ export function ContactForm() {
       const json = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(json.error ?? "Something went wrong. Please try again.");
       reset();
-      setStatus({ ok: true, msg: "Thank you — your enquiry has been received. I'll reply by email." });
+      setStatus({ ok: true, msg: "Thank you — your enquiry has been received. I’ll reply within 24–48 hours." });
     } catch (err) {
       setStatus({ ok: false, msg: err instanceof Error ? err.message : "Something went wrong." });
     }

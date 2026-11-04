@@ -46,3 +46,26 @@ export async function getProject(slug: string): Promise<Project | null> {
     images: arr<ProjectImage>(p.images).sort((a, b) => a.sort_order - b.sort_order),
   };
 }
+// Which project categories feed each service's preview images
+export const SERVICE_CATEGORIES: Record<string, string[]> = {
+    "brand-identity": ["Brand Identity", "Logo Design"],
+    "graphic-design": ["Graphic Design", "Social Media Design"],
+    "campaign-direction": ["Campaigns & Posters"],
+    "photo-manipulation": ["Photo Manipulation", "Photography"],
+    "packaging-print": ["Packaging"],
+    "digital-experiences": ["Experimental Design"],
+  };
+  
+  export async function getServicePreviews(): Promise<Record<string, string[]>> {
+    const sb = publicClient();
+    if (!sb) return {};
+    const { data } = await sb.from("projects")
+      .select("cover_url, category:categories(name)")
+      .eq("published", true).not("cover_url", "is", null).order("sort_order").limit(60);
+    const rows = (data ?? []) as unknown as { cover_url: string; category: { name: string } | null }[];
+    const out: Record<string, string[]> = {};
+    for (const [slug, cats] of Object.entries(SERVICE_CATEGORIES)) {
+      out[slug] = rows.filter((r) => r.category && cats.includes(r.category.name)).map((r) => r.cover_url).slice(0, 3);
+    }
+    return out;
+  }
