@@ -53,6 +53,11 @@ export const site = {
       summary: "Bringing brand identities to screens with responsive web visuals and digital brand kits that hold up on every device.",
       deliverables: ["Web UI visual assets", "Digital brand kits", "Interactive design systems"],
     },
+    {
+      no: "07", slug: "carousel-design", title: "Carousel & Social Content Design",
+      summary: "Multi-slide carousels that tell a story, explain an offer and keep people swiping, designed as one consistent series.",
+      deliverables: ["Instagram & LinkedIn carousels", "Educational & explainer carousels", "Product & listing carousels", "Event & campaign carousel series", "Reusable carousel templates"],
+    },
   ];
   
   // ── Homepage content (edit freely) ──────────────────────────

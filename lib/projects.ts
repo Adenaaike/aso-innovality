@@ -54,6 +54,7 @@ export const SERVICE_CATEGORIES: Record<string, string[]> = {
     "photo-manipulation": ["Photo Manipulation", "Photography"],
     "packaging-print": ["Packaging"],
     "digital-experiences": ["Experimental Design"],
+    "carousel-design": ["Carousel & Social Content Design"],
   };
   
   export async function getServicePreviews(): Promise<Record<string, string[]>> {
@@ -69,3 +70,25 @@ export const SERVICE_CATEGORIES: Record<string, string[]> = {
     }
     return out;
   }
+  export type Carousel = { slug: string; title: string; client: string | null; year: number | null; slides: { url: string; alt: string }[] };
+
+export async function getCarousels(limit = 12): Promise<Carousel[]> {
+  const sb = publicClient();
+  if (!sb) return [];
+  const { data: cat } = await sb.from("categories").select("id").eq("slug", "carousel-design").maybeSingle();
+  if (!cat) return [];
+  const { data } = await sb.from("projects")
+    .select("slug, title, client, year, cover_url, images:project_images(url, alt, sort_order)")
+    .eq("published", true).eq("category_id", cat.id).order("sort_order").limit(limit);
+  const rows = (data ?? []) as unknown as {
+    slug: string; title: string; client: string | null; year: number | null; cover_url: string | null;
+    images: { url: string; alt: string; sort_order: number }[] | null;
+  }[];
+  return rows
+    .map((r) => {
+      const imgs = [...(r.images ?? [])].sort((a, b) => a.sort_order - b.sort_order).map((i) => ({ url: i.url, alt: i.alt }));
+      const slides = imgs.length ? imgs : r.cover_url ? [{ url: r.cover_url, alt: r.title }] : [];
+      return { slug: r.slug, title: r.title, client: r.client, year: r.year, slides };
+    })
+    .filter((c) => c.slides.length > 0);
+}

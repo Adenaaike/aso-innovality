@@ -10,6 +10,8 @@ import { Stats } from "@/components/home/Stats";
 import { ServicesHover } from "@/components/home/ServicesHover";
 import { steps } from "@/lib/site";
 import { publicClient } from "@/lib/supabase/public";
+import { getCarousels } from "@/lib/projects";
+import { CarouselTeaser } from "@/components/carousel/CarouselTeaser";
 
 export const revalidate = 300;
 
@@ -35,6 +37,7 @@ const SERVICE_CATEGORIES: Record<string, string[]> = {
   "photo-manipulation": ["Photo Manipulation", "Photography"],
   "packaging-print": ["Packaging"],
   "digital-experiences": ["Experimental Design"],
+  "carousel-design": ["Carousel & Social Content Design"],
 };
 async function getPreviews(): Promise<Record<string, string[]>> {
   const sb = publicClient();
@@ -68,8 +71,7 @@ function Eyebrow({ no, label, light = false }: { no: string; label: string; ligh
 }
 
 export default async function Home() {
-  const [featured, previews] = await Promise.all([getFeatured(), getPreviews()]);
-
+  const [featured, previews, carousels] = await Promise.all([getFeatured(), getPreviews(), getCarousels(6)]);
   return (
     <>
             {/* HERO */}
@@ -173,6 +175,7 @@ export default async function Home() {
                 ))}
           </div>
 
+          <CarouselTeaser carousels={carousels} />
           <Reveal className="mt-20"><h3 className="font-display text-2xl font-bold md:text-3xl">What I design</h3></Reveal>
           <div className="mt-8"><ServicesHover previews={previews} /></div>
         </div>

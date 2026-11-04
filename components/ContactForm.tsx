@@ -12,6 +12,7 @@ const SERVICE_TO_TYPE: Record<string, (typeof projectTypes)[number]> = {
   "photo-manipulation": "Photo Manipulation & Compositing",
   "packaging-print": "Print & Packaging",
   "digital-experiences": "Digital Visual Experience",
+  "carousel-design": "Carousel & Social Content Design",
 };
 
 export function ContactForm() {

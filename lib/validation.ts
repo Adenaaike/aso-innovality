@@ -4,6 +4,7 @@ export const projectTypes = [
   "Brand Identity & Logo System",
   "Event / Campaign Series",
   "Commercial & Social Media Design",
+  "Carousel & Social Content Design",
   "Photo Manipulation & Compositing",
   "Print & Packaging",
   "Digital Visual Experience",

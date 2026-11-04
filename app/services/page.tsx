@@ -4,19 +4,20 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { ServicesAccordion } from "@/components/services/ServicesAccordion";
+import { CoverflowCarousel } from "@/components/carousel/CoverflowCarousel";
 import { services, steps } from "@/lib/site";
-import { getServicePreviews } from "@/lib/projects";
+import { getServicePreviews, getCarousels } from "@/lib/projects";
 
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Services — Brand Identity, Campaign Design & Art Direction",
-  description: "Brand identity systems, campaign and event art direction, advertising design, photo manipulation, packaging and print by ASO INNOVALITY in Lagos.",
+  title: "Services — Brand Identity, Campaign & Carousel Design",
+  description: "Brand identity systems, campaign and event art direction, advertising and carousel design, photo manipulation, packaging and print by ASO INNOVALITY in Lagos.",
   alternates: { canonical: "/services" },
 };
 
 export default async function Services() {
-  const previews = await getServicePreviews();
+  const [previews, carousels] = await Promise.all([getServicePreviews(), getCarousels()]);
 
   return (
     <div className="pt-32">
@@ -30,6 +31,23 @@ export default async function Services() {
         </p>
         <div className="mt-12"><ServicesAccordion previews={previews} /></div>
       </section>
+
+      {carousels.length > 0 && (
+        <section id="carousels" className="mt-20 scroll-mt-20 overflow-hidden bg-navy py-20 text-white">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold tracking-[0.3em] text-sky">CAROUSEL DESIGN</p>
+              <h2 className="mt-4 font-display text-[clamp(1.75rem,4vw,2.75rem)] font-bold leading-tight">
+                Swipe-worthy <span className="text-sky">carousels.</span>
+              </h2>
+              <p className="mt-4 text-ice">
+                Multi-slide stories built to stop the scroll, explain the offer and earn the swipe. Tap the centre carousel to view every slide.
+              </p>
+            </div>
+            <div className="mt-14"><CoverflowCarousel carousels={carousels} /></div>
+          </div>
+        </section>
+      )}
 
       <section className="mx-auto mt-16 max-w-6xl px-6">
         {services.map((s) => (
@@ -50,7 +68,7 @@ export default async function Services() {
                   {s.deliverables.map((d) => <li key={d} className="flex gap-2.5"><span className="mt-2 size-1.5 shrink-0 rounded-full bg-royal" />{d}</li>)}
                 </ul>
               </div>
-              <Link href="/work" className="group grid grid-cols-3 gap-2 self-start" aria-label={`See ${s.title} work`}>
+              <Link href={s.slug === "carousel-design" && carousels.length ? "#carousels" : "/work"} className="group grid grid-cols-3 gap-2 self-start" aria-label={`See ${s.title} work`}>
                 {(previews[s.slug]?.length ? previews[s.slug] : [null, null, null]).slice(0, 3).map((src, i) => (
                   <div key={i} className="relative aspect-[4/5] overflow-hidden rounded-md bg-surface">
                     {src
@@ -85,7 +103,7 @@ export default async function Services() {
       <section className="bg-navy py-20 text-center text-white">
         <Reveal className="mx-auto max-w-3xl px-6">
           <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] font-bold leading-tight">
-            Have a brief in mind? <span className="aso-text-gradient">Let’s talk.</span>
+            Have a brief in mind? <span className="text-sky">Let’s talk.</span>
           </h2>
           <p className="mt-4 text-ice">Projects start from $300. Every brief is quoted individually.</p>
           <Link href="/contact" className="mt-8 inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium hover:bg-azure">Start a project</Link>
