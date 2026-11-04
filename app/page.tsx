@@ -89,7 +89,7 @@ export default async function Home() {
             </h1>
             <p className="mt-5 max-w-xl text-base text-muted md:text-lg">Designing identities. Building impressions. Creating possibilities.</p>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted md:text-base">
-              I’m Adenaike Sodiq Olusegun, a multidisciplinary creative designer in Lagos with over 9 years’ experience helping organisations, startups and ministries across Africa and Europe communicate with clarity and visual impact.
+            I’m Adenaike Sodiq Olusegun, a Lagos-based creative designer with 9+ years helping organisations, startups and ministries across Africa and Europe communicate with clarity and impact. ASO INNOVALITY is where that craft meets technology: brand identity, websites and smart automation, under one studio.
             </p>
             <Link href="/estimate" className="group mt-6 inline-flex items-center gap-2 text-sm font-medium text-royal dark:text-light-azure">
                 <span className="grid size-6 place-items-center rounded-full bg-royal/10 text-xs font-bold">$</span>
