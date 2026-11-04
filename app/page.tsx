@@ -233,7 +233,6 @@ export default async function Home() {
       <PracticeCards />
       <Testimonials items={testimonials} />
 
-      <PracticeCards />
 {/* CTA */}
       <section className="bg-navy py-20 text-center text-white">
         <Reveal className="mx-auto max-w-4xl px-6">
