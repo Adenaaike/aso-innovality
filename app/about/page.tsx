@@ -4,7 +4,10 @@ import Link from "next/link";
 import { ArrowUpRight, Download } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { Stats } from "@/components/home/Stats";
-import { bio, principles, experience, education, certifications, exhibitions, competencies, tools, cvPath } from "@/lib/about";
+import { bio, principles, experience, education, certifications, exhibitions, competencies, tools } from "@/lib/about";
+import { getSettings } from "@/lib/settings";
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "About — Creative Designer & Brand Identity Designer in Lagos",
@@ -14,14 +17,15 @@ export const metadata: Metadata = {
 
 const label = "text-xs font-semibold uppercase tracking-[0.2em] text-muted";
 
-export default function About() {
-  return (
+export default async function About() {
+    const settings = await getSettings();
+    return (
     <div className="pt-28">
       {/* HEADER */}
       <section className="mx-auto grid max-w-6xl gap-12 px-6 pb-20 lg:grid-cols-12 lg:items-center">
         <Reveal className="lg:col-span-5">
           <div className="relative mx-auto aspect-[4/5] w-full max-w-[260px] overflow-hidden rounded-lg sm:max-w-xs lg:mx-0">
-            <Image src="/images/aso-portrait.jpg" alt="Portrait of Adenaike Sodiq Olusegun, creative designer in Lagos"
+            <Image src={settings.portraitAbout} alt="Portrait of Adenaike Sodiq Olusegun, creative designer in Lagos"
               fill sizes="(min-width:1024px) 320px, 260px" loading="eager" className="object-cover" />
           </div>
         </Reveal>
@@ -34,7 +38,7 @@ export default function About() {
             {bio.map((p, i) => <p key={i}>{p}</p>)}
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={cvPath} download className="inline-flex items-center gap-2 rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-bright">
+            <a href={settings.cvUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-bright">
               <Download size={16} /> Download CV
             </a>
             <Link href="/contact" className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-medium hover:border-royal hover:text-royal">
@@ -112,7 +116,7 @@ export default function About() {
             </ul>
           </Reveal>
           <Reveal>
-            <a href={cvPath} download className="inline-flex items-center gap-2 text-sm font-medium text-royal hover:underline dark:text-light-azure">
+            <a href={settings.cvUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-medium text-royal hover:underline dark:text-light-azure">
               <Download size={15} /> Download full CV (PDF)
             </a>
           </Reveal>

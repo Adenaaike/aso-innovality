@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { studio } from "@/lib/site";
 
-export function StatusCard() {
+export function StatusCard({ available = studio.available, note = "" }: { available?: boolean; note?: string }) {
   const [time, setTime] = useState<string | null>(null);
 
   useEffect(() => {
@@ -16,13 +16,13 @@ export function StatusCard() {
   return (
     <div className="inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 rounded-full border border-line bg-bg/70 px-4 py-2 text-xs font-medium backdrop-blur">
       <span className="relative flex size-2" aria-hidden>
-        {studio.available && <span className="absolute inline-flex size-full animate-ping rounded-full bg-sky opacity-75" />}
-        <span className={`relative inline-flex size-2 rounded-full ${studio.available ? "bg-royal" : "bg-neutral-grey"}`} />
+        {available && <span className="absolute inline-flex size-full animate-ping rounded-full bg-sky opacity-75" />}
+        <span className={`relative inline-flex size-2 rounded-full ${available ? "bg-royal" : "bg-neutral-grey"}`} />
       </span>
       <span>{studio.city} · {time ?? "--:--"} WAT</span>
       <span className="text-muted" aria-hidden>·</span>
-      <span className={studio.available ? "text-royal dark:text-light-azure" : "text-muted"}>
-        {studio.available ? "Available for projects" : "Currently booked"}
+      <span className={available ? "text-royal dark:text-light-azure" : "text-muted"}>
+        {available ? "Available for projects" : note || "Currently booked"}
       </span>
     </div>
   );

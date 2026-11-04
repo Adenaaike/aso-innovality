@@ -12,6 +12,7 @@ import { steps } from "@/lib/site";
 import { publicClient } from "@/lib/supabase/public";
 import { getCarousels } from "@/lib/projects";
 import { CarouselTeaser } from "@/components/carousel/CarouselTeaser";
+import { getSettings } from "@/lib/settings";
 
 export const revalidate = 300;
 
@@ -71,7 +72,7 @@ function Eyebrow({ no, label, light = false }: { no: string; label: string; ligh
 }
 
 export default async function Home() {
-  const [featured, previews, carousels] = await Promise.all([getFeatured(), getPreviews(), getCarousels(6)]);
+  const [featured, previews, carousels, settings] = await Promise.all([getFeatured(), getPreviews(), getCarousels(6), getSettings()]);
   return (
     <>
             {/* HERO */}
@@ -79,7 +80,7 @@ export default async function Home() {
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(55%_50%_at_78%_38%,#21A9FF33,transparent_70%),radial-gradient(40%_40%_at_15%_85%,#1177FF1F,transparent_70%)]" />
         <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-7">
-            <StatusCard />
+          <StatusCard available={settings.available} note={settings.availabilityNote} />
             <h1 className="mt-6 font-display text-[clamp(2rem,4.5vw,3.75rem)] font-bold uppercase leading-[1.02] tracking-tight">
               I turn ideas into <span className="aso-text-gradient">visual experiences.</span>
             </h1>
@@ -186,7 +187,7 @@ export default async function Home() {
         <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-12 lg:items-center">
           <Reveal className="lg:col-span-5">
             <div className="relative mx-auto aspect-[4/5] w-full max-w-[260px] overflow-hidden rounded-sm sm:max-w-sm lg:mx-0 lg:ml-auto">
-              <Image src="/images/aso-portrait.jpg" alt="Portrait of Adenaike Sodiq Olusegun, creative designer in Lagos"
+              <Image src={settings.portraitHome} alt="Portrait of Adenaike Sodiq Olusegun, creative designer in Lagos"
                 fill sizes="(min-width:1024px) 40vw, 100vw" className="object-cover" />
             </div>
           </Reveal>
