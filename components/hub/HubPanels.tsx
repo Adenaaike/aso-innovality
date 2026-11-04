@@ -8,6 +8,19 @@ export function HubPanels({ items }: { items: { slug: string; title: string; cov
 
   if (!items.length) return <div aria-hidden className="hidden h-[440px] rounded-lg aso-gradient opacity-80 lg:block" />;
 
+  // A single project: show it as one wide card, so screenshots aren't cropped
+  if (items.length === 1) {
+    const p = items[0];
+    return (
+      <Link href={`/work/${p.slug}`} data-cursor="View project"
+        className="group relative block aspect-[16/10] overflow-hidden rounded-lg shadow-[0_30px_60px_-30px_#1177FF]">
+        <Image src={p.cover} alt={p.title} fill sizes="(min-width:1024px) 50vw, 100vw" className="object-cover object-top transition duration-700 group-hover:scale-[1.03]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent" />
+        <p className="absolute inset-x-0 bottom-0 p-5 font-display text-base font-semibold text-white">{p.title}</p>
+      </Link>
+    );
+  }
+
   return (
     <>
       <div className="hidden h-[440px] gap-2 lg:flex">
