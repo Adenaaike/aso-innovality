@@ -76,4 +76,32 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
 }
 @media (prefers-reduced-motion: reduce) {
   .orbit-float { animation: none; }
+}/* ===== AI hub: gold data flow ===== */
+.flow-ring {
+  background: conic-gradient(from 0deg, transparent 0 55%, #F5C451 80%, #FFE7A3 90%, transparent 100%);
+  opacity: 0.2;
+  animation: flow-spin 1.6s linear infinite, flow-glow 4s ease-in-out infinite;
+}
+.flow-card { animation: flow-card 4s ease-in-out infinite; }
+.flow-pulse {
+  background: linear-gradient(to bottom, transparent, #F5C451, #FFE7A3, transparent);
+  transform: translateY(-100%);
+  opacity: 0;
+  animation: flow-down 4s ease-in-out infinite;
+}
+@keyframes flow-spin { to { transform: rotate(360deg); } }
+@keyframes flow-glow { 0%, 30%, 100% { opacity: 0.2; } 6%, 18% { opacity: 1; } }
+@keyframes flow-card {
+  0%, 30%, 100% { box-shadow: 0 0 0 0 rgba(245, 196, 81, 0); }
+  8%, 18% { box-shadow: 0 0 0 1px rgba(245, 196, 81, 0.55), 0 10px 30px -12px rgba(245, 196, 81, 0.6); }
+}
+@keyframes flow-down {
+  0% { transform: translateY(-100%); opacity: 0; }
+  4% { opacity: 1; }
+  20% { transform: translateY(260%); opacity: 1; }
+  22%, 100% { transform: translateY(260%); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-ring, .flow-card, .flow-pulse { animation: none; }
+  .flow-ring { opacity: 0.6; }
 }
