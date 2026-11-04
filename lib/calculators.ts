@@ -18,7 +18,7 @@ export type CalcStep = {
   none_label: string | null; none_note: string | null; options: CalcOption[];
 };
 
-type RawOption = CalcOption & { published: boolean; sort_order: number; price_usd: number | string | null };
+type RawOption = Omit<CalcOption, "price_usd"> & { published: boolean; sort_order: number; price_usd: number | string | null };
 type RawStep = Omit<CalcStep, "options"> & { options: RawOption[] | null };
 
 export async function getCalculator(key: CalcKey): Promise<CalcStep[]> {

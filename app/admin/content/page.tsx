@@ -11,6 +11,12 @@ const testimonialFields: Field[] = [
 const faqFields: Field[] = [
   { key: "question", label: "Question", type: "text", required: true },
   { key: "answer", label: "Answer", type: "textarea", required: true },
+  { key: "hub", label: "Show on", type: "select", required: true, options: [
+    { value: "general", label: "Services page (general)" },
+    { value: "design", label: "Design Studio hub" },
+    { value: "web", label: "Web & SEO hub" },
+    { value: "ai", label: "AI & Automation hub" },
+  ] },
 ];
 
 const packageFields: Field[] = [
