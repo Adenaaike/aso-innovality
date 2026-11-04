@@ -107,6 +107,15 @@ export default function AdminSettings() {
           <p className="mt-1 text-xs text-muted">Digits only, including the country code, e.g. 2348106458863.</p></div>
       </section>
 
+      <section className={card}>
+          <h2 className="font-display text-lg font-semibold">Cost estimator</h2>
+          <div>
+            <label htmlFor="rate" className={label}>Naira exchange rate (₦ per $1)</label>
+            <input id="rate" type="number" min={0} step="any" value={s.ngnRate || ""} onChange={(e) => set("ngnRate", Number(e.target.value) || 0)}
+              className={input} placeholder="Enter today’s rate" />
+            <p className="mt-1 text-xs text-muted">Used to show ₦ prices on the calculators. Leave empty to show USD only. Update it when the rate changes.</p>
+          </div>
+        </section>
       <button onClick={() => save()} disabled={saving} className="rounded-full bg-royal px-8 py-3 text-sm font-medium text-white hover:bg-bright disabled:opacity-60">
         {saving ? "Saving…" : "Save changes"}
       </button>

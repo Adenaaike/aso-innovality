@@ -11,6 +11,7 @@ export type SiteSettings = {
   cvUrl: string;
   portraitHome: string;
   portraitAbout: string;
+  ngnRate: number; // ₦ per $1 for the calculators; 0 hides the ₦ option
 };
 
 // Used until you save something in Admin → Settings
@@ -23,6 +24,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   cvUrl: cvPath,
   portraitHome: "/images/aso-portrait.jpg",
   portraitAbout: "/images/aso-portrait.jpg",
+  ngnRate: 0,
 };
 
 export async function getSettings(): Promise<SiteSettings> {

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight, Check, Clock, ShieldCheck, Tag } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { HubPanels } from "@/components/hub/HubPanels";
+import { HubVisual } from "@/components/hub/HubVisual";
 import { Calculator } from "@/components/calculator/Calculator";
 import { ProjectTile } from "@/components/work/ProjectTile";
 import { FaqSection } from "@/components/content/Faq";
@@ -41,7 +42,7 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
             </a>
           </div>
         </div>
-        <div className="min-w-0 lg:col-span-6"><HubPanels items={panels} /></div>
+        <div className="min-w-0 lg:col-span-6">{panels.length ? <HubPanels items={panels} /> : <HubVisual kind={hub.key} />}</div>
       </section>
 
       {/* QUICK FACTS */}
@@ -87,7 +88,7 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
           <div className="lg:col-span-7">
             <Reveal><h2 className="font-display text-2xl font-bold md:text-3xl">How a project runs</h2></Reveal>
             <ol className="mt-8 grid gap-4 sm:grid-cols-2">
-              {processSteps.map((s, i) => (
+            {(hub.process ?? processSteps).map((s, i) => (
                 <Reveal key={s.no} delay={i * 0.06}>
                   <li className={card}>
                     <span aria-hidden className={sweep} />

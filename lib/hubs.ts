@@ -13,6 +13,7 @@ export type Hub = {
   benefits: { title: string; text: string }[];
   deliverables: string[];
   categories: string[];   // project categories shown as proof on this hub
+  process?: { no: string; title: string; text: string }[]; // optional hub-specific steps
   seo: { title: string; description: string };
 };
 
@@ -57,3 +58,48 @@ export const designHub: Hub = {
     description: "Brand identity, logo design, social media and carousel design, campaign visuals, packaging and photo manipulation by ASO INNOVALITY in Lagos. Get an instant estimate.",
   },
 };
+
+export const webHub: Hub = {
+    key: "web",
+    path: "/web",
+    eyebrow: "WEB & SEO",
+    title: "Websites that load fast, rank well and",
+    titleAccent: "turn visitors into clients.",
+    intro: "Custom, mobile-first websites that I design and build myself, with on-page SEO, speed and analytics set up from day one. Choose your website below and get an instant estimate.",
+    contactService: "digital-experiences",
+    calcName: "website cost calculator",
+    facts: [
+      { label: "Pricing", value: "Per project or monthly SEO" },
+      { label: "Every build", value: "Mobile-first & SEO-ready" },
+      { label: "Based in", value: "Lagos, working worldwide" },
+    ],
+    benefits: [
+      { title: "Designed to convert", text: "Clear structure, strong calls to action and one-tap WhatsApp, so visitors know exactly what to do next." },
+      { title: "Mobile-first & fast", text: "Built for the phones most of your customers use, with optimised images and lightweight code." },
+      { title: "SEO built in", text: "Clean structure, page titles, descriptions, sitemaps and structured data, so search engines understand your site." },
+      { title: "Easy to update", text: "A simple admin where you can change text, images and projects yourself, without calling a developer." },
+      { title: "Secure & reliable", text: "HTTPS, modern hosting and protected admin areas, so your site and your visitors stay safe." },
+      { title: "Connected", text: "Contact forms, WhatsApp, analytics and Google Search Console set up and working on launch day." },
+    ],
+    deliverables: [
+      "Business, portfolio & ministry websites",
+      "Landing pages",
+      "Website redesigns",
+      "On-page & technical SEO",
+      "Google Search Console & analytics setup",
+      "Google Business Profile setup",
+      "Content admin you can manage",
+      "Hosting & domain setup",
+    ],
+    categories: ["Web Design & Development", "SEO"],
+    process: [
+      { no: "01", title: "Discover & plan", text: "Your goals, your audience, and the pages and keywords your site needs to win." },
+      { no: "02", title: "Design", text: "A custom design built around your brand, approved by you before any code is written." },
+      { no: "03", title: "Build & test", text: "A fast, secure, mobile-first build, tested across phones, tablets and browsers." },
+      { no: "04", title: "Launch & optimise", text: "Domain, analytics and Search Console connected, then speed and SEO tuned after launch." },
+    ],
+    seo: {
+      title: "Website Design & SEO in Lagos — Web & SEO",
+      description: "Custom, mobile-first website design and development with on-page SEO by ASO INNOVALITY in Lagos. Choose your website and get an instant estimate.",
+    },
+  };
