@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight, Check, Clock, ShieldCheck, Tag } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { HubPanels } from "@/components/hub/HubPanels";
-import { HubVisual } from "@/components/hub/HubVisual";
+import { HubVisual, WebBadges } from "@/components/hub/HubVisual";
 import { Calculator } from "@/components/calculator/Calculator";
 import { ProjectTile } from "@/components/work/ProjectTile";
 import { FaqSection } from "@/components/content/Faq";
@@ -42,7 +42,10 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
             </a>
           </div>
         </div>
-        <div className="min-w-0 lg:col-span-6">{panels.length ? <HubPanels items={panels} /> : <HubVisual kind={hub.key} />}</div>
+        <div className="relative min-w-0 lg:col-span-6">
+          {panels.length ? <HubPanels items={panels} /> : <HubVisual kind={hub.key} />}
+          {hub.key === "web" && panels.length > 0 && <WebBadges />}
+        </div>
       </section>
 
       {/* QUICK FACTS */}

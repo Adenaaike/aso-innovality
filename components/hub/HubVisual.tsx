@@ -74,3 +74,29 @@ export function HubVisual({ kind }: { kind: CalcKey }) {
 
   return <div aria-hidden className="hidden h-[440px] rounded-lg aso-gradient opacity-80 lg:block" />;
 }
+// Floating "Mobile-first · Fast · SEO-ready" badges, each gliding in its own small circle
+export function WebBadges() {
+    const badges = [
+      { Icon: Smartphone, text: "Mobile-first", speed: "7s", delay: "0s", r: "8px" },
+      { Icon: Gauge, text: "Fast", speed: "9s", delay: "-3s", r: "6px" },
+      { Icon: Search, text: "SEO-ready", speed: "8s", delay: "-5s", r: "9px" },
+    ];
+    return (
+      <div aria-hidden className="pointer-events-none absolute top-6 -right-2 z-10 hidden flex-col items-end gap-3 sm:flex sm:-right-6">
+        {badges.map(({ Icon, text, speed, delay, r }, i) => (
+          <span key={text} className="orbit-float"
+            style={{ "--orbit-speed": speed, "--orbit-delay": delay, "--orbit-r": r } as React.CSSProperties}>
+            <span className="inline-flex animate-[fadeUp_0.6s_ease_both] items-center gap-2 rounded-full border border-line bg-bg/90 px-3 py-1.5 text-xs font-medium shadow-[0_10px_30px_-12px_#1177FF] backdrop-blur"
+              style={{ animationDelay: `${0.3 + i * 0.15}s` }}>
+              <Icon size={14} className="text-royal dark:text-light-azure" />
+              {text}
+              <span className="relative ml-0.5 flex size-1.5">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-sky opacity-75" style={{ animationDelay: `${i * 0.5}s` }} />
+                <span className="relative inline-flex size-1.5 rounded-full bg-royal" />
+              </span>
+            </span>
+          </span>
+        ))}
+      </div>
+    );
+  }

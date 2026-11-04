@@ -64,4 +64,16 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: none; }
+}/* Badges gliding in a small circle (moves, never rotates the text) */
+@keyframes orbit-float {
+  from { transform: rotate(0deg) translateX(var(--orbit-r, 7px)) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(var(--orbit-r, 7px)) rotate(-360deg); }
+}
+.orbit-float {
+  display: inline-block;
+  animation: orbit-float var(--orbit-speed, 7s) linear infinite;
+  animation-delay: var(--orbit-delay, 0s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit-float { animation: none; }
 }
