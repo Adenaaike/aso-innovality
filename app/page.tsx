@@ -13,6 +13,8 @@ import { publicClient } from "@/lib/supabase/public";
 import { getCarousels } from "@/lib/projects";
 import { CarouselTeaser } from "@/components/carousel/CarouselTeaser";
 import { getSettings } from "@/lib/settings";
+import { getTestimonials } from "@/lib/content";
+import { Testimonials } from "@/components/content/Testimonials";
 
 export const revalidate = 300;
 
@@ -72,7 +74,7 @@ function Eyebrow({ no, label, light = false }: { no: string; label: string; ligh
 }
 
 export default async function Home() {
-  const [featured, previews, carousels, settings] = await Promise.all([getFeatured(), getPreviews(), getCarousels(6), getSettings()]);
+  const [featured, previews, carousels, settings, testimonials] = await Promise.all([getFeatured(), getPreviews(), getCarousels(6), getSettings(), getTestimonials()]);
   return (
     <>
             {/* HERO */}
@@ -121,7 +123,8 @@ export default async function Home() {
         <ol className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
             <Reveal key={s.no} delay={i * 0.08}>
-              <li className="h-full rounded-sm border border-line p-6 transition hover:border-royal">
+                            <li className="group relative h-full overflow-hidden rounded-lg border border-line p-6 transition duration-300 hover:-translate-y-1 hover:border-royal hover:shadow-[0_20px_40px_-24px_#1177FF]">
+                            <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 aso-gradient transition-transform duration-500 group-hover:scale-x-100" />
                 <span className="font-display text-sm text-royal dark:text-light-azure">{s.no}</span>
                 <h3 className="mt-3 font-display text-lg font-semibold">{s.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
@@ -221,7 +224,9 @@ export default async function Home() {
         </Reveal>
       </section>
 
-      {/* CTA */}
+      <Testimonials items={testimonials} />
+
+{/* CTA */}
       <section className="bg-navy py-20 text-center text-white">
         <Reveal className="mx-auto max-w-4xl px-6">
           <h2 className="font-display text-[clamp(1.75rem,4.5vw,3.25rem)] font-bold uppercase leading-[1.05]">
