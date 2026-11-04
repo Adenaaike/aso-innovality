@@ -54,8 +54,8 @@ export const SERVICE_CATEGORIES: Record<string, string[]> = {
     "photo-manipulation": ["Photo Manipulation", "Photography"],
     "packaging-print": ["Packaging"],
     "digital-experiences": ["Experimental Design"],
-    "carousel-design": ["Carousel & Social Content Design"],
-  };
+    "carousel-design": ["Carousel Design"],
+}
   
   export async function getServicePreviews(): Promise<Record<string, string[]>> {
     const sb = publicClient();
