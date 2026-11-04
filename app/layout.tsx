@@ -6,13 +6,21 @@ import { Nav } from "@/components/Nav";
 import { WhatsAppButton } from "@/components/home/WhatsAppButton";
 import { DesignerCursor } from "@/components/DesignerCursor";
 import { site } from "@/lib/site";
+import { PRACTICES } from "@/lib/practices";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: "ASO Innovality — Adenaike Sodiq Olusegun | Brand Identity & Graphic Designer", template: "%s — ASO Innovality" },
-  description: "Adenaike Sodiq Olusegun (ASO) is a multidisciplinary creative designer in Nigeria specialising in brand identity, logo design, creative direction, photography and packaging.",
-  keywords: ["Adenaike Sodiq Olusegun", "ASO Innovality", "Graphic Designer in Nigeria", "Brand Identity Designer", "Logo Designer", "Creative Director", "Freelance Graphic Designer"],
+  title: {
+    default: "ASO Innovality — Design, Web & AI Studio in Lagos | Adenaike Sodiq Olusegun",
+    template: "%s — ASO Innovality",
+  },
+  description: "The creative-tech studio of Adenaike Sodiq Olusegun in Lagos: brand identity and graphic design, websites and SEO, and AI automation for organisations in Nigeria and worldwide.",
+  keywords: [
+    "Adenaike Sodiq Olusegun", "ASO Innovality", "Graphic Designer in Nigeria", "Brand Identity Designer",
+    "Logo Designer Lagos", "Carousel Designer", "Website Designer Lagos", "SEO Nigeria",
+    "AI Automation Nigeria", "WhatsApp Automation", "Creative Studio Lagos",
+  ],
   openGraph: { type: "website", siteName: "ASO Innovality", locale: "en_NG" },
   twitter: { card: "summary_large_image" },
 };
@@ -22,11 +30,16 @@ const personLd = {
   "@type": "Person",
   name: site.name,
   alternateName: ["ASO", "ASO Innovality"],
-  jobTitle: "Creative Designer",
+  jobTitle: "Creative Designer & Founder",
   url: site.url,
   email: `mailto:${site.email}`,
-  address: { "@type": "PostalAddress", addressCountry: "NG" },
+  address: { "@type": "PostalAddress", addressLocality: "Lagos", addressCountry: "NG" },
   alumniOf: { "@type": "CollegeOrUniversity", name: "Lagos State University" },
+  worksFor: { "@type": "Organization", name: "ASO Innovality", url: site.url },
+  knowsAbout: [
+    "Brand identity design", "Logo design", "Graphic design", "Carousel design", "Photo manipulation",
+    "Packaging design", "Website design", "Web development", "Search engine optimisation", "Workflow automation",
+  ],
   sameAs: [site.instagram, site.pinterest],
 };
 
@@ -41,12 +54,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Nav />
           <main id="main">{children}</main>
           <footer className="border-t border-line">
-            <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-10 text-sm text-muted md:flex-row md:items-center md:justify-between">
-              <p>© {new Date().getFullYear()} {site.brand}. {site.tagline}</p>
-              <div className="flex gap-6">
-                <a href={site.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-royal">Instagram</a>
-                <a href={site.pinterest} target="_blank" rel="noopener noreferrer" className="hover:text-royal">Pinterest</a>
-                <Link href="/contact" className="hover:text-royal">Contact</Link>
+            <div className="mx-auto max-w-7xl px-6 py-10 text-sm text-muted">
+              <nav aria-label="Practices" className="mb-6 flex flex-wrap gap-x-6 gap-y-2 border-b border-line pb-6">
+                {PRACTICES.map((p) => (
+                  <Link key={p.key} href={p.href} className="hover:text-royal">{p.title}</Link>
+                ))}
+                <Link href="/estimate" className="font-medium text-royal hover:underline dark:text-light-azure">Get an estimate</Link>
+              </nav>
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <p>© {new Date().getFullYear()} {site.brand}. {site.tagline}</p>
+                <div className="flex gap-6">
+                  <a href={site.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-royal">Instagram</a>
+                  <a href={site.pinterest} target="_blank" rel="noopener noreferrer" className="hover:text-royal">Pinterest</a>
+                  <Link href="/contact" className="hover:text-royal">Contact</Link>
+                </div>
               </div>
             </div>
           </footer>
