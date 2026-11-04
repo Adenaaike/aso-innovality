@@ -13,7 +13,7 @@ import { publicClient } from "@/lib/supabase/public";
 import { getCarousels } from "@/lib/projects";
 import { CarouselTeaser } from "@/components/carousel/CarouselTeaser";
 import { getSettings } from "@/lib/settings";
-import { PracticeCards } from "@/components/practices/PracticeCards";
+import { PRACTICES } from "@/lib/practices";
 import { getTestimonials } from "@/lib/content";
 import { Testimonials } from "@/components/content/Testimonials";
 
@@ -211,26 +211,63 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 03 — INNOVATION */}
-      <section className="px-6 py-24" aria-labelledby="innovation-title">
-        <Reveal className="relative mx-auto max-w-6xl overflow-hidden rounded-sm aso-gradient px-8 py-14 text-navy md:px-12">
-          <Eyebrow no="03" label="INNOVATION" light />
-          <h2 id="innovation-title" className="mt-4 max-w-2xl font-display text-3xl font-bold md:text-4xl">A space where creativity meets experimentation.</h2>
-          <p className="mt-4 max-w-xl text-base">Free creative tools and design games, built by ASO. Set type, generate palettes and test your eye.</p>
-          <ul className="mt-8 flex flex-wrap gap-2">
-            {tools.map((t) => (
-              <li key={t.id}>
-                <Link href={`/playground#${t.id}`} className="inline-flex rounded-full bg-white/70 px-4 py-2 text-sm font-medium backdrop-blur transition hover:bg-white">
-                  {t.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <Link href="/playground" className="mt-8 inline-flex rounded-full bg-navy px-6 py-3 text-sm font-medium text-white hover:bg-royal">Enter the Playground</Link>
-        </Reveal>
+            {/* 03 — INNOVATION */}
+            <section className="px-6 py-24" aria-labelledby="innovation-title">
+        <div className="mx-auto max-w-6xl">
+          <Reveal>
+            <Eyebrow no="03" label="INNOVATION" />
+            <h2 id="innovation-title" className="mt-4 max-w-3xl font-display text-3xl font-bold md:text-4xl">
+              Websites and automations <span className="aso-text-gradient">that work for you.</span>
+            </h2>
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
+              Design is where I started. Building is where I’m growing. I now design and develop websites with SEO built in, and set up automations that save hours every week.
+            </p>
+          </Reveal>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
+            {PRACTICES.filter((p) => p.key !== "design").map((p, i) => {
+              const Icon = p.Icon;
+              return (
+                <Reveal key={p.key} delay={i * 0.08}>
+                  <div className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-line bg-bg p-7 transition duration-300 hover:-translate-y-1 hover:border-royal hover:shadow-[0_24px_50px_-24px_#1177FF]">
+                    <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 aso-gradient transition-transform duration-500 group-hover:scale-x-100" />
+                    <span className="grid size-12 place-items-center rounded-full bg-royal/10 text-royal transition duration-300 group-hover:bg-royal group-hover:text-white dark:text-light-azure">
+                      <Icon size={22} />
+                    </span>
+                    <p className="mt-5 text-[10px] font-semibold tracking-[0.3em] text-muted">{p.word}</p>
+                    <h3 className="mt-1 font-display text-2xl font-bold">{p.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">{p.text}</p>
+                    <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 pt-6 text-sm font-medium">
+                      <Link href={p.href} className="inline-flex items-center gap-1 text-royal after:absolute after:inset-0 dark:text-light-azure">
+                        Explore <ArrowUpRight size={15} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </Link>
+                      <Link href={`${p.href}#estimate`} className="relative z-10 text-muted hover:text-royal">Get an estimate</Link>
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+
+          <Reveal className="relative mt-6 overflow-hidden rounded-sm aso-gradient px-8 py-12 text-navy md:px-12">
+            <p className="text-xs font-semibold tracking-[0.3em]">PLAYGROUND</p>
+            <h3 className="mt-3 max-w-2xl font-display text-2xl font-bold md:text-3xl">Where creativity meets experimentation.</h3>
+            <p className="mt-3 max-w-xl text-base">Free creative tools and design games, built by ASO. Set type, generate palettes and test your eye.</p>
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {tools.map((t) => (
+                <li key={t.id}>
+                  <Link href={`/playground#${t.id}`} className="inline-flex rounded-full bg-white/70 px-4 py-2 text-sm font-medium backdrop-blur transition hover:bg-white">
+                    {t.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link href="/playground" className="mt-8 inline-flex rounded-full bg-navy px-6 py-3 text-sm font-medium text-white hover:bg-royal">Enter the Playground</Link>
+          </Reveal>
+        </div>
       </section>
 
-      <PracticeCards />
+      
       <Testimonials items={testimonials} />
 
 {/* CTA */}
