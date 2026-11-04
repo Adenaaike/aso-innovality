@@ -2,20 +2,21 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { budgets, enquirySchema, projectTypes, type Enquiry } from "@/lib/validation";
+import { budgets, enquirySchema, projectTypes, projectTypeGroups, type Enquiry } from "@/lib/validation";
 
 // "Start a project" buttons link to /contact?service=<slug>
 const SERVICE_TO_TYPE: Record<string, (typeof projectTypes)[number]> = {
-  "brand-identity": "Brand Identity & Logo System",
-  "graphic-design": "Commercial & Social Media Design",
-  "campaign-direction": "Event / Campaign Series",
-  "photo-manipulation": "Photo Manipulation & Compositing",
-  "packaging-print": "Print & Packaging",
-  "digital-experiences": "Digital Visual Experience",
-  "carousel-design": "Carousel & Social Content Design",
-  "web-development": "Website Design & Development",
-  "ai-automation": "AI & Automation",
-};
+    "brand-identity": "Brand Identity & Logo System",
+    "graphic-design": "Graphic Design & Advertising",
+    "campaign-direction": "Event / Campaign Series",
+    "photo-manipulation": "Photo Manipulation & Compositing",
+    "packaging-print": "Print & Packaging",
+    "digital-experiences": "Digital & UI Visuals",
+    "carousel-design": "Social Media & Carousel Design",
+    "web-development": "Website Design & Development",
+    "seo": "SEO & Search Visibility",
+    "ai-automation": "Workflow & AI Automation",
+  };
 
 export function ContactForm() {
   const { register, handleSubmit, reset, setValue, formState: { errors, isSubmitting } } = useForm<Enquiry>({ resolver: zodResolver(enquirySchema) });
@@ -72,8 +73,13 @@ export function ContactForm() {
         <input id="company" autoComplete="organization" className={input} {...register("company")} /></div>
       <div><label htmlFor="projectType" className="mb-1 block text-sm font-medium">Project type *</label>
         <select id="projectType" defaultValue="" className={input} {...register("projectType")} {...aria("projectType")}>
-          <option value="" disabled>Select…</option>{projectTypes.map((t) => <option key={t}>{t}</option>)}
-        </select><Err name="projectType" /></div>
+        <option value="" disabled>Select…</option>
+              {projectTypeGroups.map((g) => (
+                <optgroup key={g.label} label={g.label}>
+                  {g.types.map((t) => <option key={t}>{t}</option>)}
+                </optgroup>
+              ))}
+                          </select><Err name="projectType" /></div>
       <div className="md:col-span-2"><label htmlFor="budget" className="mb-1 block text-sm font-medium">Estimated budget</label>
         <select id="budget" defaultValue="" className={input} {...register("budget")}>
    

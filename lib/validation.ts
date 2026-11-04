@@ -1,17 +1,27 @@
 import { z } from "zod";
 
 export const projectTypes = [
-  "Brand Identity & Logo System",
-  "Event / Campaign Series",
-  "Commercial & Social Media Design",
-  "Carousel & Social Content Design",
-  "Website Design & Development",
-  "AI & Automation",
-  "Photo Manipulation & Compositing",
-  "Print & Packaging",
-  "Digital Visual Experience",
-  "Other Collaboration",
-] as const;
+    "Brand Identity & Logo System",
+    "Graphic Design & Advertising",
+    "Social Media & Carousel Design",
+    "Event / Campaign Series",
+    "Photo Manipulation & Compositing",
+    "Print & Packaging",
+    "Digital & UI Visuals",
+    "Website Design & Development",
+    "SEO & Search Visibility",
+    "Chatbots & WhatsApp Automation",
+    "Workflow & AI Automation",
+    "Other Collaboration",
+  ] as const;
+  
+  // How the project types are grouped in the contact form dropdown
+  export const projectTypeGroups: { label: string; types: (typeof projectTypes)[number][] }[] = [
+    { label: "Design Studio", types: ["Brand Identity & Logo System", "Graphic Design & Advertising", "Social Media & Carousel Design", "Event / Campaign Series", "Photo Manipulation & Compositing", "Print & Packaging", "Digital & UI Visuals"] },
+    { label: "Web & SEO", types: ["Website Design & Development", "SEO & Search Visibility"] },
+    { label: "AI & Automation", types: ["Chatbots & WhatsApp Automation", "Workflow & AI Automation"] },
+    { label: "Other", types: ["Other Collaboration"] },
+  ];
 
 export const budgets = ["Starter — $300+", "Growth — $750+", "Enterprise — $1,800+", "Custom scope"];
 
