@@ -103,3 +103,47 @@ export const webHub: Hub = {
       description: "Custom, mobile-first website design and development with on-page SEO by ASO INNOVALITY in Lagos. Choose your website and get an instant estimate.",
     },
   };
+  
+export const aiHub: Hub = {
+    key: "ai",
+    path: "/ai",
+    eyebrow: "AI & AUTOMATION",
+    title: "Automations that save time and",
+    titleAccent: "work while you sleep.",
+    intro: "I design and build practical AI and automation for growing businesses, teams and ministries: chatbots, WhatsApp follow-ups and workflows that connect your tools, so the repetitive work runs itself. Choose what you need below and get an instant estimate.",
+    contactService: "digital-experiences",
+    calcName: "automation cost calculator",
+    facts: [
+      { label: "Pricing", value: "Per project or monthly support" },
+      { label: "Built for", value: "Small teams & growing businesses" },
+      { label: "Based in", value: "Lagos, working worldwide" },
+    ],
+    benefits: [
+      { title: "Save hours every week", text: "Repetitive tasks like data entry, follow-ups and reports run automatically, so your team can focus on real work." },
+      { title: "Reply instantly", text: "Chatbots and auto-replies answer common questions and capture leads at any hour, even when you’re offline." },
+      { title: "Fewer manual errors", text: "Information moves between your tools automatically, instead of being copied and pasted by hand." },
+      { title: "Your tools, connected", text: "Forms, spreadsheets, email, WhatsApp and your website working together as one system." },
+      { title: "You stay in control", text: "Clear rules, human hand-off where it matters, and simple dashboards so you always know what’s happening." },
+      { title: "Private by design", text: "Only the data each automation needs, with access kept to the people and tools that should have it." },
+    ],
+    deliverables: [
+      "Website & WhatsApp chatbots",
+      "Automated lead capture & follow-up",
+      "Workflow automation between your tools",
+      "AI-assisted content workflows",
+      "Custom AI integrations",
+      "Setup, documentation & training",
+      "Ongoing support & monitoring",
+    ],
+    categories: ["AI & Automation"],
+    process: [
+      { no: "01", title: "Map your workflow", text: "We walk through how the work happens today and find the steps worth automating first." },
+      { no: "02", title: "Design the automation", text: "A clear plan of what triggers what, which tools connect and where a person stays in the loop." },
+      { no: "03", title: "Build & test", text: "I build it, then test it with real examples until it runs reliably from start to finish." },
+      { no: "04", title: "Launch & support", text: "Your team gets a walkthrough and documentation, with optional monthly monitoring and improvements." },
+    ],
+    seo: {
+      title: "AI & Automation Services in Lagos — Chatbots & Workflows",
+      description: "Chatbots, WhatsApp automation, workflow automation and AI integrations by ASO INNOVALITY in Lagos. Choose what you need and get an instant estimate.",
+    },
+  };
