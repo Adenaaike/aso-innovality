@@ -15,6 +15,7 @@ export function CoverflowCarousel({ carousels }: { carousels: Carousel[] }) {
   const [slide, setSlide] = useState(0);
   const [lightbox, setLightbox] = useState<number | null>(null);
   const drag = useRef<{ x: number; moved: boolean } | null>(null);
+  const swipeX = useRef<number | null>(null);
   const count = carousels.length;
   const active = carousels[index];
 
@@ -147,7 +148,15 @@ export function CoverflowCarousel({ carousels }: { carousels: Carousel[] }) {
             <button type="button" onClick={() => setLightbox(null)} aria-label="Close" autoFocus
               className="grid size-10 place-items-center rounded-full text-white hover:bg-white/10"><X size={20} /></button>
           </div>
-          <div className="relative flex-1" onClick={(e) => e.stopPropagation()}>
+          <div className="relative flex-1 touch-pan-y" onClick={(e) => e.stopPropagation()}
+            onPointerDown={(e) => { swipeX.current = e.clientX; }}
+            onPointerUp={(e) => {
+              if (swipeX.current === null) return;
+              const dx = e.clientX - swipeX.current;
+              swipeX.current = null;
+              const n = active.slides.length;
+              if (Math.abs(dx) > 50) setLightbox((lightbox + (dx < 0 ? 1 : -1) + n) % n);
+            }}>
             <Image src={active.slides[lightbox].url} alt={active.slides[lightbox].alt || active.title} fill sizes="100vw" className="object-contain px-4 sm:px-16" />
             {active.slides.length > 1 && (
               <>

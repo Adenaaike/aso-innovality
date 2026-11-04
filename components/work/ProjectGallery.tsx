@@ -1,11 +1,12 @@
 "use client";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { ProjectImage } from "@/lib/projects";
 
 export function ProjectGallery({ images, title }: { images: ProjectImage[]; title: string }) {
-  const [open, setOpen] = useState<number | null>(null);
+    const [open, setOpen] = useState<number | null>(null);
+  const swipeX = useRef<number | null>(null);
   const close = useCallback(() => setOpen(null), []);
   const go = useCallback((d: number) => setOpen((i) => (i === null ? null : (i + d + images.length) % images.length)), [images.length]);
 
@@ -50,7 +51,14 @@ export function ProjectGallery({ images, title }: { images: ProjectImage[]; titl
             <button type="button" onClick={close} aria-label="Close" autoFocus
               className="grid size-10 place-items-center rounded-full text-white hover:bg-white/10"><X size={20} /></button>
           </div>
-          <div className="relative flex-1" onClick={(e) => e.stopPropagation()}>
+          <div className="relative flex-1 touch-pan-y" onClick={(e) => e.stopPropagation()}
+            onPointerDown={(e) => { swipeX.current = e.clientX; }}
+            onPointerUp={(e) => {
+              if (swipeX.current === null) return;
+              const dx = e.clientX - swipeX.current;
+              swipeX.current = null;
+              if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+            }}>
             <Image src={current.url} alt={current.alt || title} fill sizes="100vw" className="object-contain px-4 sm:px-16" />
             {images.length > 1 && (
               <>
