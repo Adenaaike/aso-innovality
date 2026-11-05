@@ -138,3 +138,16 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
 .group:hover .accent-icon, .group\/card:hover .accent-icon { background-color: var(--accent); color: #fff; }
 .glow-card { transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
 .glow-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 24px 50px -24px var(--accent-glow); }
+/* Text/icon colour that sits ON an accent background (dark text on gold for contrast) */
+:root, .accent-design, .accent-web { --accent-on: #FFFFFF; }
+.accent-ai { --accent-on: #101B2B; }
+.accent-text-gradient {
+  background-image: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Gradient stops used by the downloadable estimate card */
+:root, .accent-design { --accent-1: #1177FF; --accent-2: #21A9FF; --accent-3: #9BD9FE; }
+.accent-web { --accent-1: #E5484D; --accent-2: #FF6B6B; --accent-3: #FFB4B4; }
+.accent-ai { --accent-1: #D99A1E; --accent-2: #F5C451; --accent-3: #FFE7A3; }

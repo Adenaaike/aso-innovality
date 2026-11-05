@@ -10,6 +10,16 @@ type Billing = "one_off" | "monthly";
 type Line = { label: string; usd: number | null };
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+// Accent-aware class helpers (colour comes from the hub: blue / red / gold)
+const A = {
+  border: "border-[var(--accent)]",
+  hoverBorder: "hover:border-[var(--accent)]",
+  softBg: "bg-[var(--accent-soft)]",
+  solid: "bg-[var(--accent)] text-[var(--accent-on)]",
+  text: "text-[var(--accent-text)]",
+  pressed: "aria-pressed:bg-[var(--accent)] aria-pressed:text-[var(--accent-on)]",
+};
+
 function Rolling({ value, format }: { value: number; format: (n: number) => string }) {
   const reduce = useReducedMotion();
   const [shown, setShown] = useState(value);
@@ -27,16 +37,16 @@ function OptionCard({ type, name, selected, onSelect, title, desc, price, featur
   title: string; desc?: string | null; price: string; features?: string[];
 }) {
   return (
-    <label className={`block cursor-pointer rounded-lg border p-5 transition ${selected ? "border-royal bg-royal/5" : "border-line hover:border-royal"}`}>
+    <label className={`block cursor-pointer rounded-lg border p-5 transition ${selected ? `${A.border} ${A.softBg}` : `border-line ${A.hoverBorder}`}`}>
       <input type={type} name={name} className="sr-only" checked={selected} onChange={onSelect} />
       <span className="flex items-start gap-4">
-        <span className={`mt-1 grid size-5 shrink-0 place-items-center border-2 ${type === "radio" ? "rounded-full" : "rounded-md"} ${selected ? "border-royal" : "border-line"}`}>
-          {selected && (type === "radio" ? <span className="size-2.5 rounded-full bg-royal" /> : <Check size={12} className="text-royal" />)}
+        <span className={`mt-1 grid size-5 shrink-0 place-items-center border-2 ${type === "radio" ? "rounded-full" : "rounded-md"} ${selected ? A.border : "border-line"}`}>
+          {selected && (type === "radio" ? <span className="size-2.5 rounded-full bg-[var(--accent)]" /> : <Check size={12} className={A.text} />)}
         </span>
         <span className="min-w-0 flex-1">
           <span className="flex items-baseline justify-between gap-3">
             <span className="font-display font-semibold">{title}</span>
-            <span className="shrink-0 font-display text-sm font-bold text-royal dark:text-light-azure">{price}</span>
+            <span className={`shrink-0 font-display text-sm font-bold ${A.text}`}>{price}</span>
           </span>
           {desc && <span className="mt-1 block text-sm text-muted">{desc}</span>}
           <AnimatePresence initial={false}>
@@ -45,7 +55,7 @@ function OptionCard({ type, name, selected, onSelect, title, desc, price, featur
                 transition={{ duration: 0.3, ease: EASE }} className="overflow-hidden">
                 <li aria-hidden className="mt-4 border-t border-dashed border-line pt-3" />
                 {features.map((f) => (
-                  <li key={f} className="flex gap-2.5 py-1 text-sm"><Check size={15} className="mt-0.5 shrink-0 text-royal dark:text-light-azure" />{f}</li>
+                  <li key={f} className="flex gap-2.5 py-1 text-sm"><Check size={15} className={`mt-0.5 shrink-0 ${A.text}`} />{f}</li>
                 ))}
               </motion.ul>
             )}
@@ -107,30 +117,31 @@ export function Calculator({ steps, ngnRate, whatsapp, related, calcName, contac
       }
     }
     return out;
-}, [visible, single, multi, qty]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [visible, single, multi, qty]); // eslint-disable-line react-hooks/exhaustive-deps
 
-// Sticky mobile bar: only while the calculator is on screen and the estimate panel isn't
-const rootRef = useRef<HTMLDivElement>(null);
-const [inCalc, setInCalc] = useState(false);
-const [summaryVisible, setSummaryVisible] = useState(false);
-useEffect(() => {
-  const root = rootRef.current;
-  const panel = document.getElementById("estimate-summary");
-  if (!root) return;
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      if (e.target === root) setInCalc(e.isIntersecting);
-      else setSummaryVisible(e.isIntersecting);
-    }
-  });
-  io.observe(root);
-  if (panel) io.observe(panel);
-  return () => io.disconnect();
-}, []);
+  // Sticky mobile bar: only while the calculator is on screen and the estimate panel isn't
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [inCalc, setInCalc] = useState(false);
+  const [summaryVisible, setSummaryVisible] = useState(false);
+  useEffect(() => {
+    const root = rootRef.current;
+    const panel = document.getElementById("estimate-summary");
+    if (!root) return;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.target === root) setInCalc(e.isIntersecting);
+        else setSummaryVisible(e.isIntersecting);
+      }
+    });
+    io.observe(root);
+    if (panel) io.observe(panel);
+    return () => io.disconnect();
+  }, []);
+
   if (!visible.length) {
     return (
       <p className="rounded-lg border border-dashed border-line p-10 text-center text-sm text-muted">
-        This calculator is being set up. In the meantime, <Link href={`/contact?service=${contactService}`} className="text-royal hover:underline dark:text-light-azure">tell me about your project</Link>.
+        This calculator is being set up. In the meantime, <Link href={`/contact?service=${contactService}`} className={`${A.text} hover:underline`}>tell me about your project</Link>.
       </p>
     );
   }
@@ -160,6 +171,13 @@ useEffect(() => {
     const css = getComputedStyle(document.documentElement);
     const display = css.getPropertyValue("--font-space-grotesk").trim() || "sans-serif";
     const body = css.getPropertyValue("--font-inter").trim() || "sans-serif";
+
+    // Use this hub's accent colours (blue / red / gold)
+    const acc = getComputedStyle(rootRef.current ?? document.documentElement);
+    const c1 = acc.getPropertyValue("--accent-1").trim() || "#1177FF";
+    const c2 = acc.getPropertyValue("--accent-2").trim() || "#21A9FF";
+    const c3 = acc.getPropertyValue("--accent-3").trim() || "#9BD9FE";
+
     const W = 1080, pad = 80, lh = 54;
     const H = Math.max(1080, 600 + lines.length * lh + 300);
     const c = document.createElement("canvas");
@@ -172,13 +190,20 @@ useEffect(() => {
       return `${s}…`;
     };
     const g = x.createLinearGradient(0, 0, W, 0);
-    g.addColorStop(0, "#1177FF"); g.addColorStop(0.5, "#21A9FF"); g.addColorStop(1, "#9BD9FE");
+    g.addColorStop(0, c1); g.addColorStop(0.5, c2); g.addColorStop(1, c3);
+
+    // Background with a soft accent glow
     x.fillStyle = "#101B2B"; x.fillRect(0, 0, W, H);
+    const glow = x.createRadialGradient(W - 120, 140, 0, W - 120, 140, 520);
+    glow.addColorStop(0, `${c2}33`); glow.addColorStop(1, "transparent");
+    x.fillStyle = glow; x.fillRect(0, 0, W, H);
     x.fillStyle = g; x.fillRect(0, 0, W, 12);
+
     x.fillStyle = "#FFFFFF"; x.font = `700 32px ${display}`; x.fillText("ASO INNOVALITY", pad, 115);
-    x.fillStyle = "#21A9FF"; x.font = `600 22px ${body}`; x.fillText(`${calcName.toUpperCase()} · ${monthly ? "MONTHLY" : "PROJECT"} ESTIMATE`, pad, 180);
+    x.fillStyle = c2; x.font = `600 22px ${body}`; x.fillText(`${calcName.toUpperCase()} · ${monthly ? "MONTHLY" : "PROJECT"} ESTIMATE`, pad, 180);
     x.fillStyle = "#A9BCD2"; x.font = `400 22px ${body}`;
     x.fillText(new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }), pad, 218);
+
     let y = 310;
     x.font = `400 28px ${body}`;
     for (const l of lines) {
@@ -192,19 +217,23 @@ useEffect(() => {
     y += 86; x.fillStyle = g; x.font = `700 84px ${display}`; x.fillText(fmt(total), pad, y);
     const second = alt(total);
     if (second) { y += 52; x.fillStyle = "#A9BCD2"; x.font = `400 26px ${body}`; x.fillText(`≈ ${second}`, pad, y); }
+
     x.fillStyle = "#A9BCD2"; x.font = `400 22px ${body}`;
     x.fillText("A starting guide. Your formal quote confirms the scope before any work begins.", pad, H - 150);
+    x.fillStyle = g; x.fillRect(pad, H - 128, 64, 3);
     x.fillStyle = "#FFFFFF"; x.font = `600 24px ${body}`;
-    x.fillText(`${window.location.host} · WhatsApp +${whatsapp}`, pad, H - 100);
+    x.fillText(`${window.location.host} · WhatsApp +${whatsapp}`, pad, H - 90);
+
     const blob = await new Promise<Blob | null>((r) => c.toBlob(r, "image/png"));
     if (!blob) return;
     const url = URL.createObjectURL(blob);
-    Object.assign(document.createElement("a"), { href: url, download: "aso-innovality-estimate.png" }).click();
+    const kind = calcName.split(" ")[0].toLowerCase(); // design / website / automation
+    Object.assign(document.createElement("a"), { href: url, download: `aso-innovality-${kind}-estimate.png` }).click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
   const action = "inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition";
-  const toggle = "rounded-full px-4 py-1.5 text-xs font-semibold transition aria-pressed:bg-royal aria-pressed:text-white";
+  const toggle = `rounded-full px-4 py-1.5 text-xs font-semibold transition ${A.pressed}`;
 
   return (
     <>
@@ -215,14 +244,14 @@ useEffect(() => {
         </div>
       )}
 
-<div ref={rootRef} className="grid gap-10 lg:grid-cols-12">
+      <div ref={rootRef} className="grid gap-10 lg:grid-cols-12">
         <AnimatePresence mode="wait">
-                    <motion.div key={billing} className="min-w-0 space-y-12 lg:col-span-8"
+          <motion.div key={billing} className="min-w-0 space-y-12 lg:col-span-8"
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.3, ease: EASE }}>
             {visible.map((s, idx) => (
               <section key={s.id}>
                 <h3 className="mb-4 flex items-center gap-3 font-display text-lg font-semibold">
-                  <span className="grid size-7 place-items-center rounded-full bg-royal text-xs font-bold text-white">{idx + 1}</span>
+                  <span className={`grid size-7 place-items-center rounded-full text-xs font-bold ${A.solid}`}>{idx + 1}</span>
                   {s.title}
                 </h3>
 
@@ -261,17 +290,17 @@ useEffect(() => {
                       const q = qty[o.id] ?? 0;
                       const set = (n: number) => setQty((p) => ({ ...p, [o.id]: Math.max(0, Math.min(99, n)) }));
                       return (
-                        <div key={o.id} className={`flex items-center gap-4 rounded-lg border p-5 transition ${q > 0 ? "border-royal bg-royal/5" : "border-line"}`}>
+                        <div key={o.id} className={`flex items-center gap-4 rounded-lg border p-5 transition ${q > 0 ? `${A.border} ${A.softBg}` : "border-line"}`}>
                           <span className="min-w-0 flex-1">
                             <span className="font-display font-semibold">{o.name}</span>
                             <span className="block text-sm text-muted">{priceLabel(o)} {o.unit ?? "each"}{o.description ? ` · ${o.description}` : ""}</span>
                           </span>
                           <div className="flex items-center gap-2">
                             <button onClick={() => set(q - 1)} disabled={q === 0} aria-label={`Fewer ${o.name}`}
-                              className="grid size-9 place-items-center rounded-full border border-line hover:border-royal disabled:opacity-30"><Minus size={14} /></button>
+                              className={`grid size-9 place-items-center rounded-full border border-line ${A.hoverBorder} disabled:opacity-30`}><Minus size={14} /></button>
                             <span className="w-7 text-center font-semibold" aria-live="polite">{q}</span>
                             <button onClick={() => set(q + 1)} aria-label={`More ${o.name}`}
-                              className="grid size-9 place-items-center rounded-full border border-line hover:border-royal"><Plus size={14} /></button>
+                              className={`grid size-9 place-items-center rounded-full border border-line ${A.hoverBorder}`}><Plus size={14} /></button>
                           </div>
                         </div>
                       );
@@ -283,14 +312,14 @@ useEffect(() => {
           </motion.div>
         </AnimatePresence>
 
-        <aside id="estimate-summary" className="scroll-mt-24 lg:col-span-4">
+        <aside id="estimate-summary" className="min-w-0 scroll-mt-24 lg:col-span-4">
           <div className="space-y-6 rounded-lg bg-navy p-6 text-white lg:sticky lg:top-24">
             <div className="flex items-center justify-between gap-3">
-              <p className="text-xs font-semibold tracking-[0.25em] text-sky">YOUR ESTIMATE</p>
+              <p className="text-xs font-semibold tracking-[0.25em] text-[var(--accent)]">YOUR ESTIMATE</p>
               {canNgn && (
                 <div role="group" aria-label="Currency" className="flex rounded-full border border-white/20 p-0.5 text-xs font-semibold">
                   {(["USD", "NGN"] as const).map((c) => (
-                    <button key={c} onClick={() => setCur(c)} aria-pressed={cur === c} className="rounded-full px-3 py-1 transition aria-pressed:bg-royal">
+                    <button key={c} onClick={() => setCur(c)} aria-pressed={cur === c} className={`rounded-full px-3 py-1 transition ${A.pressed}`}>
                       {c === "USD" ? "$ USD" : "₦ NGN"}
                     </button>
                   ))}
@@ -323,15 +352,15 @@ useEffect(() => {
 
             <div className="space-y-2">
               <a href={ready ? waHref : undefined} target="_blank" rel="noopener noreferrer" aria-disabled={!ready}
-                className={`${action} ${ready ? "bg-royal hover:bg-azure" : "pointer-events-none bg-white/10 text-white/40"}`}>
+                className={`${action} ${ready ? `${A.solid} hover:brightness-110` : "pointer-events-none bg-white/10 text-white/40"}`}>
                 <MessageCircle size={16} /> Send estimate on WhatsApp
               </a>
-              <Link href={ready ? quoteHref : `/contact?service=${contactService}`} className={`${action} border border-white/20 hover:border-sky`}>
+              <Link href={ready ? quoteHref : `/contact?service=${contactService}`} className={`${action} border border-white/20 ${A.hoverBorder}`}>
                 <FileText size={16} /> Request a formal quote
               </Link>
               <div className="grid grid-cols-2 gap-2">
-                <button onClick={download} disabled={!ready} className={`${action} border border-white/20 hover:border-sky disabled:opacity-40`}><Download size={15} /> Download</button>
-                <button onClick={copy} disabled={!ready} className={`${action} border border-white/20 hover:border-sky disabled:opacity-40`}>
+                <button onClick={download} disabled={!ready} className={`${action} border border-white/20 ${A.hoverBorder} disabled:opacity-40`}><Download size={15} /> Download</button>
+                <button onClick={copy} disabled={!ready} className={`${action} border border-white/20 ${A.hoverBorder} disabled:opacity-40`}>
                   {copied ? <Check size={15} /> : <Copy size={15} />} {copied ? "Copied" : "Copy"}
                 </button>
               </div>
@@ -339,7 +368,7 @@ useEffect(() => {
 
             {related.length > 0 && (
               <div className="border-t border-white/15 pt-5">
-                <p className="mb-3 text-xs font-semibold tracking-[0.2em] text-sky">SIMILAR WORK</p>
+                <p className="mb-3 text-xs font-semibold tracking-[0.2em] text-[var(--accent)]">SIMILAR WORK</p>
                 <Link href="/work" className="grid grid-cols-3 gap-2">
                   {related.slice(0, 3).map((src) => (
                     <span key={src} className="relative aspect-[4/5] overflow-hidden rounded-md">
@@ -354,14 +383,14 @@ useEffect(() => {
       </div>
 
       <AnimatePresence>
-      {ready && inCalc && !summaryVisible && (
+        {ready && inCalc && !summaryVisible && (
           <motion.div initial={{ y: 80 }} animate={{ y: 0 }} exit={{ y: 80 }} transition={{ duration: 0.3, ease: EASE }}
             className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t border-white/10 bg-navy/95 px-5 py-3 text-white backdrop-blur lg:hidden">
             <span>
               <span className="block text-[10px] uppercase tracking-wider text-ice/70">Estimate{monthly ? " / month" : ""}</span>
               <span className="font-display text-lg font-bold"><Rolling value={total} format={fmt} /></span>
             </span>
-            <a href="#estimate-summary" className="rounded-full bg-royal px-5 py-2.5 text-sm font-medium">Review & send</a>
+            <a href="#estimate-summary" className={`rounded-full px-5 py-2.5 text-sm font-medium ${A.solid}`}>Review & send</a>
           </motion.div>
         )}
       </AnimatePresence>

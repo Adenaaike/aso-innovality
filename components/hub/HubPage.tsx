@@ -124,7 +124,7 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
         <div className="mx-auto max-w-6xl px-6">
           <p className={eyebrow}>INSTANT ESTIMATE</p>
           <h2 className="mt-4 font-display text-[clamp(1.75rem,4vw,2.75rem)] font-bold leading-tight">
-            Know your cost <span className="aso-text-gradient">in 60 seconds.</span>
+            Know your cost <span className="accent-text-gradient">in 60 seconds.</span>
           </h2>
           <p className="mt-3 max-w-2xl text-muted">Pick what you need and watch the estimate update. Then send it on WhatsApp or request a formal quote.</p>
           <div className="mt-10">
@@ -138,7 +138,7 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
               { Icon: Clock, title: "Reply within 24–48 hours", text: "Send your estimate and I’ll come back with a formal, itemised quote." },
             ].map(({ Icon, title, text }) => (
               <li key={title} className="flex gap-4">
-                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-royal/10 text-royal dark:text-light-azure"><Icon size={18} /></span>
+                <span className="accent-icon grid size-10 shrink-0 place-items-center rounded-full"><Icon size={18} /></span>
                 <span><span className="block font-display font-semibold">{title}</span><span className="mt-1 block text-sm text-muted">{text}</span></span>
               </li>
             ))}
