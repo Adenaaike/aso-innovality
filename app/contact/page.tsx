@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/ContactForm";
 import { site } from "@/lib/site";
 import { getSettings } from "@/lib/settings";
+import { StatusCard } from "@/components/home/StatusCard";
 
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Contact — Start a Branding or Design Project",
-  description: "Get in touch with Adenaike Sodiq Olusegun (ASO INNOVALITY) for brand identity, campaign art direction and creative collaborations in Lagos and worldwide.",
+  title: "Contact — Start a Design, Web or Automation Project",
+  description: "Get in touch with Adenaike Sodiq Olusegun (ASO INNOVALITY) for brand identity and design, websites and SEO, and AI automation, in Lagos and worldwide.",
 };
 
 export default async function Contact() {
@@ -17,11 +18,12 @@ export default async function Contact() {
   return (
     <div className="mx-auto grid max-w-6xl gap-16 px-6 pt-32 pb-24 lg:grid-cols-12">
       <div className="lg:col-span-5">
+        <StatusCard available={s.available} note={s.availabilityNote} workDays={s.workDays} workStart={s.workStart} workEnd={s.workEnd} className="mb-8" />
         <h1 className="font-display text-[clamp(1.75rem,4vw,3rem)] font-bold leading-[1.05]">
           Let’s build something <span className="aso-text-gradient">distinctive</span> together.
         </h1>
         <p className="mt-6 text-base leading-relaxed text-muted">
-        I’m available for brand identity and design projects, websites and SEO, and AI and automation, for organisations in Nigeria and worldwide. Tell me about your organisation, timeline and goals, and I’ll reply within 24–48 hours.
+          I’m available for brand identity and design projects, websites and SEO, and AI and automation, for organisations in Nigeria and worldwide. Tell me about your organisation, timeline and goals, and I’ll reply within 24–48 hours.
         </p>
         <dl className="mt-10 space-y-5">
           <div><dt className="text-xs uppercase tracking-wider text-muted">Email</dt><dd><a href={`mailto:${s.email}`} className="hover:text-royal">{s.email}</a></dd></div>

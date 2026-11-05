@@ -4,22 +4,23 @@ import Link from "next/link";
 import { ArrowUpRight, Download } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { Stats } from "@/components/home/Stats";
+import { StartProjectButton } from "@/components/StartProjectButton";
 import { bio, principles, experience, education, certifications, exhibitions, competencies, tools } from "@/lib/about";
 import { getSettings } from "@/lib/settings";
 
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "About — Creative Designer & Brand Identity Designer in Lagos",
-  description: "About Adenaike Sodiq Olusegun (ASO), founder of ASO INNOVALITY: a Lagos-based multidisciplinary designer specialising in brand identity, campaign art direction and visual communication.",
+  title: "About — Creative Designer, Web Builder & Automation Studio in Lagos",
+  description: "About Adenaike Sodiq Olusegun (ASO), founder of ASO INNOVALITY: a Lagos-based creative designer with 9+ years in brand identity, now building websites and smart automation.",
   alternates: { canonical: "/about" },
 };
 
 const label = "text-xs font-semibold uppercase tracking-[0.2em] text-muted";
 
 export default async function About() {
-    const settings = await getSettings();
-    return (
+  const settings = await getSettings();
+  return (
     <div className="pt-28">
       {/* HEADER */}
       <section className="mx-auto grid max-w-6xl gap-12 px-6 pb-20 lg:grid-cols-12 lg:items-center">
@@ -41,9 +42,9 @@ export default async function About() {
             <a href={settings.cvUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-bright">
               <Download size={16} /> Download CV
             </a>
-            <Link href="/contact" className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-medium hover:border-royal hover:text-royal">
-              Start a project <ArrowUpRight size={16} />
-            </Link>
+            <StartProjectButton className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-medium hover:border-royal hover:text-royal">
+              Start your project <ArrowUpRight size={16} />
+            </StartProjectButton>
           </div>
         </Reveal>
       </section>
@@ -150,11 +151,12 @@ export default async function About() {
       <section className="bg-navy py-20 text-center text-white">
         <Reveal className="mx-auto max-w-3xl px-6">
           <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] font-bold leading-tight">
-            Let’s turn your idea into a <span className="aso-text-gradient">visual identity.</span>
+            Let’s turn your idea into something <span className="aso-text-gradient">people remember.</span>
           </h2>
+          <p className="mx-auto mt-4 max-w-xl text-ice/80">Brand identity, websites and smart automation, under one studio.</p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link href="/contact" className="inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium hover:bg-azure">Start a project</Link>
-            <Link href="/work" className="inline-flex rounded-full border border-white/25 px-6 py-3 text-sm font-medium hover:border-sky">See my work</Link>
+            <StartProjectButton className="inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-azure">Start your project</StartProjectButton>
+            <Link href="/work" className="inline-flex rounded-full border border-white/25 px-6 py-3 text-sm font-medium hover:border-sky">Explore my work</Link>
           </div>
         </Reveal>
       </section>

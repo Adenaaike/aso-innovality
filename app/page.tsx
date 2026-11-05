@@ -15,6 +15,7 @@ import { getCarousels } from "@/lib/projects";
 import { CarouselTeaser } from "@/components/carousel/CarouselTeaser";
 import { getSettings } from "@/lib/settings";
 import { PRACTICES } from "@/lib/practices";
+import { StartProjectButton } from "@/components/StartProjectButton";
 import { getTestimonials } from "@/lib/content";
 import { Testimonials } from "@/components/content/Testimonials";
 
@@ -77,25 +78,23 @@ export default async function Home() {
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(55%_50%_at_78%_38%,#21A9FF33,transparent_70%),radial-gradient(40%_40%_at_15%_85%,#1177FF1F,transparent_70%)]" />
         <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-7">
-          <StatusCard available={settings.available} note={settings.availabilityNote} />
+             <StatusCard available={settings.available} note={settings.availabilityNote}
+              workDays={settings.workDays} workStart={settings.workStart} workEnd={settings.workEnd} />
             <h1 className="mt-6 font-display text-[clamp(2rem,4.5vw,3.75rem)] font-bold uppercase leading-[1.02] tracking-tight">
               I turn ideas into <span className="aso-text-gradient">visual experiences.</span>
             </h1>
-            <p className="mt-5 max-w-xl text-base text-muted md:text-lg">Designing identities. Building impressions. Creating possibilities.</p>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted md:text-base">
-            I’m Adenaike Sodiq Olusegun, a Lagos-based creative designer with 9+ years helping organisations, startups and ministries across Africa and Europe communicate with clarity and impact. ASO INNOVALITY is where that craft meets technology: brand identity, websites and smart automation, under one studio.
-            </p>
+            <p className="mt-5 max-w-xl text-base text-muted md:text-lg">Brand identity, websites and smart automation, under one studio.</p>
             <Link href="/estimate" className="group mt-6 inline-flex items-center gap-2 text-sm font-medium text-royal dark:text-light-azure">
                 <span className="grid size-6 place-items-center rounded-full bg-royal/10 text-xs font-bold">$</span>
                 Know your project cost in 60 seconds
                 <ArrowUpRight size={14} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/work" className="group inline-flex items-center gap-2 rounded-full bg-royal px-6 py-3 text-sm font-medium text-white transition hover:bg-bright focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-royal">
-                Explore My Work <ArrowUpRight size={16} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-              <Link href="/contact" className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-medium transition hover:border-royal hover:text-royal">
-                Let’s Work Together
+              <StartProjectButton className="group inline-flex items-center gap-2 rounded-full bg-royal px-6 py-3 text-sm font-medium text-white transition hover:bg-bright">
+                Start your project <ArrowUpRight size={16} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </StartProjectButton>
+              <Link href="/work" className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-medium transition hover:border-royal hover:text-royal">
+                Explore my work
               </Link>
             </div>
           </div>
@@ -270,7 +269,7 @@ export default async function Home() {
           <h2 className="font-display text-[clamp(1.75rem,4.5vw,3.25rem)] font-bold uppercase leading-[1.05]">
             Have an idea? <span className="aso-text-gradient">Let’s bring it to life.</span>
           </h2>
-          <Link href="/contact" className="mt-10 inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium hover:bg-azure">Start a project</Link>
+          <StartProjectButton className="mt-10 inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-azure">Start your project</StartProjectButton>
         </Reveal>
       </section>
     </>

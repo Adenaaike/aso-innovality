@@ -116,6 +116,29 @@ export default function AdminSettings() {
             <p className="mt-1 text-xs text-muted">Used to show ₦ prices on the calculators. Leave empty to show USD only. Update it when the rate changes.</p>
           </div>
         </section>
+        <section className={card}>
+        <h2 className="font-display text-lg font-semibold">Working hours (Lagos time)</h2>
+        <div className="flex flex-wrap gap-2">
+          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d, i) => (
+            <label key={d} className="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-sm">
+              <input type="checkbox" className="accent-royal" checked={s.workDays.includes(i)}
+                onChange={(e) => set("workDays", e.target.checked ? [...s.workDays, i].sort() : s.workDays.filter((x) => x !== i))} />
+              {d}
+            </label>
+          ))}
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="ws" className={label}>Start time</label>
+            <input id="ws" type="time" value={s.workStart} onChange={(e) => set("workStart", e.target.value)} className={input} />
+          </div>
+          <div>
+            <label htmlFor="we" className={label}>End time</label>
+            <input id="we" type="time" value={s.workEnd} onChange={(e) => set("workEnd", e.target.value)} className={input} />
+          </div>
+        </div>
+        <p className="text-xs text-muted">Powers the live status card on the homepage and contact page (“In the studio now” or “Offline now”).</p>
+      </section>
       <button onClick={() => save()} disabled={saving} className="rounded-full bg-royal px-8 py-3 text-sm font-medium text-white hover:bg-bright disabled:opacity-60">
         {saving ? "Saving…" : "Save changes"}
       </button>

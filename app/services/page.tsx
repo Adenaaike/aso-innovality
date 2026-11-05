@@ -6,24 +6,26 @@ import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { ServicesAccordion } from "@/components/services/ServicesAccordion";
 import { CoverflowCarousel } from "@/components/carousel/CoverflowCarousel";
+import { StartProjectButton } from "@/components/StartProjectButton";
 import { services, steps } from "@/lib/site";
 import { getServicePreviews, getCarousels } from "@/lib/projects";
 import { getTestimonials, getFaqs, getPackages } from "@/lib/content";
 import { Testimonials } from "@/components/content/Testimonials";
 import { FaqSection } from "@/components/content/Faq";
 import { Packages } from "@/components/content/Packages";
+
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Services — Brand Identity, Campaign & Carousel Design",
-  description: "Brand identity systems, campaign and event art direction, advertising and carousel design, photo manipulation, packaging and print by ASO INNOVALITY in Lagos.",
+  title: "Services — Brand Identity, Design, Websites & Automation",
+  description: "Brand identity, campaign and carousel design, photo manipulation, packaging and print, plus websites, SEO and AI automation by ASO INNOVALITY in Lagos.",
   alternates: { canonical: "/services" },
 };
 
 export default async function Services() {
-    const [previews, carousels, testimonials, faqs, packages] = await Promise.all([
-        getServicePreviews(), getCarousels(), getTestimonials(), getFaqs(), getPackages(),
-      ]);
+  const [previews, carousels, testimonials, faqs, packages] = await Promise.all([
+    getServicePreviews(), getCarousels(), getTestimonials(), getFaqs(), getPackages(),
+  ]);
 
   return (
     <div className="pt-32">
@@ -35,11 +37,15 @@ export default async function Services() {
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted">
           Whether you’re launching a new venture, running a campaign or refreshing an established identity, I bring structured creative execution from first idea to final file.
         </p>
+        <p className="mt-3 max-w-2xl text-sm text-muted">
+          Need a website or automation too? Explore <Link href="/web" className="font-medium text-royal hover:underline dark:text-light-azure">Web & SEO</Link> and{" "}
+          <Link href="/ai" className="font-medium text-royal hover:underline dark:text-light-azure">AI & Automation</Link>.
+        </p>
         <div className="mt-12"><ServicesAccordion previews={previews} /></div>
       </section>
 
       {carousels.length > 0 && (
-                <section id="carousels" className="mt-10 scroll-mt-20 overflow-hidden bg-navy py-14 text-white sm:mt-20 sm:py-20">
+        <section id="carousels" className="mt-10 scroll-mt-20 overflow-hidden bg-navy py-14 text-white sm:mt-20 sm:py-20">
           <div className="mx-auto max-w-6xl px-6">
             <div className="mx-auto max-w-2xl text-center">
               <p className="text-xs font-semibold tracking-[0.3em] text-sky">CAROUSEL DESIGN</p>
@@ -96,8 +102,8 @@ export default async function Services() {
             {steps.map((s, i) => (
               <Reveal key={s.no} delay={i * 0.08}>
                 <li className="group relative h-full overflow-hidden rounded-lg border border-line bg-bg p-6 transition duration-300 hover:-translate-y-1 hover:border-royal hover:shadow-[0_20px_40px_-24px_#1177FF]">
-                <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 aso-gradient transition-transform duration-500 group-hover:scale-x-100" />
-                <span className="inline-block font-display text-sm text-royal transition duration-300 group-hover:translate-x-1 dark:text-light-azure">{s.no}</span>
+                  <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 aso-gradient transition-transform duration-500 group-hover:scale-x-100" />
+                  <span className="inline-block font-display text-sm text-royal transition duration-300 group-hover:translate-x-1 dark:text-light-azure">{s.no}</span>
                   <h3 className="mt-3 font-display text-lg font-semibold">{s.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
                 </li>
@@ -118,7 +124,10 @@ export default async function Services() {
             Have a brief in mind? <span className="text-sky">Let’s talk.</span>
           </h2>
           <p className="mt-4 text-ice">Projects start from $300. Every brief is quoted individually.</p>
-          <Link href="/contact" className="mt-8 inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium hover:bg-azure">Start a project</Link>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <StartProjectButton className="inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-azure">Start your project</StartProjectButton>
+            <Link href="/estimate" className="inline-flex rounded-full border border-white/25 px-6 py-3 text-sm font-medium hover:border-sky">Get an instant estimate</Link>
+          </div>
         </Reveal>
       </section>
     </div>

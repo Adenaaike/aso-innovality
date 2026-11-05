@@ -5,6 +5,7 @@ import { spaceGrotesk, inter } from "@/lib/fonts";
 import { Nav } from "@/components/Nav";
 import { WhatsAppButton } from "@/components/home/WhatsAppButton";
 import { DesignerCursor } from "@/components/DesignerCursor";
+import { StartProjectPanel } from "@/components/StartProjectPanel";
 import { site } from "@/lib/site";
 import { PRACTICES } from "@/lib/practices";
 import "./globals.css";
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </footer>
           <WhatsAppButton />
+          <StartProjectPanel />
           <DesignerCursor />
         </ThemeProvider>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />

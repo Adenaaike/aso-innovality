@@ -12,6 +12,9 @@ export type SiteSettings = {
   portraitHome: string;
   portraitAbout: string;
   ngnRate: number; // ₦ per $1 for the calculators; 0 hides the ₦ option
+  workDays: number[]; // 0 = Sunday … 6 = Saturday (Lagos time)
+  workStart: string;  // "09:00"
+  workEnd: string;    // "18:00"
 };
 
 // Used until you save something in Admin → Settings
@@ -25,6 +28,9 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   portraitHome: "/images/aso-portrait.jpg",
   portraitAbout: "/images/aso-portrait.jpg",
   ngnRate: 0,
+  workDays: [1, 2, 3, 4, 5],
+  workStart: "09:00",
+  workEnd: "18:00",
 };
 
 export async function getSettings(): Promise<SiteSettings> {
