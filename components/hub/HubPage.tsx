@@ -12,8 +12,8 @@ import type { CalcStep } from "@/lib/calculators";
 import type { ProjectCard } from "@/lib/projects";
 import type { Faq } from "@/lib/content";
 
-const card = "group relative h-full overflow-hidden rounded-lg border border-line bg-bg p-6 transition duration-300 hover:-translate-y-1 hover:border-royal hover:shadow-[0_20px_40px_-24px_#1177FF]";
-const sweep = "absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 aso-gradient transition-transform duration-500 group-hover:scale-x-100";
+const card = "glow-card group relative h-full overflow-hidden rounded-lg border border-line bg-bg p-6";
+const sweep = "accent-gradient absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100";
 const eyebrow = "text-xs font-semibold tracking-[0.3em] text-royal dark:text-light-azure";
 
 export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
@@ -24,7 +24,7 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
   const related = withCover.map((p) => p.cover_url);
 
   return (
-    <>
+    <div className={`accent-${hub.key}`}>
       {/* HERO */}
       <section className="mx-auto grid max-w-6xl gap-10 px-6 pt-32 pb-16 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-6">
@@ -68,7 +68,7 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
             <Reveal key={b.title} delay={i * 0.05}>
               <div className={card}>
                 <span aria-hidden className={sweep} />
-                <span className="inline-block font-display text-sm text-royal transition duration-300 group-hover:translate-x-1 dark:text-light-azure">{String(i + 1).padStart(2, "0")}</span>
+                <span className="inline-block font-display text-sm accent-text transition duration-300 group-hover:translate-x-1">{String(i + 1).padStart(2, "0")}</span>
                 <h3 className="mt-3 font-display text-lg font-semibold">{b.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{b.text}</p>
               </div>
@@ -84,7 +84,7 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
             <h2 className="font-display text-2xl font-bold md:text-3xl">Everything included</h2>
             <ul className="mt-8 space-y-3">
               {hub.deliverables.map((d) => (
-                <li key={d} className="flex gap-3"><Check size={18} className="mt-0.5 shrink-0 text-royal dark:text-light-azure" />{d}</li>
+                <li key={d} className="flex gap-3"><Check size={18} className="accent-text mt-0.5 shrink-0" />{d}</li>
               ))}
             </ul>
           </Reveal>
@@ -95,7 +95,7 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
                 <Reveal key={s.no} delay={i * 0.06}>
                   <li className={card}>
                     <span aria-hidden className={sweep} />
-                    <span className="inline-block font-display text-sm text-royal transition duration-300 group-hover:translate-x-1 dark:text-light-azure">{s.no}</span>
+                    <span className="inline-block font-display text-sm accent-text transition duration-300 group-hover:translate-x-1">{s.no}</span>
                     <h3 className="mt-3 font-display text-lg font-semibold">{s.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
                   </li>
@@ -160,6 +160,6 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
           </div>
         </Reveal>
       </section>
-    </>
+      </div>
   );
 }

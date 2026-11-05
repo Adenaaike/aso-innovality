@@ -67,8 +67,8 @@ export function Nav() {
                         const here = pathname.startsWith(p.href);
                         return (
                           <Link key={p.key} href={p.href} aria-current={here ? "page" : undefined}
-                            className={`group/card rounded-md p-4 transition hover:bg-surface ${here ? "bg-surface" : ""}`}>
-                            <span className="grid size-10 place-items-center rounded-full bg-royal/10 text-royal transition duration-300 group-hover/card:bg-royal group-hover/card:text-white dark:text-light-azure">
+                            className={`accent-${p.key} group/card rounded-md p-4 transition hover:bg-surface ${here ? "bg-surface" : ""}`}>
+                            <span className="accent-icon grid size-10 place-items-center rounded-full">
                               <Icon size={18} />
                             </span>
                             <span className="mt-3 block text-[10px] font-semibold tracking-[0.25em] text-muted">{p.word}</span>

@@ -130,7 +130,7 @@ export default async function Home() {
           {steps.map((s, i) => (
             <Reveal key={s.no} delay={i * 0.08}>
                             <li className="group relative h-full overflow-hidden rounded-lg border border-line p-6 transition duration-300 hover:-translate-y-1 hover:border-royal hover:shadow-[0_20px_40px_-24px_#1177FF]">
-                            <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 aso-gradient transition-transform duration-500 group-hover:scale-x-100" />
+                            <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 accent-gradient transition-transform duration-500 group-hover:scale-x-100" />
                 <span className="font-display text-sm text-royal dark:text-light-azure">{s.no}</span>
                 <h3 className="mt-3 font-display text-lg font-semibold">{s.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
@@ -229,16 +229,16 @@ export default async function Home() {
               const Icon = p.Icon;
               return (
                 <Reveal key={p.key} delay={i * 0.08}>
-                  <div className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-line bg-bg p-7 transition duration-300 hover:-translate-y-1 hover:border-royal hover:shadow-[0_24px_50px_-24px_#1177FF]">
-                    <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 aso-gradient transition-transform duration-500 group-hover:scale-x-100" />
-                    <span className="grid size-12 place-items-center rounded-full bg-royal/10 text-royal transition duration-300 group-hover:bg-royal group-hover:text-white dark:text-light-azure">
+                                    <div className={`accent-${p.key} glow-card group relative flex h-full flex-col overflow-hidden rounded-lg border border-line bg-bg p-7`}>
+                    <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 accent-gradient transition-transform duration-500 group-hover:scale-x-100" />
+                    <span className="grid size-12 place-items-center rounded-full accent-icon">
                       <Icon size={22} />
                     </span>
                     <p className="mt-5 text-[10px] font-semibold tracking-[0.3em] text-muted">{p.word}</p>
                     <h3 className="mt-1 font-display text-2xl font-bold">{p.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-muted">{p.text}</p>
                     <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 pt-6 text-sm font-medium">
-                      <Link href={p.href} className="inline-flex items-center gap-1 text-royal after:absolute after:inset-0 dark:text-light-azure">
+                      <Link href={p.href} className="accent-text inline-flex items-center gap-1 after:absolute after:inset-0">
                         Explore <ArrowUpRight size={15} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </Link>
                       <Link href={`${p.href}#estimate`} className="relative z-10 text-muted hover:text-royal">Get an estimate</Link>

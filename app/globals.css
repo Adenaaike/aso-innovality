@@ -106,3 +106,35 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
   .flow-ring, .flow-card, .flow-pulse { animation: none; }
   .flow-ring { opacity: 0.6; }
 }
+/* ===== Practice accent colours (Design = blue, Web = red, AI = gold) ===== */
+:root, .accent-design {
+  --accent: #1177FF;
+  --accent-text: #1177FF;
+  --accent-soft: rgba(17, 119, 255, 0.1);
+  --accent-glow: rgba(17, 119, 255, 0.55);
+  --accent-grad: linear-gradient(90deg, #1177FF, #21A9FF, #9BD9FE);
+}
+.accent-web {
+  --accent: #E5484D;
+  --accent-text: #D93A40;
+  --accent-soft: rgba(229, 72, 77, 0.1);
+  --accent-glow: rgba(229, 72, 77, 0.5);
+  --accent-grad: linear-gradient(90deg, #E5484D, #FF6B6B, #FFB4B4);
+}
+.accent-ai {
+  --accent: #E0A526;
+  --accent-text: #B7801A;
+  --accent-soft: rgba(245, 196, 81, 0.16);
+  --accent-glow: rgba(245, 196, 81, 0.6);
+  --accent-grad: linear-gradient(90deg, #D99A1E, #F5C451, #FFE7A3);
+}
+.dark, .dark .accent-design { --accent-text: #7CC4FF; }
+.dark .accent-web { --accent-text: #FF8A8E; }
+.dark .accent-ai { --accent-text: #F5C451; }
+
+.accent-text { color: var(--accent-text); }
+.accent-gradient { background-image: var(--accent-grad); }
+.accent-icon { background-color: var(--accent-soft); color: var(--accent-text); transition: background-color 0.3s, color 0.3s; }
+.group:hover .accent-icon, .group\/card:hover .accent-icon { background-color: var(--accent); color: #fff; }
+.glow-card { transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
+.glow-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 24px 50px -24px var(--accent-glow); }

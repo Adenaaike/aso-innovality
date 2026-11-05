@@ -49,7 +49,7 @@ export function HubVisual({ kind }: { kind: CalcKey }) {
     return (
       <div aria-hidden className="relative">
         <div className="absolute -top-16 -left-16 size-64 rounded-full aso-gradient opacity-20 blur-3xl" />
-        <div className="relative overflow-hidden rounded-lg border border-line bg-bg shadow-[0_30px_60px_-30px_#1177FF]">
+        <div className="relative overflow-hidden rounded-lg border border-line bg-bg shadow-[0_30px_60px_-30px_var(--accent-glow)]">
           <div className="flex items-center gap-2 border-b border-line bg-surface px-4 py-3">
             <span className="size-2.5 rounded-full bg-line" />
             <span className="size-2.5 rounded-full bg-line" />
@@ -75,7 +75,7 @@ export function HubVisual({ kind }: { kind: CalcKey }) {
           {badges.map(({ Icon, text }, i) => (
             <span key={text} className="inline-flex animate-[fadeUp_0.6s_ease_both] items-center gap-2 rounded-full border border-line bg-bg px-3 py-1.5 text-xs font-medium shadow-sm"
               style={{ animationDelay: `${0.3 + i * 0.15}s` }}>
-              <Icon size={14} className="text-royal dark:text-light-azure" /> {text}
+              <Icon size={14} className="accent-text" /> {text}
             </span>
           ))}
         </div>
@@ -98,9 +98,9 @@ export function WebBadges() {
       {badges.map(({ Icon, text, speed, delay, r }, i) => (
         <span key={text} className="orbit-float"
           style={{ "--orbit-speed": speed, "--orbit-delay": delay, "--orbit-r": r } as React.CSSProperties}>
-          <span className="inline-flex animate-[fadeUp_0.6s_ease_both] items-center gap-2 rounded-full border border-line bg-bg/90 px-3 py-1.5 text-xs font-medium shadow-[0_10px_30px_-12px_#1177FF] backdrop-blur"
+          <span className="inline-flex animate-[fadeUp_0.6s_ease_both] items-center gap-2 rounded-full border border-line bg-bg/90 px-3 py-1.5 text-xs font-medium shadow-[0_10px_30px_-12px_var(--accent-glow)] backdrop-blur"
             style={{ animationDelay: `${0.3 + i * 0.15}s` }}>
-            <Icon size={14} className="text-royal dark:text-light-azure" />
+            <Icon size={14} className="accent-text" />
             {text}
             <span className="relative ml-0.5 flex size-1.5">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-sky opacity-75" style={{ animationDelay: `${i * 0.5}s` }} />
