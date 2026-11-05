@@ -15,6 +15,7 @@ export const adminLinks = [
     { href: "/admin/settings", label: "Settings" },
     { href: "/admin/content", label: "Content" },
     { href: "/admin/calculators", label: "Calculators" },
+    { href: "/admin/journal", label: "Journal" },
   ];
 
 export function AdminGate({ children }: { children: ReactNode }) {
