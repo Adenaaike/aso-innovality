@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PLAYGROUND_TOOLS } from "@/lib/playground";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { HeroVisual } from "@/components/hero/HeroVisual";
@@ -57,14 +58,7 @@ async function getPreviews(): Promise<Record<string, string[]>> {
   return out;
 }
 
-const tools = [
-  { id: "typography-lab", label: "Typography Lab" },
-  { id: "palette", label: "Palette Generator" },
-  { id: "colour-match", label: "Colour Match" },
-  { id: "memory", label: "Design Memory" },
-  { id: "logo-detective", label: "Logo Detective" },
-  { id: "prompts", label: "Prompt Generator" },
-];
+const tools = PLAYGROUND_TOOLS;
 
 function Eyebrow({ no, label, light = false }: { no: string; label: string; light?: boolean }) {
   return (
