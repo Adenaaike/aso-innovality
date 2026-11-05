@@ -8,6 +8,8 @@ import { DesignMemory } from "@/components/playground/DesignMemory";
 import { LogoDetective } from "@/components/playground/LogoDetective";
 import { MonogramMaker } from "@/components/playground/MonogramMaker";
 import { TimeSavedCalculator } from "@/components/playground/TimeSavedCalculator";
+import { CarouselSplitter } from "@/components/playground/CarouselSplitter";
+import { LinkPreviewTester } from "@/components/playground/LinkPreviewTester";
 import { PLAYGROUND_SECTIONS, PLAYGROUND_TOOLS } from "@/lib/playground";
 
 export const metadata: Metadata = {
@@ -25,6 +27,8 @@ const EL: Record<string, ReactNode> = {
   prompts: <PromptGenerator />,
   monogram: <MonogramMaker />,
   "time-saved": <TimeSavedCalculator />,
+  "carousel-splitter": <CarouselSplitter />,
+  "link-preview": <LinkPreviewTester />,
 };
 
 export default function Playground() {

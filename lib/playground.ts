@@ -8,6 +8,8 @@ export const PLAYGROUND_TOOLS: { id: string; label: string; practice: ToolPracti
   { id: "logo-detective", label: "Logo Detective", practice: "design" },
   { id: "prompts", label: "Prompt Generator", practice: "design" },
   { id: "monogram", label: "Monogram Maker", practice: "design", isNew: true },
+  { id: "carousel-splitter", label: "Carousel Splitter", practice: "design", isNew: true },
+  { id: "link-preview", label: "Link Preview Tester", practice: "web", isNew: true },
   { id: "time-saved", label: "Time-Saved Calculator", practice: "ai", isNew: true },
 ];
 
