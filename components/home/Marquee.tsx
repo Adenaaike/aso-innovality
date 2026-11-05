@@ -10,9 +10,11 @@ export function Marquee() {
       <div className="group overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)]">
         <ul className="flex w-max animate-[marquee_40s_linear_infinite] group-hover:[animation-play-state:paused]">
           {row.map((name, i) => (
-            <li key={i} aria-hidden={i >= clients.length}
-              className="whitespace-nowrap pr-10 font-display text-sm font-semibold text-muted md:text-base">
-              {name}
+            <li key={i} aria-hidden={i >= clients.length} className="flex items-center whitespace-nowrap">
+              <span className="font-display text-sm font-semibold text-slate-500 transition-colors duration-300 hover:text-royal dark:text-ice/55 dark:hover:text-white md:text-base">
+                {name}
+              </span>
+              <span aria-hidden className="mx-5 size-1 rounded-full bg-royal/40 dark:bg-sky/40" />
             </li>
           ))}
         </ul>
