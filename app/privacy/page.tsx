@@ -31,7 +31,9 @@ export default function Privacy() {
         <p>
           When you send the contact form, I collect your <strong>name, email address, company or brand</strong> (if given),
           <strong> project type, estimated budget</strong> and <strong>project description</strong>, including any estimate you
-          send from my cost calculators. I use this only to reply to you, prepare a quote and work on your project.
+          send from my cost calculators. I use this only to reply to you, prepare a quote and work on your project. To protect
+          the form from spam, the website also stores a scrambled code (a one-way “hash”) created from your connection details,
+          which is deleted after two days.
         </p>
         <h3>When you use the calculators and tools</h3>
         <p>
@@ -86,6 +88,8 @@ export default function Privacy() {
           <li><strong>Enquiries:</strong> kept for as long as needed to respond and manage any project that follows, and normally deleted within two years of our last contact, unless we are working together.</li>
           <li><strong>Idea Wall entries:</strong> kept while they are on the wall. You can ask me to remove yours at any time.</li>
           <li><strong>Idea Wall daily-limit codes:</strong> deleted after two days.</li>
+          <li><strong>Contact form spam-protection codes:</strong> deleted after two days.</li>
+          <li><strong>Contact form spam-protection codes:</strong> deleted after two days.</li>
         </ul>
 
         <h2>6. Your rights</h2>

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { budgets, enquirySchema, projectTypes, projectTypeGroups, type Enquiry } from "@/lib/validation";
@@ -21,6 +21,7 @@ const SERVICE_TO_TYPE: Record<string, (typeof projectTypes)[number]> = {
 export function ContactForm() {
   const { register, handleSubmit, reset, setValue, formState: { errors, isSubmitting } } = useForm<Enquiry>({ resolver: zodResolver(enquirySchema) });
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+  const startedAt = useRef(Date.now()); // used by the spam speed check
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -48,7 +49,7 @@ export function ContactForm() {
   async function onSubmit(values: Enquiry) {
     setStatus(null);
     try {
-      const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(values) });
+      const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...values, startedAt: startedAt.current }) });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(json.error ?? "Something went wrong. Please try again.");
       reset();
