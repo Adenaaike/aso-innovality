@@ -56,8 +56,9 @@ export default async function About() {
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {principles.map((p, i) => (
               <Reveal key={p.no} delay={i * 0.08}>
-                <div className="h-full rounded-lg border border-line bg-bg p-6">
-                  <span className="font-display text-sm text-royal dark:text-light-azure">{p.no}</span>
+                <div className="glow-card group relative h-full overflow-hidden rounded-lg border border-line bg-bg p-6">
+                  <span aria-hidden className="accent-gradient absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
+                  <span className="accent-text inline-block font-display text-sm transition duration-300 group-hover:translate-x-1">{p.no}</span>
                   <h3 className="mt-3 font-display text-xl font-bold">{p.title}</h3>
                   <p className="text-xs uppercase tracking-wider text-muted">{p.subtitle}</p>
                   <p className="mt-4 text-sm leading-relaxed text-muted">{p.text}</p>
