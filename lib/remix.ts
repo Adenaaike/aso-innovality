@@ -54,7 +54,7 @@ const lum = (h: string) => {
 // Keep the main colour readable: dark enough for white text, light enough to see on dark pages
 const balance = (h: string) => {
   let c = h;
-  for (let i = 0; i < 10 && lum(c) > 0.3; i++) c = mix(c, "#000000", 0.85);
+  for (let i = 0; i < 10 && lum(c) > 0.18; i++) c = mix(c, "#000000", 0.88);
   for (let i = 0; i < 10 && lum(c) < 0.04; i++) c = mix(c, "#FFFFFF", 0.85);
   return c;
 };

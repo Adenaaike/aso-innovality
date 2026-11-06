@@ -99,15 +99,15 @@ export default async function Services() {
         <div className="mx-auto max-w-6xl px-6">
           <Reveal><h2 className="font-display text-2xl font-bold md:text-3xl">How a project runs</h2></Reveal>
           <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {steps.map((s, i) => (
-              <Reveal key={s.no} delay={i * 0.08}>
-                <li className="group relative h-full overflow-hidden rounded-lg border border-line bg-bg p-6 transition duration-300 hover:-translate-y-1 hover:border-royal hover:shadow-[0_20px_40px_-24px_#1177FF]">
-                  <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 aso-gradient transition-transform duration-500 group-hover:scale-x-100" />
+          {steps.map((s, i) => (
+              <li key={s.no} className="group relative h-full overflow-hidden rounded-lg border border-line bg-bg p-6 transition duration-300 hover:-translate-y-1 hover:border-royal hover:shadow-[0_20px_40px_-24px_var(--color-royal)]">
+                <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 aso-gradient transition-transform duration-500 group-hover:scale-x-100" />
+                <Reveal delay={i * 0.08}>
                   <span className="inline-block font-display text-sm text-royal transition duration-300 group-hover:translate-x-1 dark:text-light-azure">{s.no}</span>
                   <h3 className="mt-3 font-display text-lg font-semibold">{s.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
-                </li>
-              </Reveal>
+                </Reveal>
+              </li>
             ))}
           </ol>
         </div>

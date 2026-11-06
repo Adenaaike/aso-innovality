@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-royal: #1177FF;
+  --color-royal: #0B6CEB; /* brand blue, deepened slightly so white text meets accessibility contrast */
   --color-bright: #1689FE;
   --color-azure: #1D9BFF;
   --color-sky: #21A9FF;

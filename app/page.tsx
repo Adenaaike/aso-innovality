@@ -122,15 +122,15 @@ export default async function Home() {
         </Reveal>
         <ol className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
-            <Reveal key={s.no} delay={i * 0.08}>
-                            <li className="group relative h-full overflow-hidden rounded-lg border border-line p-6 transition duration-300 hover:-translate-y-1 hover:border-royal hover:shadow-[0_20px_40px_-24px_#1177FF]">
+                                        <li key={s.no} className="group relative h-full overflow-hidden rounded-lg border border-line p-6 transition duration-300 hover:-translate-y-1 hover:border-royal hover:shadow-[0_20px_40px_-24px_#1177FF]">
                             <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 accent-gradient transition-transform duration-500 group-hover:scale-x-100" />
+                            <Reveal delay={i * 0.08}>
                 <span className="font-display text-sm text-royal dark:text-light-azure">{s.no}</span>
                 <h3 className="mt-3 font-display text-lg font-semibold">{s.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
-              </li>
-            </Reveal>
-          ))}
+                </Reveal>
+                </li>
+                      ))}
         </ol>
         <div className="mt-20"><Stats /></div>
       </section>

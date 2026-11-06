@@ -22,7 +22,7 @@ function when(iso: string) {
 
 function Tile({ e, fresh }: { e: WallEntry; fresh?: boolean }) {
   return (
-    <div tabIndex={0} aria-label={`${e.color}${e.label ? `, ${e.label}` : ""}`} className="group relative aspect-square outline-none">
+    <div tabIndex={0} role="img" aria-label={`${e.color}${e.label ? `, ${e.label}` : ""}`} className="group relative aspect-square outline-none">
       <div className={`size-full rounded-md border border-black/5 transition duration-300 group-hover:scale-110 group-hover:shadow-lg group-focus:scale-110 ${fresh ? "animate-pulse ring-2 ring-royal ring-offset-2 ring-offset-bg" : ""}`}
         style={{ background: e.color }} />
       <div role="tooltip" className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded-md bg-navy px-2.5 py-1.5 text-[11px] text-white shadow-lg group-hover:block group-focus:block">
