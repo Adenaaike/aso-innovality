@@ -11,6 +11,8 @@ import { RemixController } from "@/components/remix/RemixController";
 import { RemixButton } from "@/components/remix/RemixButton";
 
 // Runs before the page appears: skip the intro if already seen this visit, on admin pages, or with reduced motion
+// Cloudflare Web Analytics (cookie-free). Only loads on the live site, when the token is set in Netlify.
+const CF_TOKEN = process.env.NEXT_PUBLIC_CF_BEACON_TOKEN;
 const INTRO_SCRIPT = `(function(){try{var d=document.documentElement;var r=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(r||location.pathname.indexOf('/admin')===0||sessionStorage.getItem('aso-intro-seen')){d.dataset.introSeen='1';}}catch(e){document.documentElement.dataset.introSeen='1';}})();`;
 import { site } from "@/lib/site";
 import { PRACTICES } from "@/lib/practices";
@@ -90,6 +92,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <DesignerCursor />
         </ThemeProvider>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />
+        {CF_TOKEN && process.env.NODE_ENV === "production" && (
+          <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={JSON.stringify({ token: CF_TOKEN })} />
+        )}
       </body>
     </html>
   );
