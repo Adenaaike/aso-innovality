@@ -29,6 +29,11 @@ const packageFields: Field[] = [
 
 const HUB_LABEL: Record<string, string> = { general: "Services", design: "Design", web: "Web", ai: "AI" };
 
+const wallFields: Field[] = [
+  { key: "color", label: "Colour (hex, e.g. #1177FF)", type: "text", required: true },
+  { key: "label", label: "Name or word (optional)", type: "text" },
+];
+
 export default function AdminContent() {
   return (
     <div className="max-w-4xl space-y-10">
@@ -36,6 +41,8 @@ export default function AdminContent() {
         <h1 className="font-display text-3xl font-bold">Content</h1>
         <p className="mt-2 text-sm text-muted">Each section appears on the site only once it has published items. Changes show on the live site within 5 minutes. Calculator prices live in Admin → Calculators.</p>
       </div>
+      <CollectionEditor table="idea_wall" title="Idea Wall" hint="Every colour visitors add. Click 👁 to hide an entry, or the bin to delete it."
+        fields={wallFields} summary={(r) => `${r.color}${r.label ? ` · ${r.label}` : ""}`} />
       <CollectionEditor table="packages" title="Packages (Ways to work together)" hint="Shown as cards on the Services page."
         fields={packageFields} summary={(r) => `${r.name}${r.price_from ? ` · ${r.price_from}` : ""}${r.highlighted ? " · Most popular" : ""}`} />
       <CollectionEditor table="testimonials" title="Testimonials" hint="Shown on the homepage and Services page as a rotating quote."

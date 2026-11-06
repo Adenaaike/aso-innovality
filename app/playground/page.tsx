@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { TypographyLab } from "@/components/playground/TypographyLab";
+import { WallStrip } from "@/components/wall/WallStrip";
 import { PaletteGenerator } from "@/components/playground/PaletteGenerator";
 import { ColourMatch } from "@/components/playground/ColourMatch";
 import { PromptGenerator } from "@/components/playground/PromptGenerator";
@@ -79,6 +80,7 @@ export default function Playground() {
             </div>
           </section>
         ))}
+            <div className="mt-32 -mx-6"><WallStrip /></div>
       </div>
     </div>
   );

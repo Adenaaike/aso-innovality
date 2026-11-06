@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PLAYGROUND_TOOLS } from "@/lib/playground";
 import Image from "next/image";
+import { WallStrip } from "@/components/wall/WallStrip";
 import { ArrowUpRight } from "lucide-react";
 import { HeroVisual } from "@/components/hero/HeroVisual";
 import { SignatureWords } from "@/components/SignatureWords";
@@ -261,6 +262,7 @@ export default async function Home() {
       </section>
 
       
+      <WallStrip />
       <Testimonials items={testimonials} />
 
 {/* CTA */}
