@@ -17,6 +17,7 @@ const A = {
   softBg: "bg-[var(--accent-soft)]",
   solid: "bg-[var(--accent)] text-[var(--accent-on)]",
   text: "text-[var(--accent-text)]",
+  onDark: "text-[var(--accent-light)]", // accent text that stays readable on the navy panel
   pressed: "aria-pressed:bg-[var(--accent)] aria-pressed:text-[var(--accent-on)]",
 };
 
@@ -141,7 +142,7 @@ export function Calculator({ steps, ngnRate, whatsapp, related, calcName, contac
   if (!visible.length) {
     return (
       <p className="rounded-lg border border-dashed border-line p-10 text-center text-sm text-muted">
-        This calculator is being set up. In the meantime, <Link href={`/contact?service=${contactService}`} className={`${A.text} hover:underline`}>tell me about your project</Link>.
+        This calculator is being set up. In the meantime, <Link href={`/contact?service=${contactService}`} className={`${A.text} underline`}>tell me about your project</Link>.
       </p>
     );
   }
@@ -315,7 +316,7 @@ export function Calculator({ steps, ngnRate, whatsapp, related, calcName, contac
         <aside id="estimate-summary" className="min-w-0 scroll-mt-24 lg:col-span-4">
           <div className="space-y-6 rounded-lg bg-navy p-6 text-white lg:sticky lg:top-24">
             <div className="flex items-center justify-between gap-3">
-              <p className="text-xs font-semibold tracking-[0.25em] text-[var(--accent)]">YOUR ESTIMATE</p>
+              <p className={`text-xs font-semibold tracking-[0.25em] ${A.onDark}`}>YOUR ESTIMATE</p>
               {canNgn && (
                 <div role="group" aria-label="Currency" className="flex rounded-full border border-white/20 p-0.5 text-xs font-semibold">
                   {(["USD", "NGN"] as const).map((c) => (
@@ -330,9 +331,9 @@ export function Calculator({ steps, ngnRate, whatsapp, related, calcName, contac
             <div>
               <p className="font-display text-4xl font-bold" aria-live="polite">
                 <Rolling value={total} format={fmt} />
-                {monthly && <span className="text-base font-medium text-ice/70"> / month</span>}
+                {monthly && <span className="text-base font-medium text-ice/80"> / month</span>}
               </p>
-              {alt(total) && <p className="mt-1 text-sm text-ice/70">≈ {alt(total)}{per}</p>}
+              {alt(total) && <p className="mt-1 text-sm text-ice/80">≈ {alt(total)}{per}</p>}
             </div>
 
             <ul className="space-y-2 border-t border-white/15 pt-4 text-sm">
@@ -344,17 +345,22 @@ export function Calculator({ steps, ngnRate, whatsapp, related, calcName, contac
               ))}
             </ul>
 
-            <div className="space-y-2 text-xs leading-relaxed text-ice/60">
+            <div className="space-y-2 text-xs leading-relaxed text-ice/80">
               {onRequest && <p>Items marked “On request” are quoted separately and aren’t included in the total.</p>}
               {canNgn && <p>Converted at ₦{ngnRate.toLocaleString("en-NG")} to $1. The invoice currency is agreed with you.</p>}
               <p>These are my published starting rates. Your formal quote confirms the scope and deliverables before any work begins.</p>
             </div>
 
             <div className="space-y-2">
-              <a href={ready ? waHref : undefined} target="_blank" rel="noopener noreferrer" aria-disabled={!ready}
-                className={`${action} ${ready ? `${A.solid} hover:brightness-110` : "pointer-events-none bg-white/10 text-white/40"}`}>
-                <MessageCircle size={16} /> Send estimate on WhatsApp
-              </a>
+              {ready ? (
+                <a href={waHref} target="_blank" rel="noopener noreferrer" className={`${action} ${A.solid} hover:brightness-110`}>
+                  <MessageCircle size={16} /> Send estimate on WhatsApp
+                </a>
+              ) : (
+                <span aria-disabled="true" className={`${action} cursor-not-allowed bg-white/10 text-white/70`}>
+                  <MessageCircle size={16} /> Send estimate on WhatsApp
+                </span>
+              )}
               <Link href={ready ? quoteHref : `/contact?service=${contactService}`} className={`${action} border border-white/20 ${A.hoverBorder}`}>
                 <FileText size={16} /> Request a formal quote
               </Link>
@@ -368,8 +374,8 @@ export function Calculator({ steps, ngnRate, whatsapp, related, calcName, contac
 
             {related.length > 0 && (
               <div className="border-t border-white/15 pt-5">
-                <p className="mb-3 text-xs font-semibold tracking-[0.2em] text-[var(--accent)]">SIMILAR WORK</p>
-                <Link href="/work" className="grid grid-cols-3 gap-2">
+                <p className={`mb-3 text-xs font-semibold tracking-[0.2em] ${A.onDark}`}>SIMILAR WORK</p>
+                <Link href="/work" aria-label="See similar work" className="grid grid-cols-3 gap-2">
                   {related.slice(0, 3).map((src) => (
                     <span key={src} className="relative aspect-[4/5] overflow-hidden rounded-md">
                       <Image src={src} alt="" fill sizes="100px" className="object-cover transition duration-500 hover:scale-105" />
@@ -387,7 +393,7 @@ export function Calculator({ steps, ngnRate, whatsapp, related, calcName, contac
           <motion.div initial={{ y: 80 }} animate={{ y: 0 }} exit={{ y: 80 }} transition={{ duration: 0.3, ease: EASE }}
             className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t border-white/10 bg-navy/95 px-5 py-3 text-white backdrop-blur lg:hidden">
             <span>
-              <span className="block text-[10px] uppercase tracking-wider text-ice/70">Estimate{monthly ? " / month" : ""}</span>
+              <span className="block text-[10px] uppercase tracking-wider text-ice/80">Estimate{monthly ? " / month" : ""}</span>
               <span className="font-display text-lg font-bold"><Rolling value={total} format={fmt} /></span>
             </span>
             <a href="#estimate-summary" className={`rounded-full px-5 py-2.5 text-sm font-medium ${A.solid}`}>Review & send</a>

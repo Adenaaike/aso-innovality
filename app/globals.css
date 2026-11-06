@@ -175,3 +175,7 @@ html[data-remix-anim] * { transition: background-color 0.5s, border-color 0.5s, 
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-8px) rotate(2deg); }
 }
+/* Accent colour readable on dark navy panels (estimate panel labels) */
+:root, .accent-design, html[data-remix] .accent-web, html[data-remix] .accent-ai { --accent-light: var(--color-light-azure); }
+.accent-web { --accent-light: #FF8A8E; }
+.accent-ai { --accent-light: #F5C451; }

@@ -91,15 +91,15 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
           <div className="lg:col-span-7">
             <Reveal><h2 className="font-display text-2xl font-bold md:text-3xl">How a project runs</h2></Reveal>
             <ol className="mt-8 grid gap-4 sm:grid-cols-2">
-            {(hub.process ?? processSteps).map((s, i) => (
-                <Reveal key={s.no} delay={i * 0.06}>
-                  <li className={card}>
-                    <span aria-hidden className={sweep} />
+              {(hub.process ?? processSteps).map((s, i) => (
+                <li key={s.no} className={card}>
+                  <span aria-hidden className={sweep} />
+                  <Reveal delay={i * 0.06}>
                     <span className="inline-block font-display text-sm accent-text transition duration-300 group-hover:translate-x-1">{s.no}</span>
                     <h3 className="mt-3 font-display text-lg font-semibold">{s.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
-                  </li>
-                </Reveal>
+                  </Reveal>
+                </li>
               ))}
             </ol>
           </div>
@@ -155,11 +155,11 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
             Ready when you are. <span className="text-sky">Let’s start.</span>
           </h2>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link href={`/contact?service=${hub.contactService}`} className="inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium hover:bg-azure">Start a project</Link>
+            <Link href={`/contact?service=${hub.contactService}`} className="inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-azure">Start a project</Link>
             <a href="#estimate" className="inline-flex rounded-full border border-white/25 px-6 py-3 text-sm font-medium hover:border-sky">Get an estimate</a>
           </div>
         </Reveal>
       </section>
-      </div>
+    </div>
   );
 }
