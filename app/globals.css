@@ -151,3 +151,5 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
 :root, .accent-design { --accent-1: #1177FF; --accent-2: #21A9FF; --accent-3: #9BD9FE; }
 .accent-web { --accent-1: #E5484D; --accent-2: #FF6B6B; --accent-3: #FFB4B4; }
 .accent-ai { --accent-1: #D99A1E; --accent-2: #F5C451; --accent-3: #FFE7A3; }
+/* Hide the intro instantly for returning visitors, admin pages and reduced motion */
+html[data-intro-seen="1"] .aso-intro { display: none !important; }

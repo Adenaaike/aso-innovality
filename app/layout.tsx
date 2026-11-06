@@ -6,6 +6,10 @@ import { Nav } from "@/components/Nav";
 import { WhatsAppButton } from "@/components/home/WhatsAppButton";
 import { DesignerCursor } from "@/components/DesignerCursor";
 import { StartProjectPanel } from "@/components/StartProjectPanel";
+import { IntroSplash } from "@/components/IntroSplash";
+
+// Runs before the page appears: skip the intro if already seen this visit, on admin pages, or with reduced motion
+const INTRO_SCRIPT = `(function(){try{var d=document.documentElement;var r=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(r||location.pathname.indexOf('/admin')===0||sessionStorage.getItem('aso-intro-seen')){d.dataset.introSeen='1';}}catch(e){document.documentElement.dataset.introSeen='1';}})();`;
 import { site } from "@/lib/site";
 import { PRACTICES } from "@/lib/practices";
 import "./globals.css";
@@ -47,11 +51,15 @@ const personLd = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${spaceGrotesk.variable} ${inter.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: INTRO_SCRIPT }} />
+      </head>
       <body className="antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-royal focus:px-4 focus:py-2 focus:text-white">
             Skip to content
           </a>
+          <IntroSplash />
           <Nav />
           <main id="main">{children}</main>
           <footer className="border-t border-line">
