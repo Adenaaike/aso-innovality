@@ -7,6 +7,8 @@ import { WhatsAppButton } from "@/components/home/WhatsAppButton";
 import { DesignerCursor } from "@/components/DesignerCursor";
 import { StartProjectPanel } from "@/components/StartProjectPanel";
 import { IntroSplash } from "@/components/IntroSplash";
+import { RemixController } from "@/components/remix/RemixController";
+import { RemixButton } from "@/components/remix/RemixButton";
 
 // Runs before the page appears: skip the intro if already seen this visit, on admin pages, or with reduced motion
 const INTRO_SCRIPT = `(function(){try{var d=document.documentElement;var r=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(r||location.pathname.indexOf('/admin')===0||sessionStorage.getItem('aso-intro-seen')){d.dataset.introSeen='1';}}catch(e){document.documentElement.dataset.introSeen='1';}})();`;
@@ -68,6 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 {PRACTICES.map((p) => (
                   <Link key={p.key} href={p.href} className="hover:text-royal">{p.title}</Link>
                 ))}
+                <RemixButton className="hover:text-royal">Remix this site</RemixButton>
                 <Link href="/estimate" className="font-medium text-royal hover:underline dark:text-light-azure">Get an estimate</Link>
               </nav>
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -82,6 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </footer>
           <WhatsAppButton />
           <StartProjectPanel />
+          <RemixController />
           <DesignerCursor />
         </ThemeProvider>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />

@@ -10,7 +10,8 @@ import { MonogramMaker } from "@/components/playground/MonogramMaker";
 import { TimeSavedCalculator } from "@/components/playground/TimeSavedCalculator";
 import { CarouselSplitter } from "@/components/playground/CarouselSplitter";
 import { LinkPreviewTester } from "@/components/playground/LinkPreviewTester";
-import { BrandQuiz } from "@/components/playground/BrandQuiz";
+  import { BrandQuiz } from "@/components/playground/BrandQuiz";
+  import { RemixTool } from "@/components/playground/RemixTool";
 import { PLAYGROUND_SECTIONS, PLAYGROUND_TOOLS } from "@/lib/playground";
 
 export const metadata: Metadata = {
@@ -30,7 +31,8 @@ const EL: Record<string, ReactNode> = {
   "time-saved": <TimeSavedCalculator />,
   "carousel-splitter": <CarouselSplitter />,
   "link-preview": <LinkPreviewTester />,
-  "brand-quiz": <BrandQuiz />,
+      "brand-quiz": <BrandQuiz />,
+    remix: <RemixTool />,
 };
 
 export default function Playground() {

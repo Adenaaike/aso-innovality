@@ -2,6 +2,7 @@ export type ToolPractice = "design" | "web" | "ai";
 
 export const PLAYGROUND_TOOLS: { id: string; label: string; practice: ToolPractice; isNew?: boolean }[] = [
     { id: "brand-quiz", label: "Brand Personality Quiz", practice: "design", isNew: true },
+  { id: "remix", label: "Remix This Site", practice: "design", isNew: true },
   { id: "typography-lab", label: "Typography Lab", practice: "design" },
   { id: "palette", label: "Palette Generator", practice: "design" },
   { id: "colour-match", label: "Colour Match", practice: "design" },

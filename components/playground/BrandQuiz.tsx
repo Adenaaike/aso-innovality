@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, ArrowUpRight, Check, Download, MessageCircle, RotateCcw, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, Download, MessageCircle, RotateCcw, Sparkles, Wand2 } from "lucide-react";
 
 type Key = "creator" | "sage" | "hero" | "caregiver" | "explorer" | "ruler" | "rebel" | "magician";
 type Archetype = {
@@ -76,6 +76,11 @@ export function BrandQuiz() {
     return ORDER.reduce((best, k) => (totals[k] > totals[best] ? k : best), ORDER[0]);
   })();
   const A = ARCHETYPES[result];
+
+  // Remember the result so "Remix This Site" can offer it
+  useEffect(() => {
+    if (done) { try { sessionStorage.setItem("aso-quiz-result", result); } catch {} }
+  }, [done, result]);
 
   const choose = (i: number) => { setAnswers((p) => [...p.slice(0, step), i]); setStep((s) => s + 1); };
   const back = () => setStep((s) => Math.max(0, s - 1));
@@ -221,6 +226,10 @@ export function BrandQuiz() {
                 </a>
                 <button type="button" onClick={restart} className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium hover:border-[var(--accent)]">
                   <RotateCcw size={15} /> Retake
+                </button>
+                <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("aso:remix-apply", { detail: { kind: "preset", key: result } }))}
+                  className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium hover:border-[var(--accent)]">
+                  <Wand2 size={15} /> Remix the site with my brand
                 </button>
               </div>
 

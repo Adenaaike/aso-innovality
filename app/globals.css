@@ -36,15 +36,19 @@
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
 
+/* Never allow sideways scrolling on phones (clip keeps sticky elements working) */
+html, body { overflow-x: clip; }
+
+/* Brand gradients — built from the colour settings so Remix can change them */
 .aso-gradient {
-  background: linear-gradient(100deg, #1177FF 0%, #1689FE 18%, #1D9BFF 36%, #21A9FF 54%, #9BD9FE 78%, #E8FCFC 100%);
+  background: linear-gradient(100deg, var(--color-royal) 0%, var(--color-bright) 18%, var(--color-azure) 36%, var(--color-sky) 54%, var(--color-pale-blue) 78%, var(--color-aqua) 100%);
 }
 .aso-text-gradient {
-  background: linear-gradient(100deg, #1177FF, #1D9BFF 40%, #48B7FF 70%, #9BD9FE);
+  background: linear-gradient(100deg, var(--color-royal), var(--color-azure) 40%, var(--color-light-azure) 70%, var(--color-pale-blue));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .dark .aso-text-gradient {
-  background: linear-gradient(100deg, #48B7FF, #9BD9FE 50%, #E8FCFC);
+  background: linear-gradient(100deg, var(--color-light-azure), var(--color-pale-blue) 50%, var(--color-aqua));
   -webkit-background-clip: text; background-clip: text;
 }
 
@@ -65,7 +69,9 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: none; }
-}/* Badges gliding in a small circle (moves, never rotates the text) */
+}
+
+/* Badges gliding in a small circle (moves, never rotates the text) */
 @keyframes orbit-float {
   from { transform: rotate(0deg) translateX(var(--orbit-r, 7px)) rotate(0deg); }
   to   { transform: rotate(360deg) translateX(var(--orbit-r, 7px)) rotate(-360deg); }
@@ -77,7 +83,9 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
 }
 @media (prefers-reduced-motion: reduce) {
   .orbit-float { animation: none; }
-}/* ===== AI hub: gold data flow ===== */
+}
+
+/* ===== AI hub: gold data flow ===== */
 .flow-ring {
   background: conic-gradient(from 0deg, transparent 0 55%, #F5C451 80%, #FFE7A3 90%, transparent 100%);
   opacity: 0.2;
@@ -106,13 +114,17 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
   .flow-ring, .flow-card, .flow-pulse { animation: none; }
   .flow-ring { opacity: 0.6; }
 }
-/* ===== Practice accent colours (Design = blue, Web = red, AI = gold) ===== */
-:root, .accent-design {
-  --accent: #1177FF;
-  --accent-text: #1177FF;
-  --accent-soft: rgba(17, 119, 255, 0.1);
-  --accent-glow: rgba(17, 119, 255, 0.55);
-  --accent-grad: linear-gradient(90deg, #1177FF, #21A9FF, #9BD9FE);
+
+/* ===== Practice accent colours (Design = brand colour, Web = red, AI = gold) ===== */
+/* Design (and every practice while a Remix is active) follows the brand colour settings */
+:root, .accent-design, html[data-remix] .accent-web, html[data-remix] .accent-ai {
+  --accent: var(--color-royal);
+  --accent-text: var(--color-royal);
+  --accent-soft: color-mix(in srgb, var(--color-royal) 10%, transparent);
+  --accent-glow: color-mix(in srgb, var(--color-royal) 55%, transparent);
+  --accent-grad: linear-gradient(90deg, var(--color-royal), var(--color-sky), var(--color-pale-blue));
+  --accent-on: #FFFFFF;
+  --accent-1: var(--color-royal); --accent-2: var(--color-sky); --accent-3: var(--color-pale-blue);
 }
 .accent-web {
   --accent: #E5484D;
@@ -120,6 +132,8 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
   --accent-soft: rgba(229, 72, 77, 0.1);
   --accent-glow: rgba(229, 72, 77, 0.5);
   --accent-grad: linear-gradient(90deg, #E5484D, #FF6B6B, #FFB4B4);
+  --accent-on: #FFFFFF;
+  --accent-1: #E5484D; --accent-2: #FF6B6B; --accent-3: #FFB4B4;
 }
 .accent-ai {
   --accent: #E0A526;
@@ -127,10 +141,13 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
   --accent-soft: rgba(245, 196, 81, 0.16);
   --accent-glow: rgba(245, 196, 81, 0.6);
   --accent-grad: linear-gradient(90deg, #D99A1E, #F5C451, #FFE7A3);
+  --accent-on: #101B2B;
+  --accent-1: #D99A1E; --accent-2: #F5C451; --accent-3: #FFE7A3;
 }
-.dark, .dark .accent-design { --accent-text: #7CC4FF; }
+.dark, .dark .accent-design { --accent-text: var(--color-light-azure); }
 .dark .accent-web { --accent-text: #FF8A8E; }
 .dark .accent-ai { --accent-text: #F5C451; }
+html.dark[data-remix] .accent-web, html.dark[data-remix] .accent-ai { --accent-text: var(--color-light-azure); }
 
 .accent-text { color: var(--accent-text); }
 .accent-gradient { background-image: var(--accent-grad); }
@@ -138,18 +155,15 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
 .group:hover .accent-icon, .group\/card:hover .accent-icon { background-color: var(--accent); color: #fff; }
 .glow-card { transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
 .glow-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 24px 50px -24px var(--accent-glow); }
-/* Text/icon colour that sits ON an accent background (dark text on gold for contrast) */
-:root, .accent-design, .accent-web { --accent-on: #FFFFFF; }
-.accent-ai { --accent-on: #101B2B; }
 .accent-text-gradient {
   background-image: var(--accent-grad);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-/* Gradient stops used by the downloadable estimate card */
-:root, .accent-design { --accent-1: #1177FF; --accent-2: #21A9FF; --accent-3: #9BD9FE; }
-.accent-web { --accent-1: #E5484D; --accent-2: #FF6B6B; --accent-3: #FFB4B4; }
-.accent-ai { --accent-1: #D99A1E; --accent-2: #F5C451; --accent-3: #FFE7A3; }
+
 /* Hide the intro instantly for returning visitors, admin pages and reduced motion */
 html[data-intro-seen="1"] .aso-intro { display: none !important; }
+
+/* Smooth colour change when a Remix is applied or reset */
+html[data-remix-anim] * { transition: background-color 0.5s, border-color 0.5s, color 0.5s !important; }
