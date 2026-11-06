@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { CtaBand } from "@/components/CtaBand";
 import { ArrowUpRight, Download } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { Stats } from "@/components/home/Stats";
@@ -148,19 +149,10 @@ export default async function About() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-navy py-20 text-center text-white">
-        <Reveal className="mx-auto max-w-3xl px-6">
-          <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] font-bold leading-tight">
-            Let’s turn your idea into something <span className="aso-text-gradient">people remember.</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-ice/80">Brand identity, websites and smart automation, under one studio.</p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <StartProjectButton className="inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-azure">Start your project</StartProjectButton>
-            <Link href="/work" className="inline-flex rounded-full border border-white/25 px-6 py-3 text-sm font-medium hover:border-sky">Explore my work</Link>
-          </div>
-        </Reveal>
-      </section>
+            {/* CTA */}
+            <CtaBand title="Let’s turn your idea into" accent="something people remember."
+        text="Brand identity, websites and smart automation, under one studio."
+        secondaryLabel="Explore my work" secondaryHref="/work" />
     </div>
   );
 }

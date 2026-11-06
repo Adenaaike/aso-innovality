@@ -11,12 +11,14 @@ export type WorkItem = {
 };
 
 const TABS = [
-  { key: "all", label: "All", accent: "design" },
+  { key: "all", label: "All", accent: null },
   { key: "design", label: "Design", accent: "design" },
   { key: "web", label: "Web & SEO", accent: "web" },
   { key: "ai", label: "AI & Automation", accent: "ai" },
 ] as const;
 type TabKey = (typeof TABS)[number]["key"];
+
+const LABEL = { design: "Design", web: "Web & SEO", ai: "AI & Automation" } as const;
 
 export function WorkTabs({ items }: { items: WorkItem[] }) {
   const [tab, setTab] = useState<TabKey>("all");
@@ -26,38 +28,52 @@ export function WorkTabs({ items }: { items: WorkItem[] }) {
   return (
     <div>
       <div role="tablist" aria-label="Filter projects by practice" className="flex flex-wrap gap-2">
-        {TABS.map((t) => (
-          <button key={t.key} type="button" role="tab" aria-selected={tab === t.key} onClick={() => setTab(t.key)}
-            className={`accent-${t.accent} inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition ${
-              tab === t.key ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-on)]" : "border-line hover:border-[var(--accent)]"}`}>
-            {t.label}
-            <span className={`rounded-full px-1.5 text-xs ${tab === t.key ? "bg-black/15" : "bg-surface text-muted"}`}>{count(t.key)}</span>
-          </button>
-        ))}
+        {TABS.map((t) => {
+          const on = tab === t.key;
+          return (
+            <button key={t.key} type="button" role="tab" aria-selected={on} onClick={() => setTab(t.key)}
+              className={`${t.accent ? `accent-${t.accent}` : ""} inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition ${
+                on ? "border-fg bg-fg text-bg" : "border-line hover:border-fg/40"}`}>
+              {t.accent && <span aria-hidden className="size-2 rounded-full bg-[var(--accent)]" />}
+              {t.label}
+              <span className={`grid min-w-6 place-items-center rounded-full px-1.5 text-xs ${on ? "bg-bg/15" : "bg-surface text-muted"}`}>{count(t.key)}</span>
+            </button>
+          );
+        })}
       </div>
 
       <AnimatePresence mode="wait">
         <motion.div key={tab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.3 }} className="mt-8">
           {shown.length ? (
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-              {shown.map((p) => (
-                <Link key={p.slug} href={`/work/${p.slug}`} data-cursor="View project" className={`accent-${p.practice} group block`}>
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-surface">
+            <div className="grid grid-flow-dense grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+              {shown.map((p) => {
+                const wide = p.practice !== "design"; // websites & automations are landscape
+                return (
+                  <Link key={p.slug} href={`/work/${p.slug}`} data-cursor="View project"
+                    className={`accent-${p.practice} glow-card group relative block overflow-hidden rounded-xl border border-line bg-surface ${
+                      wide ? "col-span-2 aspect-[8/5]" : "aspect-[4/5]"}`}>
                     {p.cover_url ? (
-                      <Image src={p.cover_url} alt={p.title} fill sizes="(min-width:1024px) 25vw, (min-width:768px) 33vw, 50vw"
-                        className="object-cover object-top transition duration-500 group-hover:scale-[1.04]" />
+                      <Image src={p.cover_url} alt="" fill
+                        sizes={wide ? "(min-width:1024px) 50vw, (min-width:768px) 66vw, 100vw" : "(min-width:1024px) 25vw, (min-width:768px) 33vw, 50vw"}
+                        className="object-cover object-top transition duration-700 group-hover:scale-[1.04]" />
                     ) : <div className="absolute inset-0 aso-gradient opacity-40" />}
-                    <span className="absolute top-3 left-3 rounded-full bg-[var(--accent)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--accent-on)]">
-                      {p.practice === "design" ? "Design" : p.practice === "web" ? "Web" : "AI"}
-                    </span>
-                  </div>
-                  <h3 className="mt-2.5 truncate font-display text-sm font-semibold transition group-hover:text-[var(--accent-text)]">{p.title}</h3>
-                  <p className="mt-0.5 text-xs text-muted">{[p.category, p.year].filter(Boolean).join(" · ")}</p>
-                </Link>
-              ))}
+
+                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/25 to-transparent" />
+
+                    <div className="absolute inset-x-0 bottom-0 p-4 text-white md:p-5">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-navy/70 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur">
+                        <span aria-hidden className="size-1.5 rounded-full bg-[var(--accent-light)]" />
+                        {LABEL[p.practice]}
+                      </span>
+                      <h3 className={`mt-2 font-display font-bold leading-tight ${wide ? "text-lg md:text-2xl" : "text-sm md:text-base"}`}>{p.title}</h3>
+                      <p className="mt-0.5 text-xs text-ice/80">{[p.category, p.year].filter(Boolean).join(" · ")}</p>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           ) : (
-            <div className={`accent-${tab === "all" ? "design" : tab} rounded-lg border border-[var(--accent)] bg-[var(--accent-soft)] p-8 text-center`}>
+            <div className={`accent-${tab === "all" ? "design" : tab} rounded-xl border border-[var(--accent)] bg-[var(--accent-soft)] p-8 text-center`}>
               <p className="font-display text-lg font-semibold">
                 {tab === "ai" ? "First automation case studies are on the way." : "New projects are on the way."}
               </p>

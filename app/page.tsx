@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { CtaBand } from "@/components/CtaBand";
 import { ArrowUpRight, Check } from "lucide-react";
 import { HeroVisual } from "@/components/hero/HeroVisual";
 import { Reveal } from "@/components/Reveal";
@@ -317,19 +318,10 @@ export default async function Home() {
       {/* TESTIMONIALS (only shows once you add some in the admin) */}
       <Testimonials items={testimonials} />
 
-      {/* CTA */}
-      <section className="bg-navy py-20 text-center text-white">
-        <Reveal className="mx-auto max-w-4xl px-6">
-          <h2 className="font-display text-[clamp(1.75rem,4.5vw,3.25rem)] font-bold uppercase leading-[1.05]">
-            Have an idea? <span className="aso-text-gradient">Let’s bring it to life.</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-ice">Brand identity, websites and smart automation, under one studio.</p>
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
-            <StartProjectButton className="inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-azure">Start your project</StartProjectButton>
-            <Link href="/estimate" className="inline-flex rounded-full border border-white/25 px-6 py-3 text-sm font-medium hover:border-sky">Get an instant estimate</Link>
-          </div>
-        </Reveal>
-      </section>
-    </>
+            {/* CTA */}
+            <CtaBand title="Have an idea? Let’s" accent="bring it to life."
+        text="Brand identity, websites and smart automation, under one studio."
+        secondaryLabel="Get an instant estimate" secondaryHref="/estimate" />
+            </>
   );
 }

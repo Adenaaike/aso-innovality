@@ -3,6 +3,7 @@ import { ArrowUpRight, Check, Clock, ShieldCheck, Tag } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { HubPanels } from "@/components/hub/HubPanels";
 import { HubVisual, WebBadges } from "@/components/hub/HubVisual";
+import { CtaBand } from "@/components/CtaBand";
 import { Calculator } from "@/components/calculator/Calculator";
 import { ProjectTile } from "@/components/work/ProjectTile";
 import { FaqSection } from "@/components/content/Faq";
@@ -148,18 +149,11 @@ export function HubPage({ hub, projects, calcSteps, faqs, ngnRate, whatsapp }: {
 
       <FaqSection items={faqs} />
 
-      {/* CTA */}
-      <section className="bg-navy py-20 text-center text-white">
-        <Reveal className="mx-auto max-w-3xl px-6">
-          <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] font-bold leading-tight">
-            Ready when you are. <span className="text-sky">Let’s start.</span>
-          </h2>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link href={`/contact?service=${hub.contactService}`} className="inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-azure">Start a project</Link>
-            <a href="#estimate" className="inline-flex rounded-full border border-white/25 px-6 py-3 text-sm font-medium hover:border-sky">Get an estimate</a>
-          </div>
-        </Reveal>
-      </section>
+            {/* CTA */}
+            <CtaBand title="Ready when you are." accent="Let’s start."
+        text="Tell me about your project, or price it in about 60 seconds."
+        primaryLabel="Start a project" primaryHref={`/contact?service=${hub.contactService}`}
+        secondaryLabel="Get an estimate" secondaryHref="#estimate" />
     </div>
   );
 }

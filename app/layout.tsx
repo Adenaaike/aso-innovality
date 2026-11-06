@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ThemeProvider } from "next-themes";
 import { spaceGrotesk, inter } from "@/lib/fonts";
+import { SiteFooter } from "@/components/SiteFooter";
 import { Nav } from "@/components/Nav";
 import { WhatsAppButton } from "@/components/home/WhatsAppButton";
 import { IntroSplash } from "@/components/IntroSplash";
@@ -64,26 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <IntroSplash />
           <Nav />
           <main id="main">{children}</main>
-          <footer className="border-t border-line">
-            <div className="mx-auto max-w-7xl px-6 py-10 text-sm text-muted">
-              <nav aria-label="Practices" className="mb-6 flex flex-wrap gap-x-6 gap-y-2 border-b border-line pb-6">
-                {PRACTICES.map((p) => (
-                  <Link key={p.key} href={p.href} className="hover:text-royal">{p.title}</Link>
-                ))}
-                <RemixButton className="hover:text-royal">Remix this site</RemixButton>
-                <Link href="/estimate" className="font-medium text-royal hover:underline dark:text-light-azure">Get an estimate</Link>
-              </nav>
-              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <p>© {new Date().getFullYear()} {site.brand}. {site.tagline}</p>
-                <div className="flex gap-6">
-                  <a href={site.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-royal">Instagram</a>
-                  <a href={site.pinterest} target="_blank" rel="noopener noreferrer" className="hover:text-royal">Pinterest</a>
-                  <Link href="/contact" className="hover:text-royal">Contact</Link>
-                  <Link href="/privacy" className="hover:text-royal">Privacy</Link>
-                </div>
-              </div>
-            </div>
-          </footer>
+          <SiteFooter />
           <WhatsAppButton />
           <LazyExtras />
                                     </ThemeProvider>

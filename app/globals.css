@@ -179,3 +179,8 @@ html[data-remix-anim] * { transition: background-color 0.5s, border-color 0.5s, 
 :root, .accent-design, html[data-remix] .accent-web, html[data-remix] .accent-ai { --accent-light: var(--color-light-azure); }
 .accent-web { --accent-light: #FF8A8E; }
 .accent-ai { --accent-light: #F5C451; }
+/* Bright brand gradient for headings on navy sections */
+.on-dark-gradient {
+  background: linear-gradient(100deg, var(--color-azure), var(--color-light-azure) 50%, var(--color-pale-blue));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}

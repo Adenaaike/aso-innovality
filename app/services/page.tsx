@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { CtaBand } from "@/components/CtaBand";
 import { ServicesAccordion } from "@/components/services/ServicesAccordion";
 import { CoverflowCarousel } from "@/components/carousel/CoverflowCarousel";
 import { StartProjectButton } from "@/components/StartProjectButton";
@@ -118,18 +119,9 @@ export default async function Services() {
       <Testimonials items={testimonials} />
       <FaqSection items={faqs} />
 
-      <section className="bg-navy py-20 text-center text-white">
-        <Reveal className="mx-auto max-w-3xl px-6">
-          <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] font-bold leading-tight">
-            Have a brief in mind? <span className="text-sky">Let’s talk.</span>
-          </h2>
-          <p className="mt-4 text-ice">Projects start from $300. Every brief is quoted individually.</p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <StartProjectButton className="inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-azure">Start your project</StartProjectButton>
-            <Link href="/estimate" className="inline-flex rounded-full border border-white/25 px-6 py-3 text-sm font-medium hover:border-sky">Get an instant estimate</Link>
-          </div>
-        </Reveal>
-      </section>
+      <CtaBand title="Have a brief in mind?" accent="Let’s talk."
+        text="Every brief is quoted individually, and you can get an instant estimate first."
+        secondaryLabel="Get an instant estimate" secondaryHref="/estimate" />
     </div>
   );
 }
