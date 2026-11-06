@@ -137,7 +137,7 @@ export function IdeaWall({ initial, total, variant = "full" }: { initial: WallEn
           {addedToday ? "Added today, come back tomorrow" : "Add to the wall"}
         </button>
         {msg && <p role={msg.ok ? "status" : "alert"} className={`text-sm ${msg.ok ? "text-royal dark:text-light-azure" : "text-red-600 dark:text-red-400"}`}>{msg.text}</p>}
-        <p className="text-xs text-muted">One colour per visitor per day. Please keep words friendly.</p>
+        <p className="text-xs text-muted">One colour per visitor per day. Your colour and word are public, so please keep them friendly. <a href="/privacy" className="underline hover:text-royal">Privacy</a></p>
       </form>
 
       <div className="lg:col-span-8">

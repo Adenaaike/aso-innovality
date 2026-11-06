@@ -92,6 +92,9 @@ export function ContactForm() {
         <button type="submit" disabled={isSubmitting} className="rounded-full bg-royal px-8 py-4 font-medium text-white hover:bg-bright disabled:opacity-60">
           {isSubmitting ? "Sending…" : "Send enquiry"}
         </button>
+        <p className="mt-3 text-xs text-muted">
+              By sending this form, you agree to how I handle your details in the <a href="/privacy" className="underline hover:text-royal">Privacy Policy</a>.
+            </p>
         <p role="status" aria-live="polite" className={`mt-4 text-sm ${status?.ok ? "text-royal dark:text-light-azure" : "text-red-600 dark:text-red-400"}`}>{status?.msg}</p>
       </div>
     </form>

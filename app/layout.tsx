@@ -79,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <a href={site.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-royal">Instagram</a>
                   <a href={site.pinterest} target="_blank" rel="noopener noreferrer" className="hover:text-royal">Pinterest</a>
                   <Link href="/contact" className="hover:text-royal">Contact</Link>
+                  <Link href="/privacy" className="hover:text-royal">Privacy</Link>
                 </div>
               </div>
             </div>

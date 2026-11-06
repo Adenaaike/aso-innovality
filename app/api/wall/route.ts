@@ -40,6 +40,8 @@ export async function POST(req: Request) {
     const day = new Date().toISOString().slice(0, 10);
     const { error: limited } = await sb.from("wall_limits").insert({ visitor_hash: hash, day });
     if (limited) return fail("You’ve already added a colour today. Come back tomorrow!", 429);
+    // Privacy: remove daily-limit codes older than two days
+    await sb.from("wall_limits").delete().lt("day", new Date(Date.now() - 2 * 86400000).toISOString().slice(0, 10));
   }
 
   const { data, error } = await sb.from("idea_wall").insert({ color, label: label || null })
