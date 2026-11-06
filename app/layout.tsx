@@ -4,11 +4,9 @@ import { ThemeProvider } from "next-themes";
 import { spaceGrotesk, inter } from "@/lib/fonts";
 import { Nav } from "@/components/Nav";
 import { WhatsAppButton } from "@/components/home/WhatsAppButton";
-import { DesignerCursor } from "@/components/DesignerCursor";
-import { StartProjectPanel } from "@/components/StartProjectPanel";
 import { IntroSplash } from "@/components/IntroSplash";
-import { RemixController } from "@/components/remix/RemixController";
 import { RemixButton } from "@/components/remix/RemixButton";
+import { LazyExtras } from "@/components/LazyExtras";
 
 // Runs before the page appears: skip the intro if already seen this visit, on admin pages, or with reduced motion
 // Cloudflare Web Analytics (cookie-free). Only loads on the live site, when the token is set in Netlify.
@@ -87,10 +85,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </footer>
           <WhatsAppButton />
-          <StartProjectPanel />
-          <RemixController />
-          <DesignerCursor />
-        </ThemeProvider>
+          <LazyExtras />
+                                    </ThemeProvider>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />
         {CF_TOKEN && process.env.NODE_ENV === "production" && (
           <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"

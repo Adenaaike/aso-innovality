@@ -44,8 +44,9 @@ export function IdeaWall({ initial, total, variant = "full" }: { initial: WallEn
 
   useEffect(() => { try { setAddedToday(localStorage.getItem("aso-wall-day") === todayKey()); } catch {} }, []);
 
-  // Live: new colours appear for everyone watching
+  // Live: new colours appear for everyone watching (full wall only — keeps previews light)
   useEffect(() => {
+    if (variant === "strip") return;
     const sb = browserClient();
     const channel = sb.channel("idea-wall")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "idea_wall" }, (payload) => {
@@ -56,7 +57,7 @@ export function IdeaWall({ initial, total, variant = "full" }: { initial: WallEn
       })
       .subscribe();
     return () => { sb.removeChannel(channel); };
-  }, []);
+  }, [variant]);
 
   async function submit(ev: FormEvent) {
     ev.preventDefault();

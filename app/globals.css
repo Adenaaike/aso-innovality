@@ -167,3 +167,11 @@ html[data-intro-seen="1"] .aso-intro { display: none !important; }
 
 /* Smooth colour change when a Remix is applied or reset */
 html[data-remix-anim] * { transition: background-color 0.5s, border-color 0.5s, color 0.5s !important; }
+/* Lightweight hero illustration: gentle floating */
+.hv-float { animation: hv-float 6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.hv-float-slow { animation-duration: 8s; animation-delay: -2s; }
+.hv-float-fast { animation-duration: 4.5s; animation-delay: -1s; }
+@keyframes hv-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
