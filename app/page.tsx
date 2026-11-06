@@ -1,96 +1,124 @@
 import Link from "next/link";
-import { PLAYGROUND_TOOLS } from "@/lib/playground";
 import Image from "next/image";
-import { WallStrip } from "@/components/wall/WallStrip";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Check } from "lucide-react";
 import { HeroVisual } from "@/components/hero/HeroVisual";
-import { SignatureWords } from "@/components/SignatureWords";
 import { Reveal } from "@/components/Reveal";
 import { StatusCard } from "@/components/home/StatusCard";
 import { Marquee } from "@/components/home/Marquee";
-import { Stats } from "@/components/home/Stats";
-import { ServicesHover } from "@/components/home/ServicesHover";
-import { steps } from "@/lib/site";
-import { publicClient } from "@/lib/supabase/public";
-import { getCarousels } from "@/lib/projects";
-import { CarouselTeaser } from "@/components/carousel/CarouselTeaser";
-import { getSettings } from "@/lib/settings";
-import { PRACTICES } from "@/lib/practices";
+import { RotatingWord } from "@/components/home/RotatingWord";
+import { WorkTabs, type WorkItem } from "@/components/home/WorkTabs";
 import { StartProjectButton } from "@/components/StartProjectButton";
-import { getTestimonials } from "@/lib/content";
+import { RemixButton } from "@/components/remix/RemixButton";
 import { Testimonials } from "@/components/content/Testimonials";
+import { publicClient } from "@/lib/supabase/public";
+import { getSettings } from "@/lib/settings";
+import { getTestimonials } from "@/lib/content";
+import { PRACTICES } from "@/lib/practices";
+import { PLAYGROUND_TOOLS } from "@/lib/playground";
+import { ARCH_KEYS, PRESETS } from "@/lib/remix";
+import { getWall } from "@/lib/wall";
 
 export const revalidate = 300;
 
-type Featured = {
-  slug: string; title: string; year: number | null; cover_url: string | null;
-  overview: string | null; summary: string | null; category: { name: string } | null;
-};
+/* ---------- data ---------- */
+const WEB_CATS = ["Web Design & Development", "SEO"];
+const AI_CATS = ["AI & Automation"];
+const practiceOf = (c: string | null): WorkItem["practice"] =>
+  c && WEB_CATS.includes(c) ? "web" : c && AI_CATS.includes(c) ? "ai" : "design";
 
-async function getFeatured(): Promise<Featured[]> {
+async function getWork(): Promise<WorkItem[]> {
   const sb = publicClient();
   if (!sb) return [];
   const { data } = await sb.from("projects")
-  .select("slug, title, year, cover_url, overview, summary, category:categories(name)")
-    .eq("published", true).eq("featured", true).order("sort_order").limit(4);
-  return (data ?? []) as unknown as Featured[];
+    .select("slug, title, year, cover_url, featured, category:categories(name)")
+    .eq("published", true)
+    .order("featured", { ascending: false }).order("sort_order").limit(40);
+  const rows = ((data ?? []) as unknown as { slug: string; title: string; year: number | null; cover_url: string | null; category: { name: string } | null }[])
+    .map((r) => ({ slug: r.slug, title: r.title, year: r.year, cover_url: r.cover_url, category: r.category?.name ?? null, practice: practiceOf(r.category?.name ?? null) }));
+  // Up to 8 design projects, plus every web and AI project
+  let design = 0;
+  return rows.filter((r) => (r.practice === "design" ? design++ < 8 : true));
 }
 
-// Which project categories feed each service's hover preview
-const SERVICE_CATEGORIES: Record<string, string[]> = {
-  "brand-identity": ["Brand Identity", "Logo Design"],
-  "graphic-design": ["Graphic Design", "Social Media Design"],
-  "campaign-direction": ["Campaigns & Posters"],
-  "photo-manipulation": ["Photo Manipulation", "Photography"],
-  "packaging-print": ["Packaging"],
-  "digital-experiences": ["Experimental Design"],
-  "carousel-design": ["Carousel Design"],
+/* ---------- content ---------- */
+const DETAILS: Record<string, { eyebrow: string; text: string; services: string[]; from: string; explore: string }> = {
+  design: {
+    eyebrow: "IDENTITY",
+    text: "Brand identities and visuals that make organisations impossible to ignore. 9+ years of craft.",
+    services: ["Logo & brand identity systems", "Social media posts & carousels", "Campaign key visuals & posters", "Packaging, print & photo manipulation"],
+    from: "From $300", explore: "Explore Design",
+  },
+  web: {
+    eyebrow: "INNOVATION",
+    text: "Fast, mobile-first websites I design and build myself, set up to be found on Google.",
+    services: ["Landing pages & business websites", "On-page SEO & speed optimisation", "Google Business Profile & analytics setup", "Care & SEO plans to keep growing"],
+    from: "From $150", explore: "Explore Web & SEO",
+  },
+  ai: {
+    eyebrow: "INNOVATION",
+    text: "Practical automations that reply, follow up and organise, so repetitive work runs itself.",
+    services: ["WhatsApp & chatbot automations", "Lead capture & instant follow-ups", "Content & admin workflows", "Custom workflows connecting your tools"],
+    from: "From $300", explore: "Explore AI & Automation",
+  },
 };
-async function getPreviews(): Promise<Record<string, string[]>> {
-  const sb = publicClient();
-  if (!sb) return {};
-  const { data } = await sb.from("projects")
-    .select("cover_url, category:categories(name)")
-    .eq("published", true).not("cover_url", "is", null).order("sort_order").limit(40);
-  const rows = (data ?? []) as unknown as { cover_url: string; category: { name: string } | null }[];
-  const out: Record<string, string[]> = {};
-  for (const [slug, cats] of Object.entries(SERVICE_CATEGORIES)) {
-    out[slug] = rows.filter((r) => r.category && cats.includes(r.category.name)).map((r) => r.cover_url).slice(0, 3);
-  }
-  return out;
-}
 
-const tools = PLAYGROUND_TOOLS;
+const PROCESS = [
+  { no: "01", title: "Discover", text: "We talk through your goals, audience and timeline, starting with a short brief and a discovery call." },
+  { no: "02", title: "Plan", text: "I map the approach and share a clear quote, scope and timeline before any work begins." },
+  { no: "03", title: "Create", text: "I design, build or automate, sharing progress and refining with two rounds of revisions." },
+  { no: "04", title: "Launch & support", text: "You get final files, a live site or a working automation, plus help afterwards." },
+];
 
-function Eyebrow({ no, label, light = false }: { no: string; label: string; light?: boolean }) {
-  return (
-    <p className={`text-xs font-semibold tracking-[0.3em] ${light ? "text-navy" : "text-royal dark:text-light-azure"}`}>
-      {no} — {label}
-    </p>
-  );
-}
+const STATS = [
+  { value: "9+", label: "Years designing" },
+  { value: "8", label: "Organisations designed for" },
+  { value: "2", label: "Countries served" },
+  { value: "3", label: "Practices, one studio" },
+];
+
+const eyebrow = "text-xs font-semibold tracking-[0.3em] text-royal dark:text-light-azure";
+const sweep = "accent-gradient absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100";
 
 export default async function Home() {
-  const [featured, previews, carousels, settings, testimonials] = await Promise.all([getFeatured(), getPreviews(), getCarousels(6), getSettings(), getTestimonials()]);
+  const [work, settings, testimonials, wall] = await Promise.all([getWork(), getSettings(), getTestimonials(), getWall(24)]);
+
   return (
     <>
-            {/* HERO */}
-            <section className="relative overflow-hidden pt-28 pb-16 lg:min-h-[90svh] lg:pt-32">
+      {/* HERO */}
+      <section className="relative overflow-hidden pt-28 pb-16 lg:min-h-[90svh] lg:pt-32">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(55%_50%_at_78%_38%,#21A9FF33,transparent_70%),radial-gradient(40%_40%_at_15%_85%,#1177FF1F,transparent_70%)]" />
         <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-7">
-             <StatusCard available={settings.available} note={settings.availabilityNote}
+            <StatusCard available={settings.available} note={settings.availabilityNote}
               workDays={settings.workDays} workStart={settings.workStart} workEnd={settings.workEnd} />
             <h1 className="mt-6 font-display text-[clamp(2rem,4.5vw,3.75rem)] font-bold uppercase leading-[1.02] tracking-tight">
-              I turn ideas into <span className="aso-text-gradient">visual experiences.</span>
+              I turn ideas into <span className="sr-only">brands, websites and automations.</span>
+              <span className="block"><RotatingWord /></span>
             </h1>
             <p className="mt-5 max-w-xl text-base text-muted md:text-lg">Brand identity, websites and smart automation, under one studio.</p>
+
+            <ul aria-label="My practices" className="mt-6 flex flex-wrap gap-2">
+              {PRACTICES.map((p) => {
+                const Icon = p.Icon;
+                return (
+                  <li key={p.key}>
+                    <Link href={p.href}
+                      className={`accent-${p.key} inline-flex items-center gap-2 rounded-full border border-line bg-bg/60 px-4 py-2 text-sm font-medium backdrop-blur transition hover:border-[var(--accent)] hover:bg-[var(--accent-soft)]`}>
+                      <span aria-hidden className="size-2 rounded-full bg-[var(--accent)]" />
+                      <Icon size={15} className="accent-text" />
+                      {p.title}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+
             <Link href="/estimate" className="group mt-6 inline-flex items-center gap-2 text-sm font-medium text-royal dark:text-light-azure">
-                <span className="grid size-6 place-items-center rounded-full bg-royal/10 text-xs font-bold">$</span>
-                Know your project cost in 60 seconds
-                <ArrowUpRight size={14} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-              <div className="mt-6 flex flex-wrap gap-3">
+              <span className="grid size-6 place-items-center rounded-full bg-royal/10 text-xs font-bold">$</span>
+              Know your project cost in 60 seconds
+              <ArrowUpRight size={14} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+            <div className="mt-6 flex flex-wrap gap-3">
               <StartProjectButton className="group inline-flex items-center gap-2 rounded-full bg-royal px-6 py-3 text-sm font-medium text-white transition hover:bg-bright">
                 Start your project <ArrowUpRight size={16} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </StartProjectButton>
@@ -103,175 +131,203 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* WHAT I DO */}
+      <section className="mx-auto max-w-6xl px-6 py-24" aria-labelledby="what-title">
+        <Reveal className="max-w-3xl">
+          <p className={eyebrow}>WHAT I DO</p>
+          <h2 id="what-title" className="mt-4 font-display text-3xl font-bold md:text-4xl">
+            One studio. <span className="aso-text-gradient">Three ways to grow your brand.</span>
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-muted">
+            Pick the practice you need, or combine them. Every project gets the same care, strategy and finish.
+          </p>
+        </Reveal>
+
+        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+          {PRACTICES.map((p, i) => {
+            const Icon = p.Icon;
+            const d = DETAILS[p.key];
+            return (
+              <Reveal key={p.key} delay={i * 0.08}>
+                <article className={`accent-${p.key} glow-card group relative flex h-full flex-col overflow-hidden rounded-lg border border-line bg-bg p-7`}>
+                  <span aria-hidden className={sweep} />
+                  <span className="accent-icon grid size-12 place-items-center rounded-full"><Icon size={22} /></span>
+                  <p className="mt-5 text-[10px] font-semibold tracking-[0.3em] text-muted">{d.eyebrow}</p>
+                  <h3 className="mt-1 font-display text-2xl font-bold">{p.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{d.text}</p>
+                  <ul className="mt-5 space-y-2.5 text-sm">
+                    {d.services.map((s) => (
+                      <li key={s} className="flex gap-2.5"><Check size={16} className="accent-text mt-0.5 shrink-0" />{s}</li>
+                    ))}
+                  </ul>
+                  <p className="mt-6 font-display text-lg font-bold accent-text">{d.from}</p>
+                  <div className="mt-auto flex flex-wrap gap-2 pt-6">
+                    <Link href={`${p.href}#estimate`}
+                      className="inline-flex items-center rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-[var(--accent-on)] transition hover:brightness-110">
+                      Get an estimate
+                    </Link>
+                    <Link href={p.href}
+                      className="inline-flex items-center gap-1 rounded-full border border-line px-5 py-2.5 text-sm font-medium transition hover:border-[var(--accent)]">
+                      {d.explore} <ArrowUpRight size={15} />
+                    </Link>
+                  </div>
+                </article>
+              </Reveal>
+            );
+          })}
+        </div>
+
+        <p className="mt-10 text-center text-sm text-muted">
+          Not sure where to start?{" "}
+          <StartProjectButton className="font-medium text-royal underline underline-offset-4 dark:text-light-azure">Start your project →</StartProjectButton>
+        </p>
+      </section>
+
+      {/* TRUSTED BY */}
       <Marquee />
 
-      {/* SIGNATURE */}
-            <section className="bg-surface py-7">
-        <div className="mx-auto max-w-6xl px-6">
-        <SignatureWords className="text-[clamp(1.75rem,6vw,4.5rem)] tracking-tight" />
-        </div>
-      </section>
-
-      {/* 01 — IDEAS */}
-      <section className="mx-auto max-w-6xl px-6 py-24" aria-labelledby="ideas-title">
-        <Reveal>
-          <Eyebrow no="01" label="IDEAS" />
-          <h2 id="ideas-title" className="mt-4 max-w-3xl font-display text-2xl font-medium leading-snug md:text-3xl">
-            Great design should do more than look good. It should <span className="aso-text-gradient">communicate, connect, inspire,</span> and create lasting impressions.
-          </h2>
-        </Reveal>
-        <ol className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((s, i) => (
-                                        <li key={s.no} className="group relative h-full overflow-hidden rounded-lg border border-line p-6 transition duration-300 hover:-translate-y-1 hover:border-royal hover:shadow-[0_20px_40px_-24px_#1177FF]">
-                            <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 accent-gradient transition-transform duration-500 group-hover:scale-x-100" />
-                            <Reveal delay={i * 0.08}>
-                <span className="font-display text-sm text-royal dark:text-light-azure">{s.no}</span>
-                <h3 className="mt-3 font-display text-lg font-semibold">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
-                </Reveal>
-                </li>
-                      ))}
-        </ol>
-        <div className="mt-20"><Stats /></div>
-      </section>
-
-            {/* 02 — IDENTITY */}
-            <section className="border-t border-line bg-surface/50 py-24" aria-labelledby="works-title">
+      {/* SELECTED WORK */}
+      <section className="border-b border-line bg-surface/50 py-24" aria-labelledby="work-title">
         <div className="mx-auto max-w-6xl px-6">
           <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-6">
             <div>
-              <Eyebrow no="02" label="IDENTITY" />
-              <h2 id="works-title" className="mt-4 font-display text-3xl font-bold md:text-4xl">Selected Works</h2>
+              <p className={eyebrow}>SELECTED WORK</p>
+              <h2 id="work-title" className="mt-4 font-display text-3xl font-bold md:text-4xl">Recent projects across all three practices.</h2>
             </div>
-            <Link href="/work" className="text-sm font-medium text-royal hover:underline dark:text-light-azure">View all projects →</Link>
+            <Link href="/work" className="text-sm font-medium text-royal hover:underline dark:text-light-azure">View all work →</Link>
           </Reveal>
-
-          <div className="columns-2 gap-4 md:columns-3 lg:columns-4 [&>*]:mb-4">
-            {featured.length
-              ? featured.map((p, i) => (
-                  <Reveal key={p.slug} delay={i * 0.06} className="break-inside-avoid">
-                    <Link href={`/work/${p.slug}`} data-cursor="View project" className="group block">
-                      <div className="relative overflow-hidden rounded-lg bg-surface">
-                        {p.cover_url ? (
-                          <Image src={p.cover_url} alt={p.title} width={1600} height={1600}
-                            sizes="(min-width:1024px) 25vw, (min-width:768px) 33vw, 50vw"
-                            className="h-auto w-full transition duration-500 group-hover:scale-[1.03]" />
-                        ) : (
-                          <div className="grid aspect-[4/5] place-items-center text-xs text-muted">No cover yet</div>
-                        )}
-                        {(p.summary || p.overview) && (
-                          <div className="absolute inset-0 flex items-end bg-gradient-to-t from-navy/85 via-navy/20 to-transparent p-4 opacity-0 transition duration-300 group-hover:opacity-100">
-                            <p className="line-clamp-3 text-xs leading-relaxed text-white">{p.summary || p.overview}</p>
-                          </div>
-                        )}
-                      </div>
-                      <h3 className="mt-2.5 truncate font-display text-sm font-semibold group-hover:text-royal">{p.title}</h3>
-                      <p className="mt-0.5 text-xs text-muted">{[p.category?.name, p.year].filter(Boolean).join(" · ")}</p>
-                    </Link>
-                  </Reveal>
-                ))
-              : ["aspect-square", "aspect-[4/5]", "aspect-[3/4]", "aspect-[4/5]"].map((ratio, i) => (
-                  <Reveal key={i} delay={i * 0.06} className="break-inside-avoid">
-                    <div className={`grid ${ratio} place-items-center rounded-lg border border-dashed border-neutral-grey/60 bg-bg p-4 text-center`}>
-                      <p className="text-xs text-muted"><strong className="block font-display text-fg">Project placeholder</strong>Publish a featured project to replace this.</p>
-                    </div>
-                  </Reveal>
-                ))}
-          </div>
-
-          <CarouselTeaser carousels={carousels} />
-          <Reveal className="mt-20"><h3 className="font-display text-2xl font-bold md:text-3xl">What I design</h3></Reveal>
-          <div className="mt-8"><ServicesHover previews={previews} /></div>
+          <WorkTabs items={work} />
         </div>
       </section>
 
-            {/* ABOUT PREVIEW */}
-            <section className="bg-navy py-20 text-white" aria-labelledby="about-title">
+      {/* HOW I WORK */}
+      <section className="mx-auto max-w-6xl px-6 py-24" aria-labelledby="process-title">
+        <Reveal>
+          <p className={eyebrow}>HOW I WORK</p>
+          <h2 id="process-title" className="mt-4 font-display text-3xl font-bold md:text-4xl">A clear process, whatever you need.</h2>
+        </Reveal>
+        <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {PROCESS.map((s, i) => (
+            <li key={s.no} className="accent-design glow-card group relative h-full overflow-hidden rounded-lg border border-line bg-bg p-6">
+              <span aria-hidden className={sweep} />
+              <Reveal delay={i * 0.08}>
+                <span className="inline-block font-display text-sm accent-text transition duration-300 group-hover:translate-x-1">{s.no}</span>
+                <h3 className="mt-3 font-display text-lg font-semibold">{s.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ABOUT PREVIEW */}
+      <section className="border-t border-line bg-surface py-24" aria-labelledby="about-title">
         <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-12 lg:items-center">
           <Reveal className="lg:col-span-5">
-            <div className="relative mx-auto aspect-[4/5] w-full max-w-[260px] overflow-hidden rounded-sm sm:max-w-sm lg:mx-0 lg:ml-auto">
+            <div className="relative mx-auto aspect-[4/5] w-full max-w-[260px] overflow-hidden rounded-lg sm:max-w-sm lg:mx-0">
               <Image src={settings.portraitHome} alt="Portrait of Adenaike Sodiq Olusegun, creative designer in Lagos"
                 fill sizes="(min-width:1024px) 40vw, 100vw" className="object-cover" />
             </div>
           </Reveal>
-          <Reveal delay={0.1} className="lg:col-span-6 lg:col-start-7">
-            <p className="text-xs font-semibold tracking-[0.3em] text-sky">ABOUT ASO</p>
-            <h2 id="about-title" className="mt-4 font-display text-3xl font-bold md:text-4xl">Creativity, strategy and attention to detail.</h2>
-            <p className="mt-5 text-base leading-relaxed text-ice">
-              Adenaike Sodiq Olusegun, professionally known as ASO, is a multidisciplinary creative designer, visual communicator and brand identity enthusiast passionate about transforming ideas into meaningful visual experiences.
-            </p>
-            <Link href="/about" className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-sky hover:text-pale-blue">Read the full story <ArrowUpRight size={16} /></Link>
-          </Reveal>
-        </div>
-      </section>
-
-            {/* 03 — INNOVATION */}
-            <section className="px-6 py-24" aria-labelledby="innovation-title">
-        <div className="mx-auto max-w-6xl">
-          <Reveal>
-            <Eyebrow no="03" label="INNOVATION" />
-            <h2 id="innovation-title" className="mt-4 max-w-3xl font-display text-3xl font-bold md:text-4xl">
-              Websites and automations <span className="aso-text-gradient">that work for you.</span>
+          <Reveal delay={0.1} className="lg:col-span-7">
+            <p className={eyebrow}>THE CREATIVE MIND BEHIND ASO INNOVALITY</p>
+            <h2 id="about-title" className="mt-4 font-display text-3xl font-bold md:text-4xl">
+              Where strategic thinking meets <span className="aso-text-gradient">visual craft.</span>
             </h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-              Design is where I started. Building is where I’m growing. I now design and develop websites with SEO built in, and set up automations that save hours every week.
+            <p className="mt-5 text-base leading-relaxed text-muted">
+              I’m Adenaike Sodiq Olusegun, a Lagos-based creative designer with 9+ years helping organisations, startups and ministries communicate with clarity. Today I bring that same care to websites and smart automation, so my clients get one trusted partner from brand to growth.
             </p>
-          </Reveal>
-
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
-            {PRACTICES.filter((p) => p.key !== "design").map((p, i) => {
-              const Icon = p.Icon;
-              return (
-                <Reveal key={p.key} delay={i * 0.08}>
-                                    <div className={`accent-${p.key} glow-card group relative flex h-full flex-col overflow-hidden rounded-lg border border-line bg-bg p-7`}>
-                    <span aria-hidden className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 accent-gradient transition-transform duration-500 group-hover:scale-x-100" />
-                    <span className="grid size-12 place-items-center rounded-full accent-icon">
-                      <Icon size={22} />
-                    </span>
-                    <p className="mt-5 text-[10px] font-semibold tracking-[0.3em] text-muted">{p.word}</p>
-                    <h3 className="mt-1 font-display text-2xl font-bold">{p.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">{p.text}</p>
-                    <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 pt-6 text-sm font-medium">
-                      <Link href={p.href} className="accent-text inline-flex items-center gap-1 after:absolute after:inset-0">
-                        Explore <ArrowUpRight size={15} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                      </Link>
-                      <Link href={`${p.href}#estimate`} className="relative z-10 text-muted hover:text-royal">Get an estimate</Link>
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-
-          <Reveal className="relative mt-6 overflow-hidden rounded-sm aso-gradient px-8 py-12 text-navy md:px-12">
-            <p className="text-xs font-semibold tracking-[0.3em]">PLAYGROUND</p>
-            <h3 className="mt-3 max-w-2xl font-display text-2xl font-bold md:text-3xl">Where creativity meets experimentation.</h3>
-            <p className="mt-3 max-w-xl text-base">Free creative tools and design games, built by ASO. Set type, generate palettes and test your eye.</p>
-            <ul className="mt-6 flex flex-wrap gap-2">
-              {tools.map((t) => (
-                <li key={t.id}>
-                  <Link href={`/playground#${t.id}`} className="inline-flex rounded-full bg-white/70 px-4 py-2 text-sm font-medium backdrop-blur transition hover:bg-white">
-                    {t.label}
-                  </Link>
-                </li>
+            <dl className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4">
+              {STATS.map((s) => (
+                <div key={s.label}>
+                  <dt className="sr-only">{s.label}</dt>
+                  <dd className="font-display text-3xl font-bold">{s.value}</dd>
+                  <dd className="mt-1 text-xs text-muted">{s.label}</dd>
+                </div>
               ))}
-            </ul>
-            <Link href="/playground" className="mt-8 inline-flex rounded-full bg-navy px-6 py-3 text-sm font-medium text-white hover:bg-royal">Enter the Playground</Link>
+            </dl>
+            <Link href="/about" className="mt-8 inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-medium transition hover:border-royal hover:text-royal">
+              More about me <ArrowUpRight size={16} />
+            </Link>
           </Reveal>
         </div>
       </section>
 
-      
-      <WallStrip />
+      {/* THE LAB */}
+      <section className="bg-navy py-24 text-white" aria-labelledby="lab-title">
+        <div className="mx-auto max-w-6xl px-6">
+          <Reveal className="max-w-3xl">
+            <p className="text-xs font-semibold tracking-[0.3em] text-sky">THE LAB</p>
+            <h2 id="lab-title" className="mt-4 font-display text-3xl font-bold md:text-4xl">
+              Free tools, <span className="aso-text-gradient">built in-house.</span>
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-ice">Proof of the craft: interactive tools I designed and built, free for everyone.</p>
+          </Reveal>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            <Reveal>
+              <div className="flex h-full flex-col rounded-lg border border-white/10 bg-white/5 p-7">
+                <h3 className="font-display text-xl font-bold">The Creative Playground</h3>
+                <p className="mt-2 text-sm leading-relaxed text-ice">
+                  {PLAYGROUND_TOOLS.length} free tools: brand personality quiz, palette generator, monogram maker, carousel splitter, link preview tester and more.
+                </p>
+                <ul className="mt-5 flex flex-wrap gap-1.5">
+                  {PLAYGROUND_TOOLS.slice(0, 6).map((t) => (
+                    <li key={t.id}><Link href={`/playground#${t.id}`} className="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs hover:bg-white/20">{t.label}</Link></li>
+                  ))}
+                </ul>
+                <Link href="/playground" className="mt-auto inline-flex w-fit items-center gap-2 pt-6 text-sm font-semibold text-sky hover:text-pale-blue">
+                  Open the Playground <ArrowUpRight size={15} />
+                </Link>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <div className="flex h-full flex-col rounded-lg border border-white/10 bg-white/5 p-7">
+                <h3 className="font-display text-xl font-bold">Remix This Site</h3>
+                <p className="mt-2 text-sm leading-relaxed text-ice">See this whole website transform into your brand’s colours and fonts, live.</p>
+                <div className="mt-5 flex gap-2" aria-hidden>
+                  {ARCH_KEYS.slice(0, 5).map((k) => (
+                    <span key={k} className="size-8 rounded-full ring-2 ring-white/20" style={{ backgroundImage: `linear-gradient(135deg, ${PRESETS[k].p}, ${PRESETS[k].a})` }} />
+                  ))}
+                </div>
+                <RemixButton className="mt-auto inline-flex w-fit items-center gap-2 pt-6 text-sm font-semibold text-sky hover:text-pale-blue">
+                  Remix it <ArrowUpRight size={15} />
+                </RemixButton>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.16}>
+              <div className="flex h-full flex-col rounded-lg border border-white/10 bg-white/5 p-7">
+                <h3 className="font-display text-xl font-bold">The Idea Wall</h3>
+                <p className="mt-2 text-sm leading-relaxed text-ice">A living palette made by visitors. Add one colour a day.</p>
+                <div className="mt-5 grid grid-cols-8 gap-1.5" aria-hidden>
+                  {(wall.length ? wall.map((e) => e.color) : ["#0B6CEB", "#21A9FF", "#00A699", "#F2A900", "#FF5A5F", "#7B3FE4", "#3B7A52", "#E5484D"])
+                    .slice(0, 24).map((c, i) => <span key={i} className="aspect-square rounded-sm" style={{ background: c }} />)}
+                </div>
+                <Link href="/wall" className="mt-auto inline-flex w-fit items-center gap-2 pt-6 text-sm font-semibold text-sky hover:text-pale-blue">
+                  Add your colour <ArrowUpRight size={15} />
+                </Link>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS (only shows once you add some in the admin) */}
       <Testimonials items={testimonials} />
 
-{/* CTA */}
+      {/* CTA */}
       <section className="bg-navy py-20 text-center text-white">
         <Reveal className="mx-auto max-w-4xl px-6">
           <h2 className="font-display text-[clamp(1.75rem,4.5vw,3.25rem)] font-bold uppercase leading-[1.05]">
             Have an idea? <span className="aso-text-gradient">Let’s bring it to life.</span>
           </h2>
-          <StartProjectButton className="mt-10 inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-azure">Start your project</StartProjectButton>
+          <p className="mx-auto mt-4 max-w-xl text-ice">Brand identity, websites and smart automation, under one studio.</p>
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <StartProjectButton className="inline-flex rounded-full bg-royal px-6 py-3 text-sm font-medium text-white hover:bg-azure">Start your project</StartProjectButton>
+            <Link href="/estimate" className="inline-flex rounded-full border border-white/25 px-6 py-3 text-sm font-medium hover:border-sky">Get an instant estimate</Link>
+          </div>
         </Reveal>
       </section>
     </>
